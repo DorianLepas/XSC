@@ -1,0 +1,2 @@
+# XSC
+XSC Language Plugin
