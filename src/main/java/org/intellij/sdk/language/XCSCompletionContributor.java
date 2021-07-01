@@ -92,18 +92,17 @@ public class XCSCompletionContributor extends CompletionContributor {
                         resultSet.addElement(LookupElementBuilder.create("U8"));
                         resultSet.addElement(LookupElementBuilder.create("F4"));
                         resultSet.addElement(LookupElementBuilder.create("F8"));
-                        resultSet.addElement(LookupElementBuilder.create("Boolean"));
+                        //resultSet.addElement(LookupElementBuilder.create("Boolean"));
                     }
                 }
         );
 
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(XCSTypes.VFEI_CMD_ITEM_NAME),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.ASCII_TYPE)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
-
                     }
                 }
         );
@@ -114,7 +113,6 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
-
                     }
                 }
         );

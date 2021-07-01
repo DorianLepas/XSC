@@ -13,9 +13,9 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     //STRUCTURE
     public static final TextAttributesKey COMMENT =
-            createTextAttributesKey("XCS_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
+            createTextAttributesKey("XCS_LINE_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
     public static final TextAttributesKey FUNCTION_COMMENT =
-            createTextAttributesKey("XCS_FUNCTION_COMMENT", DefaultLanguageHighlighterColors.DOC_COMMENT);
+            createTextAttributesKey("XCS_FUNCTION_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey FUNCTION_NAME =
             createTextAttributesKey("XCS_FUNCTION_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
     public static final TextAttributesKey COLLECTION_EVENT =
@@ -47,7 +47,7 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey VARIABLE_NAME =
             createTextAttributesKey("XCS_VARIABLE_NAME", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey VARIABLE_VALUE =
-            createTextAttributesKey("XCS_VARIABLE_VALUE", DefaultLanguageHighlighterColors.STRING);
+            createTextAttributesKey("XCS_VARIABLE_VALUE", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey CEID =
             createTextAttributesKey("XCS_CEID", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
     public static final TextAttributesKey VFEI_CMD_ITEM_NAME =
