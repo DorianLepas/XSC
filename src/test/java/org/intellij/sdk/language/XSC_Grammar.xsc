@@ -1,0 +1,5 @@
+SSR_CONTROL_STATE: S1F3 W * Selected equipment status request
+<L[1] StatusVariableList
+  <U1 SVID {VfeiName="CONTROLSTATE"}> * Status variable ID
+>
+.
