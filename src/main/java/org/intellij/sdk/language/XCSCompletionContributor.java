@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 public class XCSCompletionContributor extends CompletionContributor {
 
     public XCSCompletionContributor() {
+
+        /*
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -64,11 +66,26 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
+                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiType"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
+                        resultSet.addElement(LookupElementBuilder.create("MinSecsValue"));
+                        resultSet.addElement(LookupElementBuilder.create("DefaultSecsValue"));
+                    }
+                }
+        );
+
+        extend(CompletionType.BASIC,PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
+                new CompletionProvider<CompletionParameters>() {
+                    public void addCompletions(@NotNull CompletionParameters parameters,
+                                               @NotNull ProcessingContext context,
+                                               @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CheckAck"));
                         resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck"));
                     }
                 }
         );
+         */
 
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(XCSTypes.FUNCTION_NAME).afterSibling(PlatformPatterns.psiElement().whitespace()),
                 new CompletionProvider<CompletionParameters>() {
@@ -76,6 +93,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("COLLECTIONEVENT_VARIABLES"));
+                        resultSet.addElement(LookupElementBuilder.create("EQUIPMENTCONSTANTS"));
                         resultSet.addElement(LookupElementBuilder.create("VFEI_SECS_SEQUENCES"));
                     }
                 }
@@ -113,6 +131,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
+                        resultSet.addElement(LookupElementBuilder.create("ECID"));
                     }
                 }
         );
@@ -123,6 +142,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
+                        resultSet.addElement(LookupElementBuilder.create("ECID"));
                         resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
                     }
                 }

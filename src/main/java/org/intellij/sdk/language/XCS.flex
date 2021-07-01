@@ -21,6 +21,7 @@ WHITE_SPACE=[\ \n\t\f]
 
 
 COLLECTION_EVENT=COLLECTIONEVENT_VARIABLES
+EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
 VFEI_SECS_SEQ=VFEI_SECS_SEQUENCES
 FUNCTION_NAME=\w+
 
@@ -32,6 +33,7 @@ VARIABLE_TYPE=(U|I)[1248]|F[48]|(L|B|V|BOOLEAN|Boolean)(\[\d+\])?|J|A|V
 VARIABLE_NAME=\w+
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)
 CEID=CEID
+ECID=ECID
 VFEI_CMD_ITEM_NAME=INITIALIZE
 
 PROPERTY_START=\{
@@ -43,6 +45,7 @@ PROPERTY_NAME=VfeiQualifier|VfeiName|SecsValueAlignment|SecsValueWidth|SecsValue
               SendAsList|Disabled|ReplyMatch|WrapInList|EventLevel8
 PROPERTY_VALUE=\"\w+\"
 PROPERTY_NAME_CE=VfeiName|SecsType|ReplaceVfeiName|ReplaceItems|EventLevel8
+PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
 
 ASCII_TYPE=A(\[\d+\])?|A
@@ -55,6 +58,7 @@ FUNCTION_END=.
 //STATE
 %state FUNCTION_HEADER
 %state CE_HEADER
+%state EC_HEADER
 %state VSS_HEADER
 
 //FUNCTION
@@ -66,6 +70,11 @@ FUNCTION_END=.
 %state CE_CORE
 %state CE_NAME
 %state CE_PROPERTY
+
+//EQUIPMENT CONSTANT
+%state EC_CORE
+%state EC_NAME
+%state EC_PROPERTY
 
 //VFEI SECS SEQUENCES
 %state VSS_CORE
@@ -84,9 +93,10 @@ FUNCTION_END=.
 
 
 <YYINITIAL>{
-    {COLLECTION_EVENT}  { yybegin(CE_HEADER); return XCSTypes.COLLECTION_EVENT; }
-    {VFEI_SECS_SEQ}     { yybegin(VSS_HEADER); return XCSTypes.VFEI_SECS_SEQ; }
-    {FUNCTION_NAME}     { yybegin(FUNCTION_HEADER); return XCSTypes.FUNCTION_NAME; }
+    {COLLECTION_EVENT}      { yybegin(CE_HEADER); return XCSTypes.COLLECTION_EVENT; }
+    {EQUIPMENT_CONSTANT}    { yybegin(EC_HEADER); return XCSTypes.EQUIPMENT_CONSTANT; }
+    {VFEI_SECS_SEQ}         { yybegin(VSS_HEADER); return XCSTypes.VFEI_SECS_SEQ; }
+    {FUNCTION_NAME}         { yybegin(FUNCTION_HEADER); return XCSTypes.FUNCTION_NAME; }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +159,7 @@ FUNCTION_END=.
 <CE_CORE>{
       //LIST
      {LIST_TYPE}                         {yybegin(CE_NAME); return XCSTypes.LIST_TYPE; }
-     {CORE_START}                        {yybegin(CE_CORE); return XCSTypes.CORE_START; }
+     {CORE_START}                        {return XCSTypes.CORE_START; }
      //ASCII
      {ASCII_TYPE}                        {yybegin(CE_NAME); return XCSTypes.ASCII_TYPE; }
      {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
@@ -173,12 +183,55 @@ FUNCTION_END=.
 }
 
 <CE_PROPERTY>{
-     {PROPERTY_NAME_CE}    {return XCSTypes.PROPERTY_NAME_CE; }
-     {EQUALS}              {return XCSTypes.EQUALS; }
-     {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
-     {PROPERTY_END}        {yybegin(CE_CORE);return XCSTypes.PROPERTY_END; }
+    {PROPERTY_NAME_CE}    {return XCSTypes.PROPERTY_NAME_CE; }
+    {EQUALS}              {return XCSTypes.EQUALS; }
+    {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
+    {PROPERTY_END}        {yybegin(CE_CORE);return XCSTypes.PROPERTY_END; }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////         EC         ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+<EC_HEADER>{
+    {COLON}                        {return XCSTypes.COLON; }
+    {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
+    {CORE_START}                   {yybegin(EC_CORE); return XCSTypes.CORE_START; }
+    {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<EC_CORE>{
+    //LIST
+    {LIST_TYPE}                         {yybegin(EC_NAME); return XCSTypes.LIST_TYPE; }
+    {CORE_START}                        {return XCSTypes.CORE_START; }
+    //ASCII
+    {ASCII_TYPE}                        {yybegin(EC_NAME); return XCSTypes.ASCII_TYPE; }
+    {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
+    //OTHERS
+    {VARIABLE_TYPE}                     {yybegin(EC_NAME); return XCSTypes.VARIABLE_TYPE; }
+    {VARIABLE_VALUE}                    {return XCSTypes.VARIABLE_VALUE; }
+
+    {PROPERTY_START}                    {yybegin(EC_PROPERTY); return XCSTypes.PROPERTY_START; }
+    {CORE_END}                          {return XCSTypes.CORE_END ;}
+    {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
+    {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<EC_NAME>{
+    {ECID}              {yybegin(EC_CORE); return XCSTypes.ECID; }
+    {PROPERTY_START}    {yybegin(EC_PROPERTY); return XCSTypes.PROPERTY_START; }
+    {ASCII_VALUE}       {yybegin(EC_CORE); return XCSTypes.ASCII_VALUE; }
+    {VARIABLE_VALUE}    {yybegin(EC_CORE); return XCSTypes.PROPERTY_VALUE; }
+    {CORE_START}        {yybegin(EC_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}          {yybegin(EC_CORE); return XCSTypes.CORE_END; }
+}
+
+<EC_PROPERTY>{
+    {PROPERTY_NAME_EC}    {return XCSTypes.PROPERTY_NAME_EC; }
+    {EQUALS}              {return XCSTypes.EQUALS; }
+    {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
+    {PROPERTY_END}        {yybegin(EC_CORE);return XCSTypes.PROPERTY_END; }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////          VSS         ///////////////////////////////////

@@ -13,6 +13,11 @@ public interface XCSTypes {
   IElementType CE_PROPERTY = new XCSElementType("CE_PROPERTY");
   IElementType CE_PROPERTY_ = new XCSElementType("CE_PROPERTY_");
   IElementType COLLECTION_EVENT_SECTION = new XCSElementType("COLLECTION_EVENT_SECTION");
+  IElementType EC_CORE = new XCSElementType("EC_CORE");
+  IElementType EC_LIST = new XCSElementType("EC_LIST");
+  IElementType EC_PROPERTY = new XCSElementType("EC_PROPERTY");
+  IElementType EC_PROPERTY_ = new XCSElementType("EC_PROPERTY_");
+  IElementType EQUIPMENT_CONSTANT_SECTION = new XCSElementType("EQUIPMENT_CONSTANT_SECTION");
   IElementType FUNCTIONS = new XCSElementType("FUNCTIONS");
   IElementType FUNCTION_CORE = new XCSElementType("FUNCTION_CORE");
   IElementType PROPERTY = new XCSElementType("PROPERTY");
@@ -32,7 +37,9 @@ public interface XCSTypes {
   IElementType COMMENT = new XCSTokenType("COMMENT");
   IElementType CORE_END = new XCSTokenType("CORE_END");
   IElementType CORE_START = new XCSTokenType("CORE_START");
+  IElementType ECID = new XCSTokenType("ECID");
   IElementType EQUALS = new XCSTokenType("EQUALS");
+  IElementType EQUIPMENT_CONSTANT = new XCSTokenType("EQUIPMENT_CONSTANT");
   IElementType FUNCTION_COMMENT = new XCSTokenType("FUNCTION_COMMENT");
   IElementType FUNCTION_CORE_3_0 = new XCSTokenType("FUNCTION_CORE_3_0");
   IElementType FUNCTION_END = new XCSTokenType("FUNCTION_END");
@@ -41,6 +48,7 @@ public interface XCSTypes {
   IElementType PROPERTY_END = new XCSTokenType("PROPERTY_END");
   IElementType PROPERTY_NAME = new XCSTokenType("PROPERTY_NAME");
   IElementType PROPERTY_NAME_CE = new XCSTokenType("PROPERTY_NAME_CE");
+  IElementType PROPERTY_NAME_EC = new XCSTokenType("PROPERTY_NAME_EC");
   IElementType PROPERTY_NAME_VSS = new XCSTokenType("PROPERTY_NAME_VSS");
   IElementType PROPERTY_START = new XCSTokenType("PROPERTY_START");
   IElementType PROPERTY_VALUE = new XCSTokenType("PROPERTY_VALUE");
@@ -68,6 +76,21 @@ public interface XCSTypes {
       }
       else if (type == COLLECTION_EVENT_SECTION) {
         return new XCSCollectionEventSectionImpl(node);
+      }
+      else if (type == EC_CORE) {
+        return new XCSEcCoreImpl(node);
+      }
+      else if (type == EC_LIST) {
+        return new XCSEcListImpl(node);
+      }
+      else if (type == EC_PROPERTY) {
+        return new XCSEcPropertyImpl(node);
+      }
+      else if (type == EC_PROPERTY_) {
+        return new XCSEcProperty_Impl(node);
+      }
+      else if (type == EQUIPMENT_CONSTANT_SECTION) {
+        return new XCSEquipmentConstantSectionImpl(node);
       }
       else if (type == FUNCTIONS) {
         return new XCSFunctionsImpl(node);

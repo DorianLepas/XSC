@@ -194,6 +194,164 @@ public class XCSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // (CORE_START ASCII_TYPE [ECID] [EC_PROPERTY] ASCII_VALUE CORE_END [FUNCTION_COMMENT]) |
+  //             (CORE_START VARIABLE_TYPE [ECID] [EC_PROPERTY] VARIABLE_VALUE CORE_END [FUNCTION_COMMENT])
+  public static boolean EC_CORE(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE")) return false;
+    if (!nextTokenIs(b, CORE_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = EC_CORE_0(b, l + 1);
+    if (!r) r = EC_CORE_1(b, l + 1);
+    exit_section_(b, m, EC_CORE, r);
+    return r;
+  }
+
+  // CORE_START ASCII_TYPE [ECID] [EC_PROPERTY] ASCII_VALUE CORE_END [FUNCTION_COMMENT]
+  private static boolean EC_CORE_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CORE_START, ASCII_TYPE);
+    r = r && EC_CORE_0_2(b, l + 1);
+    r = r && EC_CORE_0_3(b, l + 1);
+    r = r && consumeTokens(b, 0, ASCII_VALUE, CORE_END);
+    r = r && EC_CORE_0_6(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [ECID]
+  private static boolean EC_CORE_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_0_2")) return false;
+    consumeToken(b, ECID);
+    return true;
+  }
+
+  // [EC_PROPERTY]
+  private static boolean EC_CORE_0_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_0_3")) return false;
+    EC_PROPERTY(b, l + 1);
+    return true;
+  }
+
+  // [FUNCTION_COMMENT]
+  private static boolean EC_CORE_0_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_0_6")) return false;
+    consumeToken(b, FUNCTION_COMMENT);
+    return true;
+  }
+
+  // CORE_START VARIABLE_TYPE [ECID] [EC_PROPERTY] VARIABLE_VALUE CORE_END [FUNCTION_COMMENT]
+  private static boolean EC_CORE_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CORE_START, VARIABLE_TYPE);
+    r = r && EC_CORE_1_2(b, l + 1);
+    r = r && EC_CORE_1_3(b, l + 1);
+    r = r && consumeTokens(b, 0, VARIABLE_VALUE, CORE_END);
+    r = r && EC_CORE_1_6(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // [ECID]
+  private static boolean EC_CORE_1_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_1_2")) return false;
+    consumeToken(b, ECID);
+    return true;
+  }
+
+  // [EC_PROPERTY]
+  private static boolean EC_CORE_1_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_1_3")) return false;
+    EC_PROPERTY(b, l + 1);
+    return true;
+  }
+
+  // [FUNCTION_COMMENT]
+  private static boolean EC_CORE_1_6(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_CORE_1_6")) return false;
+    consumeToken(b, FUNCTION_COMMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // CORE_START LIST_TYPE EC_CORE* CORE_END [FUNCTION_COMMENT]
+  public static boolean EC_LIST(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_LIST")) return false;
+    if (!nextTokenIs(b, CORE_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, CORE_START, LIST_TYPE);
+    r = r && EC_LIST_2(b, l + 1);
+    r = r && consumeToken(b, CORE_END);
+    r = r && EC_LIST_4(b, l + 1);
+    exit_section_(b, m, EC_LIST, r);
+    return r;
+  }
+
+  // EC_CORE*
+  private static boolean EC_LIST_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_LIST_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!EC_CORE(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "EC_LIST_2", c)) break;
+    }
+    return true;
+  }
+
+  // [FUNCTION_COMMENT]
+  private static boolean EC_LIST_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_LIST_4")) return false;
+    consumeToken(b, FUNCTION_COMMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
+  // PROPERTY_START EC_PROPERTY_+ PROPERTY_END
+  public static boolean EC_PROPERTY(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_PROPERTY")) return false;
+    if (!nextTokenIs(b, PROPERTY_START)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, PROPERTY_START);
+    r = r && EC_PROPERTY_1(b, l + 1);
+    r = r && consumeToken(b, PROPERTY_END);
+    exit_section_(b, m, EC_PROPERTY, r);
+    return r;
+  }
+
+  // EC_PROPERTY_+
+  private static boolean EC_PROPERTY_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_PROPERTY_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = EC_PROPERTY_(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!EC_PROPERTY_(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "EC_PROPERTY_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // PROPERTY_NAME_EC EQUALS PROPERTY_VALUE
+  public static boolean EC_PROPERTY_(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "EC_PROPERTY_")) return false;
+    if (!nextTokenIs(b, PROPERTY_NAME_EC)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, PROPERTY_NAME_EC, EQUALS, PROPERTY_VALUE);
+    exit_section_(b, m, EC_PROPERTY_, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // (CORE_START VARIABLE_TYPE [VARIABLE_NAME] [PROPERTY] [VARIABLE_VALUE] CORE_END [FUNCTION_COMMENT]) |
   //                   (CORE_START ASCII_TYPE [VARIABLE_NAME] [PROPERTY] [ASCII_VALUE] CORE_END [FUNCTION_COMMENT]) |
   //                   (CORE_START LIST_TYPE [VARIABLE_NAME] FUNCTION_CORE* CORE_END [FUNCTION_COMMENT]) |
@@ -538,6 +696,43 @@ public class XCSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // EQUIPMENT_CONSTANT COLON [FUNCTION_COMMENT] [EC_LIST] FUNCTION_END [FUNCTION_COMMENT]
+  public static boolean equipment_constant_section(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equipment_constant_section")) return false;
+    if (!nextTokenIs(b, EQUIPMENT_CONSTANT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, EQUIPMENT_CONSTANT, COLON);
+    r = r && equipment_constant_section_2(b, l + 1);
+    r = r && equipment_constant_section_3(b, l + 1);
+    r = r && consumeToken(b, FUNCTION_END);
+    r = r && equipment_constant_section_5(b, l + 1);
+    exit_section_(b, m, EQUIPMENT_CONSTANT_SECTION, r);
+    return r;
+  }
+
+  // [FUNCTION_COMMENT]
+  private static boolean equipment_constant_section_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equipment_constant_section_2")) return false;
+    consumeToken(b, FUNCTION_COMMENT);
+    return true;
+  }
+
+  // [EC_LIST]
+  private static boolean equipment_constant_section_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equipment_constant_section_3")) return false;
+    EC_LIST(b, l + 1);
+    return true;
+  }
+
+  // [FUNCTION_COMMENT]
+  private static boolean equipment_constant_section_5(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "equipment_constant_section_5")) return false;
+    consumeToken(b, FUNCTION_COMMENT);
+    return true;
+  }
+
+  /* ********************************************************** */
   // FUNCTION_NAME COLON STREAM_FUNCTION [FUNCTION_COMMENT] FUNCTION_CORE* FUNCTION_END [FUNCTION_COMMENT]
   public static boolean functions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "functions")) return false;
@@ -579,11 +774,12 @@ public class XCSParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // collection_event_section|vfei_secs_seq_section|functions|COMMENT
+  // collection_event_section|equipment_constant_section|vfei_secs_seq_section|functions|COMMENT
   static boolean items(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "items")) return false;
     boolean r;
     r = collection_event_section(b, l + 1);
+    if (!r) r = equipment_constant_section(b, l + 1);
     if (!r) r = vfei_secs_seq_section(b, l + 1);
     if (!r) r = functions(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);

@@ -23,6 +23,22 @@ public class XCSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEcCore(@NotNull XCSEcCore o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEcList(@NotNull XCSEcList o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEcProperty(@NotNull XCSEcProperty o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEcProperty_(@NotNull XCSEcProperty_ o) {
+    visitPsiElement(o);
+  }
+
   public void visitFunctionCore(@NotNull XCSFunctionCore o) {
     visitPsiElement(o);
   }
@@ -56,6 +72,10 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitCollectionEventSection(@NotNull XCSCollectionEventSection o) {
+    visitPsiElement(o);
+  }
+
+  public void visitEquipmentConstantSection(@NotNull XCSEquipmentConstantSection o) {
     visitPsiElement(o);
   }
 

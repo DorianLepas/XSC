@@ -42,6 +42,7 @@ public class XCSBlock extends AbstractBlock {
                 isAtRootFile() ||
                 (myNode.getPsi() instanceof XCSFunctionCore && myNode.getTreeParent().getPsi() instanceof XCSFunctions) ||
                 (myNode.getPsi() instanceof XCSCeList) || (myNode.getPsi() instanceof XCSCeCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
+                (myNode.getPsi() instanceof XCSEcList) || (myNode.getPsi() instanceof XCSEcCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
                 (myNode.getPsi() instanceof XCSVssList) || (myNode.getPsi() instanceof XCSVssCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
                 myNode.getPsi() instanceof  XCSProperty ||
                 myNode.getPsi() instanceof XCSProperty_ ||
