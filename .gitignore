@@ -8,8 +8,6 @@ gradlew.bat
 idea-flex.skeleton
 jflex-1.7.0-2.jar
 settings.gradle
-*.lock
-*.bin
 
 
 
