@@ -87,7 +87,7 @@ FUNCTION_END=.
 
 
 
-<YYINITIAL> {END_OF_LINE_COMMENT}               { yybegin(YYINITIAL); return XCSTypes.COMMENT; }
+{END_OF_LINE_COMMENT}                           {return XCSTypes.COMMENT; }
 <YYINITIAL> {END_OF_FUNCTION_LINE_COMMENT}      { yybegin(YYINITIAL); return XCSTypes.FUNCTION_COMMENT; }
 {WHITE_SPACE}                                   {return TokenType.WHITE_SPACE; }
 
