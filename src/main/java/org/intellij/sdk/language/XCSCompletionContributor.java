@@ -11,9 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class XCSCompletionContributor extends CompletionContributor {
 
     public XCSCompletionContributor() {
-
-        /*
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement().withElementType(XCSTypes.PROPERTY_NAME),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
@@ -46,47 +44,6 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
-
-        extend(CompletionType.BASIC,PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               @NotNull ProcessingContext context,
-                                               @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("EventLevel8"));
-                    }
-                }
-        );
-
-        extend(CompletionType.BASIC,PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               @NotNull ProcessingContext context,
-                                               @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiType"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
-                        resultSet.addElement(LookupElementBuilder.create("MinSecsValue"));
-                        resultSet.addElement(LookupElementBuilder.create("DefaultSecsValue"));
-                    }
-                }
-        );
-
-        extend(CompletionType.BASIC,PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_START)),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               @NotNull ProcessingContext context,
-                                               @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("CheckAck"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck"));
-                    }
-                }
-        );
-         */
-
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(XCSTypes.FUNCTION_NAME).afterSibling(PlatformPatterns.psiElement().whitespace()),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -100,6 +57,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                     }
                 }
         );
+
 
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.CORE_START)),
                 new CompletionProvider<CompletionParameters>() {
