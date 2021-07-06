@@ -31,7 +31,7 @@ CORE_START=<
 
 VARIABLE_TYPE=(U|I)[1248]|F[48]|(L|B|V|BOOLEAN|Boolean)(\[\d+\])?|J|A|V
 VARIABLE_NAME=\w+
-VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)
+VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
 CEID=CEID
 ECID=ECID
 VFEI_CMD_ITEM_NAME=INITIALIZE
@@ -77,9 +77,9 @@ FUNCTION_END=.
 %state EC_PROPERTY
 
 //VFEI SECS SEQUENCES
+%state VSS_LIST
 %state VSS_CORE
-%state VSS_LIST_1
-%state VSS_LIST_2
+%state VSS_NAME
 %state VSS_PROPERTY
 
 
@@ -131,9 +131,9 @@ FUNCTION_END=.
 
 <NAME>{
     {VARIABLE_NAME}     {yybegin(CORE); return XCSTypes.VARIABLE_NAME; }
-    {PROPERTY_START}    {yybegin(PROPERTY); return XCSTypes.PROPERTY_START; }
     {ASCII_VALUE}       {yybegin(CORE); return XCSTypes.ASCII_VALUE; }
     {VARIABLE_VALUE}    {yybegin(CORE); return XCSTypes.VARIABLE_VALUE; }
+    {PROPERTY_START}    {yybegin(PROPERTY); return XCSTypes.PROPERTY_START; }
     {CORE_START}        {yybegin(CORE); return XCSTypes.CORE_START; }
     {CORE_END}          {yybegin(CORE); return XCSTypes.CORE_END ;}
 }
@@ -241,33 +241,38 @@ FUNCTION_END=.
 <VSS_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
     {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
-    {CORE_START}                   {yybegin(VSS_LIST_1); return XCSTypes.CORE_START; }
+    {CORE_START}                   {yybegin(VSS_LIST); return XCSTypes.CORE_START; }
     {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
 }
 
-<VSS_LIST_1>{
+<VSS_LIST>{
       //LIST
      {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
-     {CORE_START}                        {yybegin(VSS_LIST_2); return XCSTypes.CORE_START; }
-}
-
-<VSS_LIST_2>{
-      //LIST
-     {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
-     {VFEI_CMD_ITEM_NAME}                {return XCSTypes.VFEI_CMD_ITEM_NAME; }
      {CORE_START}                        {yybegin(VSS_CORE); return XCSTypes.CORE_START; }
 }
 
 <VSS_CORE>{
+     //LIST
+     {LIST_TYPE}                         {yybegin(VSS_NAME); return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {return XCSTypes.CORE_START; }
      //ASCII
-     {ASCII_TYPE}                        {return XCSTypes.ASCII_TYPE; }
+     {ASCII_TYPE}                        {yybegin(VSS_NAME); return XCSTypes.ASCII_TYPE; }
      {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
 
      {PROPERTY_START}                    {yybegin(VSS_PROPERTY); return XCSTypes.PROPERTY_START; }
-     {CORE_START}                        {return XCSTypes.CORE_START; }
      {CORE_END}                          {return XCSTypes.CORE_END ;}
      {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
      {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<VSS_NAME>{
+    {VFEI_CMD_ITEM_NAME}                {return XCSTypes.VFEI_CMD_ITEM_NAME; }
+    {VARIABLE_NAME}                     {return XCSTypes.VARIABLE_NAME; }
+    {ASCII_VALUE}                       {yybegin(VSS_CORE); return XCSTypes.ASCII_VALUE; }
+    {VARIABLE_VALUE}                    {yybegin(VSS_CORE); return XCSTypes.PROPERTY_VALUE; }
+    {PROPERTY_START}                    {yybegin(VSS_PROPERTY); return XCSTypes.PROPERTY_START; }
+    {CORE_START}                        {yybegin(VSS_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}                          {yybegin(VSS_CORE); return XCSTypes.CORE_END; }
 }
 
 <VSS_PROPERTY>{
