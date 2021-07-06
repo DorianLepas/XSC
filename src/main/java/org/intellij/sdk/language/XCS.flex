@@ -31,7 +31,7 @@ COLON=:
 STREAM_FUNCTION=S\d+F\d+(" W")?
 CORE_START=<
 
-VARIABLE_TYPE=(U|I)[1248]|F[48]|(L|B|V|BOOLEAN|Boolean)(\[\d+\])?|J|A|V
+VARIABLE_TYPE=(U|I)[1248]|F[48]|(B|V|BOOLEAN|Boolean)(\[\d+\])?|J|V
 VARIABLE_NAME=\w+
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
 CEID=CEID
@@ -53,7 +53,7 @@ PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignme
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
 
 ASCII_TYPE=A(\[\d+\])?|A
-ASCII_VALUE=\".*\"
+ASCII_VALUE=(\".*\")
 LIST_TYPE=L(\[\d+\])?|L
 
 CORE_END=>

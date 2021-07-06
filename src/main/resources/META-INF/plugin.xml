@@ -16,14 +16,15 @@
   <description>
     <![CDATA[
       <br>Defines a new language,
-      <i>Simple language</i>
+      <i>XSC language</i>
+      <i>.</i>
       <br>
     ]]>
   </description>
   <change-notes>
     <![CDATA[
       <ul>
-        <li><b>2.0.0</b> Convert to Gradle-based plugin.</li>
+        <li>Convert to Gradle-based plugin.</li>
       </ul>
     ]]>
   </change-notes>
