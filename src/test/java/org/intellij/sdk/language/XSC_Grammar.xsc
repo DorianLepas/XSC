@@ -1,5 +1,1251 @@
-SSR_CONTROL_STATE: S1F3 W * Selected equipment status request
-<L[1] StatusVariableList
-  <U1 SVID {VfeiName="CONTROLSTATE"}> * Status variable ID
+// *********************************************************************************************
+//                        ***  SECS Definitions for Nanometrics N2000 ***
+// *********************************************************************************************
+
+// Base communication
+
+R: S1F1 W * Are you there request
+.
+
+D: S1F2 * On line data
+<L[2] L
+				<A[6] MDLN > * Equipment Model Type
+				<A[6] SOFTREV > * Software Revision Code
 >
 .
+
+SSR_CONTROL_STATE: S1F3 W * Selected equipment status request
+<L[1] StatusVariableList
+				<U1 SVID {VfeiName="CONTROLSTATE" VfeiName="Yes"}> * Status variable ID
+>
+.
+
+SSD_CONTROL_STATE: S1F4 * Selected equipment status data
+<L[2] StatusVariableList
+				<U1 {VfeiName="CONTROLSTATE"}> * Control State (1-3=Offline, 4=Online-local, 5=Online-Remote)
+>
+.
+
+CR: S1F13 W * Establish communications request
+<L[2] L2
+				<A[0] MDLN > * Equipment Model Type
+				<A[0] SOFTREV > * Software revision code
+>
+.
+
+CRA: S1F14 * Establish communications request acknowledge
+<L[2] L2a
+				<B[1] COMMACK 0> * Establish communications acknowledge code
+				<L[2] L2b
+								<A[6] MDLN > * Equipment Model Type
+								<A[6] SOFTREV > * Software revision code
+				>
+>
+.
+
+ROFL: S1F15 W * Request OFF-LINE
+.
+
+OFLA: S1F16 * OFF-LINE acknowledge
+<B[1] OFLACK 0> * Acknowledge code for OFF-LINE request
+.
+
+RONL: S1F17 W * Request ON-LINE
+.
+
+ONLA: S1F18 * ON-LINE acknowledge
+<B[1] ONLACK 0> * Acknowledge code for ON-LINE request
+.
+
+// *********************************************************************************************
+//                                 *** Online LOCAL / REMOTE control ***
+// *********************************************************************************************
+
+HCS_ONLINE_LOCAL: S2F41 W * Host command send request online local
+<L[2] L2
+				<A "GO-LOCAL">
+				<L[0]
+				>
+>
+.
+
+HCA_ONLINE_LOCAL: S2F42 * Host command acknowledge
+<L[1] L2
+				<B[1] HCACK 0> * Host command acknowledge code
+>
+.
+
+HCS_ONLINE_REMOTE: S2F41 W * Host command send request online remote
+<L[2] L2
+				<A "GO-REMOTE">
+				<L[0]
+				>
+>
+.
+
+HCA_ONLINE_REMOTE: S2F42 * Host command acknowledge
+<L[1] L2
+				<B[1] HCACK 0> * Host command acknowledge code
+>
+.
+
+
+// *********************************************************************************************
+//                                 *** Variable / Constants queries ***
+// *********************************************************************************************
+
+SVNR_ALL: S1F11 W * All equipment status variable name.
+<L[0] StatusVariableList
+>
+.
+
+SVNRR_ALL: S1F12 * All equipment status variable name reply.
+<L[1] statusVariableLists
+				<L[0] StatusVariableList
+				>
+>
+.
+
+SSR_ALL: S1F3 W * All equipment status variables request
+<L[0] StatusVariableList
+>
+.
+
+SSD_ALL: S1F4 * All equipment status variables data
+<L[0] StatusVariableList
+>
+.
+
+ECR_ALL: S2F13 W * ALL equipment constants request
+<L[0] EquipmentConstantList
+>
+.
+
+ECD_ALL: S2F14 * All equipment constants data
+<L[0] EquipmentConstantList
+>
+.
+
+EDVR_ALL: S1F21 W * All DV request with zero-length list
+<L[0]
+>
+.
+
+ECNR_ALL: S2F29 W * All equipment constants name.
+<L[0] Ln
+>
+.
+
+ECN_ALL: S2F30 * All equipment constants name reply.
+<L equipmentConstantNameLists
+				<L[6] EquipmentConstantNameList
+								<V[0] ECID > * Equipment constant ID
+								<A[0] ECNAME > * Equipment constant name
+								<V[0] ECMIN > * Equipment constant minimum value
+								<V[0] ECMAX > * Equipment constant maximum value
+								<V[0] ECDEF > * Equipment constant default value
+								<A[0] UNITS > * Units identifier
+				>
+>
+.
+
+// *********************************************************************************************
+//                                 ***  Event - Report  ***
+// *********************************************************************************************
+
+CER_ALL: S1F23 W * All Event request with zero-length list
+<L[0]
+>
+.
+
+DR_CLEAR: S2F33 W * Clear all reports
+<L
+				<V DATAID >
+				<L
+				>
+>
+.
+
+DR_INIT_LR: S2F33 W * Define Report for ControlState
+<L
+				<U4 1 >
+				<L
+								<L
+												<U4 10000 >
+												<L
+																<U4 29 >
+												>
+								>
+				>
+>
+.
+
+DR_MEASUREMENT: S2F33 W * Define Report for MEASUREMENT
+<L
+				<U4 2 >
+				<L
+								<L
+												<U4 1101 > *SubstrtReport
+												<L
+																<U4 DVID {VfeiName="SubstLotID" VfeiType="A"}>
+																<U4 DVID {VfeiName="SubstID" VfeiType="A"}>
+																<U4 DVID {VfeiName="SubstLocID" VfeiType="A"}>
+												>
+								>
+								<L
+												<U4 1107 > *CarrierInfo
+												<L
+																<U4 DVID {VfeiName="CarrierID" VfeiType="A"}>
+																<U4 DVID {VfeiName="PortID" VfeiType="U1"}>
+																<U4 DVID {VfeiName="LocationID" VfeiType="A"}>
+												>
+								>
+								<L
+												<U4 1012 > *CarrierInfoSlotMap
+												<L
+																<U4 DVID {VfeiName="CarrierID" VfeiType="A"}>
+																<U4 DVID {VfeiName="PortID" VfeiType="U1"}>
+																<U4 DVID {VfeiName="LocationID" VfeiType="A"}>
+																<U4 DVID {VfeiName="CarrierSlotMap" VfeiType="L"}>
+												>
+								>
+								<L
+												<U4 1003 > *PortInfo
+												<L
+																<U4 DVID {VfeiName="PortID" VfeiType="U1"}>
+												>
+								>
+								<L
+												<U4 1004 > *lotReport
+												<L
+																<U4 DVID {VfeiName="ChangedPortID" VfeiType="U1"}>
+																<U4 DVID {VfeiName="Current_Lot_ID_A" VfeiType="A"}>
+																<U4 DVID {VfeiName="Current_Lot_ID_B" VfeiType="A"}>
+												>
+								>
+								<L
+												<U4 1005 > *WaferReport
+												<L
+																<U4 DVID {VfeiName="Current_Slot_Number" VfeiType="U4"}>
+												>
+								>
+								<L
+												<U4 1006 > *WaferDataColl
+												<L
+																<U4 DVID {VfeiName="Current_Slot_Number" VfeiType="U4"}>
+																<U4 DVID {VfeiName="Number_of_Total_Defects_in_Wafer" VfeiType="U4"}>
+																<U4 DVID {VfeiName="Wafer_Defect_Density" VfeiType="F8"}>
+												>
+								>
+								<L
+												<U4 1007 > *LotDataColl
+												<L
+																<U4 DVID {VfeiName="ChangedPortID" VfeiType="U1"}>
+																<U4 DVID {VfeiName="Current_Lot_ID_A" VfeiType="A"}>
+																<U4 DVID {VfeiName="Current_Lot_ID_B" VfeiType="A"}>
+																<U4 DVID {VfeiName="Lot_Mean_Defect_Density" VfeiType="F8"}>
+																<U4 DVID {VfeiName="Lot_Median_Defect_Density" VfeiType="F8"}>
+												>
+								>
+								<L
+												<U4 1008 > *Error
+												<L
+																<U4 SVID {VfeiName="DetailedErrorDescriptionText" VfeiType="A"}>
+																<U4 SVID {VfeiName="DetailedErrorDescriptionIndex" VfeiType="I1"}>
+												>
+								>
+								<L
+												<U4 1009 > *DownTime
+												<L
+																<U4 ECID {VfeiName="Last_Powerdown" VfeiType="A"}>
+																<U4 SVID {VfeiName="DowntimeAlarmCode" VfeiType="U1"}>
+																<U4 SVID {VfeiName="DowntimeAlarmText" VfeiType="A"}>
+																<U4 ECID {VfeiName="Downtime_Data" VfeiType="A"}>
+																<U4 ECID {VfeiName="Cycle_Counter" VfeiType="U4"}>
+																<U4 ECID {VfeiName="Powerdown_Time" VfeiType="A"}>
+												>
+								>
+								<L
+												<U4 1010 > *LASER
+												<L
+																<U4 DVID {VfeiName="LaserPower" VfeiType="F8"}>
+																<U4 DVID {VfeiName="LaserTemperature" VfeiType="F8"}>
+																<U4 DVID {VfeiName="LaserCurrent" VfeiType="F8"}>
+												>
+								>
+				>
+>
+.
+
+LER_CLEAR: S2F35 W * Unlink all event reports
+<L
+				<V DATAID >
+				<L
+				>
+>
+.
+
+
+
+LER_INIT_LR: S2F35 W * Link Report LOCAL_REMOTE
+<L
+				<U4 2 >
+				<L
+								<L
+												<U4 4 >
+												<L
+																<U4 10000 >
+												>
+								>
+								<L
+												<U4 5 >
+												<L
+																<U4 10000 >
+												>
+								>
+				>
+>
+.
+
+LER_MEASUREMENT: S2F35 W * Link Event Report for DR_MEASUREMENT
+<L
+				<U4 3 >
+				<L
+								<L
+												<U4 CEID {VfeiName="CarrierSMTrans13"}> *SlotMapVerification
+												<L
+																<U4 1007 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="CarrierSMTrans14"}> *SlotMapVerification
+												<L
+																<U4 1012 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="CarrierSMTrans15"}> *SlotMapVerification
+												<L
+																<U4 1007 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="SubstSMTrans04"}>
+												<L
+																<U4 1101 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="SubstSMTrans05"}>
+												<L
+																<U4 1101 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="PortTransferSMTrans09"}>
+												<L
+																<U4 1003 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="LotStart"}>
+												<L
+																<U4 1004 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="WaferStart"}>
+												<L
+																<U4 1005 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="WaferEnd"}>
+												<L
+																<U4 1006 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="LotEnd"}>
+												<L
+																<U4 1007 >
+																<U4 1010 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="ErrorState"}>
+												<L
+																<U4 1008 >
+												>
+								>
+								<L
+												<U4 CEID {VfeiName="Event_STBY_to_PRD"}>
+												<L
+																<U4 1009 >
+												>
+								>
+				>
+>
+.
+
+
+EDER_ENABLE_ALL: S2F37 W * Enable all event report
+<L[2] L2
+				<Boolean CEED true> * Collection event enable code
+				<L[0] CollectionEventIdList
+				>
+>
+.
+
+EDER_INIT_LR: S2F37 W * Enable event reports LOCAL_REMOTE
+<L
+				<BOOLEAN CEED 1>
+				<L
+								<U4 4 >
+								<U4 5 >
+				>
+>
+.
+
+
+EDERA_ENABLE_ALL: S2F38 * Enable event report acknowledge
+<B[1] ERACK 0> * Enable-disable event report acknowledge code
+.
+
+EDER_DISABLE_ALL: S2F37 W * Disable all event report
+<L[2] L2
+				<Boolean CEED false> * Collection event disable code
+				<L[0] CollectionEventIdList
+				>
+>
+.
+
+EDERA_DISABLE_ALL: S2F38 * Disable all event report acknowledge
+<B[1] ERACK 0> * Disable event report acknowledge code
+.
+
+// *********************************************************************************************
+//                                 *** Alarms ***
+// *********************************************************************************************
+
+EAS_ENABLE_ALL: S5F3 W * Enable all alarms
+<L[2] L2
+				<B[1] ALED 128>
+				<U4 >
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////         COLLECTION EVENT        //////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+COLLECTIONEVENT_VARIABLES:
+<L
+				<V CEID {VfeiName="GemPPChangeEvent" EventLevel8="Report"} '1'>
+				<V CEID {VfeiName="GemEquipmentOFFLINE" EventLevel8="Report"} '3'>
+				<V CEID {VfeiName="GemControlStateLOCAL" EventLevel8="Report"} '4'>
+				<V CEID {VfeiName="GemControlStateREMOTE" EventLevel8="Report"} '5'>
+				<V CEID {VfeiName="OperatorCommand" EventLevel8="Report"} '9'>
+				<V CEID {VfeiName="GemSpoolingActivated" EventLevel8="Report"} '11'>
+				<V CEID {VfeiName="GemSpoolingDeactivated" EventLevel8="Report"} '12'>
+				<V CEID {VfeiName="GemSpoolTransmitFailure" EventLevel8="Report"} '13'>
+				<V CEID {VfeiName="EqConstChange" EventLevel8="Report"} '20'>
+				<V CEID {VfeiName="WF_Alarm_On" EventLevel8="Report"} '101'>
+				<V CEID {VfeiName="WF_Alarm_Off" EventLevel8="Report"} '102'>
+				<V CEID {VfeiName="Idle" EventLevel8="Report"} '200'>
+				<V CEID {VfeiName="LotStart" EventLevel8="Report"} '205'>
+				<V CEID {VfeiName="LotEnd" EventLevel8="Report"} '206'>
+				<V CEID {VfeiName="WaferStart" EventLevel8="Report"} '207'>
+				<V CEID {VfeiName="WaferEnd" EventLevel8="Report"} '208'>
+				<V CEID {VfeiName="ResultsExportToLocalEnded" EventLevel8="Report"} '209'>
+				<V CEID {VfeiName="ReadyForInspection" EventLevel8="Report"} '211'>
+				<V CEID {VfeiName="ErrorState" EventLevel8="Report"} '216'>
+				<V CEID {VfeiName="SignalTowerSettingChange" EventLevel8="Report"} '217'>
+				<V CEID {VfeiName="LastWaferStarted" EventLevel8="Report"} '218'>
+				<V CEID {VfeiName="LotProcessingStartedEvent" EventLevel8="Report"} '219'>
+				<V CEID {VfeiName="LotProcessingEndedEvent" EventLevel8="Report"} '220'>
+				<V CEID {VfeiName="RemoteCommandEnded" EventLevel8="Report"} '221'>
+				<V CEID {VfeiName="ManualOperationEvent" EventLevel8="Report"} '222'>
+				<V CEID {VfeiName="EmptyQueuesEvent" EventLevel8="Report"} '223'>
+				<V CEID {VfeiName="StoppedByOperatorEvent" EventLevel8="Report"} '224'>
+				<V CEID {VfeiName="StoppedByHostEvent" EventLevel8="Report"} '225'>
+				<V CEID {VfeiName="JobQueuedEvent" EventLevel8="Report"} '226'>
+				<V CEID {VfeiName="PowerUpEvent" EventLevel8="Report"} '227'>
+				<V CEID {VfeiName="ShutDownEvent" EventLevel8="Report"} '228'>
+				<V CEID {VfeiName="LoadPortStateChangedEvent" EventLevel8="Report"} '229'>
+				<V CEID {VfeiName="IplanLoadedEvent" EventLevel8="Report"} '230'>
+				<V CEID {VfeiName="ManualOperationEndEvent" EventLevel8="Report"} '231'>
+				<V CEID {VfeiName="S10Ack" EventLevel8="Report"} '240'>
+				<V CEID {VfeiName="ReadPageValidEvent" EventLevel8="Report"} '250'>
+				<V CEID {VfeiName="ReadPageInvalidEvent" EventLevel8="Report"} '251'>
+				<V CEID {VfeiName="WritePageValidEvent" EventLevel8="Report"} '252'>
+				<V CEID {VfeiName="WritePageInvalidEvent" EventLevel8="Report"} '253'>
+				<V CEID {VfeiName="Event_E84_Alarm_On" EventLevel8="Report"} '255'>
+				<V CEID {VfeiName="Event_E84_Alarm_Off" EventLevel8="Report"} '256'>
+				<V CEID {VfeiName="Event_CarrierIDReadFailure_Alarm_On" EventLevel8="Report"} '257'>
+				<V CEID {VfeiName="Event_CarrierIDReadFailure_Alarm_Off" EventLevel8="Report"} '258'>
+				<V CEID {VfeiName="Event_Material_Placed_Alarm_On" EventLevel8="Report"} '259'>
+				<V CEID {VfeiName="Event_Material_Placed_Alarm_Off" EventLevel8="Report"} '260'>
+				<V CEID {VfeiName="Event_Material_Removed_Alarm_On" EventLevel8="Report"} '261'>
+				<V CEID {VfeiName="Event_Material_Removed_Alarm_Off" EventLevel8="Report"} '262'>
+				<V CEID {VfeiName="Event_E84_Load_Ended" EventLevel8="Report"} '263'>
+				<V CEID {VfeiName="Event_E84_Unload_Ended" EventLevel8="Report"} '264'>
+				<V CEID {VfeiName="Event_Move_In_Complete" EventLevel8="Report"} '266'>
+				<V CEID {VfeiName="Event_Move_Out_Request" EventLevel8="Report"} '267'>
+				<V CEID {VfeiName="Event_Move_Out_Complete" EventLevel8="Report"} '268'>
+				<V CEID {VfeiName="Event_Presence_Sensor_ON" EventLevel8="Report"} '269'>
+				<V CEID {VfeiName="Event_Presence_Sensor_OFF" EventLevel8="Report"} '270'>
+				<V CEID {VfeiName="Event_Placement_Sensor_ON" EventLevel8="Report"} '271'>
+				<V CEID {VfeiName="Event_Placement_Sensor_OFF" EventLevel8="Report"} '272'>
+				<V CEID {VfeiName="Event_E84_Load_Started" EventLevel8="Report"} '275'>
+				<V CEID {VfeiName="Event_E84_Unload_Started" EventLevel8="Report"} '276'>
+				<V CEID {VfeiName="Event_E84_TP1_Timeout" EventLevel8="Report"} '277'>
+				<V CEID {VfeiName="Event_E84_TP2_Timeout" EventLevel8="Report"} '278'>
+				<V CEID {VfeiName="Event_E84_TP3_Timeout" EventLevel8="Report"} '279'>
+				<V CEID {VfeiName="Event_E84_TP4_Timeout" EventLevel8="Report"} '280'>
+				<V CEID {VfeiName="Event_E84_TP5_Timeout" EventLevel8="Report"} '281'>
+				<V CEID {VfeiName="Event_E84_TP6_Timeout" EventLevel8="Report"} '282'>
+				<V CEID {VfeiName="Event_E84_Lost_Signal" EventLevel8="Report"} '283'>
+				<V CEID {VfeiName="Event_E84_Unexpected_Signal" EventLevel8="Report"} '284'>
+				<V CEID {VfeiName="FFU_stopped_working" EventLevel8="Report"} '290'>
+				<V CEID {VfeiName="FFU_standard_operation_mode" EventLevel8="Report"} '291'>
+				<V CEID {VfeiName="IdCodeReaderGoOnEvent" EventLevel8="Report"} '300'>
+				<V CEID {VfeiName="IdCodeReaderGoOffEvent" EventLevel8="Report"} '301'>
+				<V CEID {VfeiName="Event_E10_Changed" EventLevel8="Report"} '310'>
+				<V CEID {VfeiName="Event_Port_Out_Of_Service" EventLevel8="Report"} '311'>
+				<V CEID {VfeiName="Event_Port_Up" EventLevel8="Report"} '312'>
+				<V CEID {VfeiName="Event_Port_Alarm_Set" EventLevel8="Report"} '313'>
+				<V CEID {VfeiName="Event_Port_Alarm_Cleared" EventLevel8="Report"} '314'>
+				<V CEID {VfeiName="Event_Port_Placed" EventLevel8="Report"} '315'>
+				<V CEID {VfeiName="Event_Port_Clamped" EventLevel8="Report"} '316'>
+				<V CEID {VfeiName="Event_Port_Removed" EventLevel8="Report"} '318'>
+				<V CEID {VfeiName="Event_Port_Unclamped" EventLevel8="Report"} '320'>
+				<V CEID {VfeiName="Event_PRD_to_PRD" EventLevel8="Report"} '350'>
+				<V CEID {VfeiName="Event_PRD_to_STBY" EventLevel8="Report"} '351'>
+				<V CEID {VfeiName="Event_PRD_to_ENG" EventLevel8="Report"} '352'>
+				<V CEID {VfeiName="Event_PRD_to_SDT" EventLevel8="Report"} '353'>
+				<V CEID {VfeiName="Event_PRD_to_UDT" EventLevel8="Report"} '354'>
+				<V CEID {VfeiName="Event_PRD_to_NST" EventLevel8="Report"} '355'>
+				<V CEID {VfeiName="Event_STBY_to_PRD" EventLevel8="Report"} '356'>
+				<V CEID {VfeiName="Event_STBY_to_STBY" EventLevel8="Report"} '357'>
+				<V CEID {VfeiName="Event_STBY_to_ENG" EventLevel8="Report"} '358'>
+				<V CEID {VfeiName="Event_STBY_to_SDT" EventLevel8="Report"} '359'>
+				<V CEID {VfeiName="Event_STBY_to_UDT" EventLevel8="Report"} '360'>
+				<V CEID {VfeiName="Event_STBY_to_NST" EventLevel8="Report"} '361'>
+				<V CEID {VfeiName="Event_ENG_to_PRD" EventLevel8="Report"} '362'>
+				<V CEID {VfeiName="Event_ENG_to_STBY" EventLevel8="Report"} '363'>
+				<V CEID {VfeiName="Event_ENG_to_ENG" EventLevel8="Report"} '364'>
+				<V CEID {VfeiName="Event_ENG_to_SDT" EventLevel8="Report"} '365'>
+				<V CEID {VfeiName="Event_ENG_to_UDT" EventLevel8="Report"} '366'>
+				<V CEID {VfeiName="Event_ENG_to_NST" EventLevel8="Report"} '367'>
+				<V CEID {VfeiName="Event_SDT_to_PRD" EventLevel8="Report"} '368'>
+				<V CEID {VfeiName="Event_SDT_to_STBY" EventLevel8="Report"} '369'>
+				<V CEID {VfeiName="Event_SDT_to_ENG" EventLevel8="Report"} '370'>
+				<V CEID {VfeiName="Event_SDT_to_SDT" EventLevel8="Report"} '371'>
+				<V CEID {VfeiName="Event_SDT_to_UDT" EventLevel8="Report"} '372'>
+				<V CEID {VfeiName="Event_SDT_to_NST" EventLevel8="Report"} '373'>
+				<V CEID {VfeiName="Event_UDT_to_PRD" EventLevel8="Report"} '374'>
+				<V CEID {VfeiName="Event_UDT_to_STBY" EventLevel8="Report"} '375'>
+				<V CEID {VfeiName="Event_UDT_to_ENG" EventLevel8="Report"} '376'>
+				<V CEID {VfeiName="Event_UDT_to_SDT" EventLevel8="Report"} '377'>
+				<V CEID {VfeiName="Event_UDT_to_UDT" EventLevel8="Report"} '378'>
+				<V CEID {VfeiName="Event_UDT_to_NST" EventLevel8="Report"} '379'>
+				<V CEID {VfeiName="Event_NST_to_PRD" EventLevel8="Report"} '380'>
+				<V CEID {VfeiName="Event_NST_to_STBY" EventLevel8="Report"} '381'>
+				<V CEID {VfeiName="Event_NST_to_ENG" EventLevel8="Report"} '382'>
+				<V CEID {VfeiName="Event_NST_to_SDT" EventLevel8="Report"} '383'>
+				<V CEID {VfeiName="Event_NST_to_UDT" EventLevel8="Report"} '384'>
+				<V CEID {VfeiName="Event_NST_to_NST" EventLevel8="Report"} '385'>
+				<V CEID {VfeiName="Event_ARAMSStateChanged" EventLevel8="Report"} '386'>
+				<V CEID {VfeiName="Event_UserInitiatedARAMSStateChange" EventLevel8="Report"} '387'>
+				<V CEID {VfeiName="Event_HostInitiatedARAMSStateChange" EventLevel8="Report"} '388'>
+				<V CEID {VfeiName="EventWaferNumberOfDefectedDiesLimit" EventLevel8="Report"} '400'>
+				<V CEID {VfeiName="EventWaferDefectDensityLimit" EventLevel8="Report"} '401'>
+				<V CEID {VfeiName="EventWaferNumberOfTotalDefectsLimit" EventLevel8="Report"} '402'>
+				<V CEID {VfeiName="EventWaferNumberOfClustersLimit" EventLevel8="Report"} '403'>
+				<V CEID {VfeiName="EventWaferNumberOfRandomDefectsLimit" EventLevel8="Report"} '404'>
+				<V CEID {VfeiName="EventLotMeanDefectDensityLimit" EventLevel8="Report"} '405'>
+				<V CEID {VfeiName="EventLotMedianDefectDensityLimit" EventLevel8="Report"} '406'>
+				<V CEID {VfeiName="EventLotMeanDefectedDiesNumberLimit" EventLevel8="Report"} '407'>
+				<V CEID {VfeiName="EventLotDefectiveWafersLimit" EventLevel8="Report"} '408'>
+				<V CEID {VfeiName="EventAutoPMStarted" EventLevel8="Report"} '409'>
+				<V CEID {VfeiName="EventAutoPMEnded" EventLevel8="Report"} '410'>
+				<V CEID {VfeiName="Event_Material_ID_Read_Error" EventLevel8="Report"} '501'>
+				<V CEID {VfeiName="Event_Material_ID_Available" EventLevel8="Report"} '503'>
+				<V CEID {VfeiName="Event_Appropriate_to_job_Material_ID_was_found" EventLevel8="Report"} '504'>
+				<V CEID {VfeiName="Event_Material_Map_Alarm_On" EventLevel8="Report"} '506'>
+				<V CEID {VfeiName="Event_Material_Map_Alarm_Off" EventLevel8="Report"} '507'>
+				<V CEID {VfeiName="Event_Material_Map_Available" EventLevel8="Report"} '508'>
+				<V CEID {VfeiName="Event_Material_Map_IS_OK" EventLevel8="Report"} '509'>
+				<V CEID {VfeiName="Event_Material_Map_IS_NOT_OK" EventLevel8="Report"} '510'>
+				<V CEID {VfeiName="Event_Port_AccessMode_Changed" EventLevel8="Report"} '513'>
+				<V CEID {VfeiName="Event_Load_Ended_Successfully" EventLevel8="Report"} '550'>
+				<V CEID {VfeiName="Event_Load_Ended_Failed" EventLevel8="Report"} '551'>
+				<V CEID {VfeiName="Event_Unload_Ended_Successfully" EventLevel8="Report"} '552'>
+				<V CEID {VfeiName="SubstSMTrans01" EventLevel8="Report"} '6395'>
+				<V CEID {VfeiName="SubstSMTrans02" EventLevel8="Report"} '6396'>
+				<V CEID {VfeiName="SubstSMTrans03" EventLevel8="Report"} '6397'>
+				<V CEID {VfeiName="SubstSMTrans04" EventLevel8="Report"} '6398'>
+				<V CEID {VfeiName="SubstSMTrans05" EventLevel8="Report"} '6399'>
+				<V CEID {VfeiName="SubstSMTrans06" EventLevel8="Report"} '6400'>
+				<V CEID {VfeiName="SubstSMTrans07" EventLevel8="Report"} '6401'>
+				<V CEID {VfeiName="SubstSMTrans08" EventLevel8="Report"} '6402'>
+				<V CEID {VfeiName="SubstSMTrans09" EventLevel8="Report"} '6403'>
+				<V CEID {VfeiName="SubstSMTrans10" EventLevel8="Report"} '6404'>
+				<V CEID {VfeiName="SubstSMTrans11" EventLevel8="Report"} '6405'>
+				<V CEID {VfeiName="SubstSMTrans12" EventLevel8="Report"} '6406'>
+				<V CEID {VfeiName="SubstSMTrans13" EventLevel8="Report"} '6407'>
+				<V CEID {VfeiName="SubstLocSMTrans01" EventLevel8="Report"} '6408'>
+				<V CEID {VfeiName="SubstLocSMTrans02" EventLevel8="Report"} '6409'>
+				<V CEID {VfeiName="SubstSMTrans14" EventLevel8="Report"} '6550'>
+				<V CEID {VfeiName="EPTStateChange0" EventLevel8="Report"} '6700'>
+				<V CEID {VfeiName="EPTStateChange1" EventLevel8="Report"} '6701'>
+				<V CEID {VfeiName="EPTStateChange2" EventLevel8="Report"} '6702'>
+				<V CEID {VfeiName="EPTStateChange3" EventLevel8="Report"} '6703'>
+				<V CEID {VfeiName="EPTStateChange4" EventLevel8="Report"} '6704'>
+				<V CEID {VfeiName="EPTStateChange5" EventLevel8="Report"} '6705'>
+				<V CEID {VfeiName="ReservationSMInit" EventLevel8="Report"} '6355'>
+				<V CEID {VfeiName="ReservationSMGoReserved" EventLevel8="Report"} '6354'>
+				<V CEID {VfeiName="ReservationSMGoNotReserved" EventLevel8="Report"} '6353'>
+				<V CEID {VfeiName="CarrierSMTrans15" EventLevel8="Report"} '6335'>
+				<V CEID {VfeiName="CarrierSMTrans16" EventLevel8="Report"} '6336'>
+				<V CEID {VfeiName="CarrierSMTrans17" EventLevel8="Report"} '6337'>
+				<V CEID {VfeiName="CarrierSMTrans18" EventLevel8="Report"} '6338'>
+				<V CEID {VfeiName="CarrierSMTrans19" EventLevel8="Report"} '6339'>
+				<V CEID {VfeiName="CarrierSMTrans20" EventLevel8="Report"} '6340'>
+				<V CEID {VfeiName="CarrierSMTrans21" EventLevel8="Report"} '6341'>
+				<V CEID {VfeiName="PortTransferSMTrans01" EventLevel8="Report"} '6343'>
+				<V CEID {VfeiName="PortTransferSMTrans02" EventLevel8="Report"} '6344'>
+				<V CEID {VfeiName="PortTransferSMTrans03" EventLevel8="Report"} '6345'>
+				<V CEID {VfeiName="PortTransferSMTrans04" EventLevel8="Report"} '6346'>
+				<V CEID {VfeiName="PortTransferSMTrans05" EventLevel8="Report"} '6347'>
+				<V CEID {VfeiName="PortTransferSMTrans06" EventLevel8="Report"} '6348'>
+				<V CEID {VfeiName="PortTransferSMTrans07" EventLevel8="Report"} '6349'>
+				<V CEID {VfeiName="PortTransferSMTrans08" EventLevel8="Report"} '6350'>
+				<V CEID {VfeiName="PortTransferSMTrans09" EventLevel8="Report"} '6351'>
+				<V CEID {VfeiName="PortTransferSMTrans10" EventLevel8="Report"} '6352'>
+				<V CEID {VfeiName="CarrierSMTrans01" EventLevel8="Report"} '6321'>
+				<V CEID {VfeiName="CarrierSMTrans02" EventLevel8="Report"} '6322'>
+				<V CEID {VfeiName="CarrierSMTrans03" EventLevel8="Report"} '6323'>
+				<V CEID {VfeiName="CarrierSMTrans04" EventLevel8="Report"} '6324'>
+				<V CEID {VfeiName="CarrierSMTrans05" EventLevel8="Report"} '6325'>
+				<V CEID {VfeiName="CarrierSMTrans06" EventLevel8="Report"} '6326'>
+				<V CEID {VfeiName="CarrierSMTrans07" EventLevel8="Report"} '6327'>
+				<V CEID {VfeiName="CarrierSMTrans08" EventLevel8="Report"} '6328'>
+				<V CEID {VfeiName="CarrierSMTrans09" EventLevel8="Report"} '6329'>
+				<V CEID {VfeiName="CarrierSMTrans10" EventLevel8="Report"} '6330'>
+				<V CEID {VfeiName="CarrierSMTrans11" EventLevel8="Report"} '6331'>
+				<V CEID {VfeiName="CarrierSMTrans12" EventLevel8="Report"} '6332'>
+				<V CEID {VfeiName="CarrierSMTrans13" EventLevel8="Report"} '6333'>
+				<V CEID {VfeiName="CarrierSMTrans14" EventLevel8="Report"} '6334'>
+				<V CEID {VfeiName="AssocSMInit" EventLevel8="Report"} '6317'>
+				<V CEID {VfeiName="AssocSMGoAssoc" EventLevel8="Report"} '6318'>
+				<V CEID {VfeiName="AssocSMGoNotAssoc" EventLevel8="Report"} '6319'>
+				<V CEID {VfeiName="AssocSMGoReAssoc" EventLevel8="Report"} '6320'>
+				<V CEID {VfeiName="AccessSMInit" EventLevel8="Report"} '6314'>
+				<V CEID {VfeiName="AccessSMGoAuto" EventLevel8="Report"} '6315'>
+				<V CEID {VfeiName="AccessSMGoManual" EventLevel8="Report"} '6316'>
+				<V CEID {VfeiName="IDReaderAvailable" EventLevel8="Report"} '6600'>
+				<V CEID {VfeiName="IDReaderUnavailable" EventLevel8="Report"} '6601'>
+				<V CEID {VfeiName="CarrierTagReleased" EventLevel8="Report"} '6443'>
+				<V CEID {VfeiName="CarrierApproachingComplete" EventLevel8="Report"} '6301'>
+				<V CEID {VfeiName="CarrierClosed" EventLevel8="Report"} '6302'>
+				<V CEID {VfeiName="CarrierIDReadFail" EventLevel8="Report"} '6303'>
+				<V CEID {VfeiName="CarrierLocationChange" EventLevel8="Report"} '6304'>
+				<V CEID {VfeiName="CarrierOpened" EventLevel8="Report"} '6305'>
+				<V CEID {VfeiName="DuplicateCarrierIDInProcess" EventLevel8="Report"} '6306'>
+				<V CEID {VfeiName="GemMaterialReceivedEvent" EventLevel8="Report"} '6307'>
+				<V CEID {VfeiName="GemMaterialRemovedEvent" EventLevel8="Report"} '6308'>
+				<V CEID {VfeiName="CarrierClamped" EventLevel8="Report"} '6441'>
+				<V CEID {VfeiName="CarrierUnclamped" EventLevel8="Report"} '6442'>
+				<V CEID {VfeiName="CjHQQCompleted" EventLevel8="Report"} '6445'>
+				<V CEID {VfeiName="SelectedCjSetEmptied" EventLevel8="Report"} '6446'>
+				<V CEID {VfeiName="CtrlJobSMTrans01" EventLevel8="Report"} '6428'>
+				<V CEID {VfeiName="CtrlJobSMTrans02" EventLevel8="Report"} '6429'>
+				<V CEID {VfeiName="CtrlJobSMTrans03" EventLevel8="Report"} '6430'>
+				<V CEID {VfeiName="CtrlJobSMTrans04" EventLevel8="Report"} '6431'>
+				<V CEID {VfeiName="CtrlJobSMTrans05" EventLevel8="Report"} '6432'>
+				<V CEID {VfeiName="CtrlJobSMTrans06" EventLevel8="Report"} '6433'>
+				<V CEID {VfeiName="CtrlJobSMTrans07" EventLevel8="Report"} '6434'>
+				<V CEID {VfeiName="CtrlJobSMTrans08" EventLevel8="Report"} '6435'>
+				<V CEID {VfeiName="CtrlJobSMTrans09" EventLevel8="Report"} '6436'>
+				<V CEID {VfeiName="CtrlJobSMTrans10" EventLevel8="Report"} '6437'>
+				<V CEID {VfeiName="CtrlJobSMTrans11" EventLevel8="Report"} '6438'>
+				<V CEID {VfeiName="CtrlJobSMTrans12" EventLevel8="Report"} '6439'>
+				<V CEID {VfeiName="CtrlJobSMTrans13" EventLevel8="Report"} '6440'>
+				<V CEID {VfeiName="PRJobSMTrans01" EventLevel8="Report"} '6410'>
+				<V CEID {VfeiName="PRJobSMTrans02" EventLevel8="Report"} '6411'>
+				<V CEID {VfeiName="PRJobSMTrans03" EventLevel8="Report"} '6412'>
+				<V CEID {VfeiName="PRJobSMTrans04" EventLevel8="Report"} '6413'>
+				<V CEID {VfeiName="PRJobSMTrans05" EventLevel8="Report"} '6414'>
+				<V CEID {VfeiName="PRJobSMTrans06" EventLevel8="Report"} '6415'>
+				<V CEID {VfeiName="PRJobSMTrans07" EventLevel8="Report"} '6416'>
+				<V CEID {VfeiName="PRJobSMTrans08" EventLevel8="Report"} '6417'>
+				<V CEID {VfeiName="PRJobSMTrans09" EventLevel8="Report"} '6418'>
+				<V CEID {VfeiName="PRJobSMTrans10" EventLevel8="Report"} '6419'>
+				<V CEID {VfeiName="PRJobSMTrans11" EventLevel8="Report"} '6420'>
+				<V CEID {VfeiName="PRJobSMTrans12" EventLevel8="Report"} '6421'>
+				<V CEID {VfeiName="PRJobSMTrans13" EventLevel8="Report"} '6422'>
+				<V CEID {VfeiName="PRJobSMTrans14" EventLevel8="Report"} '6423'>
+				<V CEID {VfeiName="PRJobSMTrans15" EventLevel8="Report"} '6424'>
+				<V CEID {VfeiName="PRJobSMTrans16" EventLevel8="Report"} '6425'>
+				<V CEID {VfeiName="PRJobSMTrans17" EventLevel8="Report"} '6426'>
+				<V CEID {VfeiName="PRJobSMTrans18" EventLevel8="Report"} '6427'>
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////         EQUIPMENT CONSTANT        /////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+EQUIPMENTCONSTANTS:
+<L
+				<U4 ECID {VfeiName="GemConfigAlarms" VfeiType="U1"} 2>
+				<U4 ECID {VfeiName="GemConfigConnect" VfeiType="U1"} 3>
+				<U4 ECID {VfeiName="GemConfigEvents" VfeiType="U1"} 4>
+				<U4 ECID {VfeiName="GemDeviceName" VfeiType="A"} 6>
+				<U4 ECID {VfeiName="GemEstabCommDelay" VfeiType="U2"} 7>
+				<U4 ECID {VfeiName="GemInitCommState" VfeiType="U1"} 9>
+				<U4 ECID {VfeiName="GemInitControlState" VfeiType="U1"} 10>
+				<U4 ECID {VfeiName="GemPollDelay" VfeiType="U2"} 11>
+				<U4 ECID {VfeiName="GemRpType" VfeiType="Boolean"} 18>
+				<U4 ECID {VfeiName="GemWBitS5" VfeiType="U1"} 19>
+				<U4 ECID {VfeiName="GemWBitS6" VfeiType="U1"} 20>
+				<U4 ECID {VfeiName="GemWBitS10" VfeiType="U1"} 21>
+				<U4 ECID {VfeiName="GemOfflineSubstate" VfeiType="U1"} 22>
+				<U4 ECID {VfeiName="GemOnlineFailed" VfeiType="U1"} 23>
+				<U4 ECID {VfeiName="GemOnlineSubstate" VfeiType="U1"} 24>
+				<U4 ECID {VfeiName="GemMaxSpoolTransmit" VfeiType="U4"} 26>
+				<U4 ECID {VfeiName="GemLimitsDelay" VfeiType="U2"} 29>
+				<U4 ECID {VfeiName="GemOverWriteSpool" VfeiType="Boolean"} 31>
+				<U4 ECID {VfeiName="GemConfigSpool" VfeiType="U1"} 32>
+				<U4 ECID {VfeiName="GemTermReqSendMax" VfeiType="I4"} 33>
+				<U4 ECID {VfeiName="GemTimeFormat" VfeiType="U1"} 35>
+				<U4 ECID {VfeiName="GemStartUpDelay" VfeiType="I2"} 36>
+				<U4 ECID {VfeiName="GemWBitS6F1" VfeiType="U1"} 70>
+				<U4 ECID {VfeiName="GemConfigReportLinkCEIDStatus" VfeiType="U1"} 71>
+				<U4 ECID {VfeiName="GemConfigIpcTimeout" VfeiType="U4"} 72>
+				<U4 ECID {VfeiName="PreventCAACK4Later" VfeiType="Boolean"} 301>
+				<U4 ECID {VfeiName="BypassReadID" VfeiType="Boolean"} 302>
+				<U4 ECID {VfeiName="Port1ByPassReadID" VfeiType="Boolean"} 303>
+				<U4 ECID {VfeiName="Port2ByPassReadID" VfeiType="Boolean"} 304>
+				<U4 ECID {VfeiName="Port3ByPassReadID" VfeiType="Boolean"} 305>
+				<U4 ECID {VfeiName="Port4ByPassReadID" VfeiType="Boolean"} 306>
+				<U4 ECID {VfeiName="Port5ByPassReadID" VfeiType="Boolean"} 307>
+				<U4 ECID {VfeiName="Port6ByPassReadID" VfeiType="Boolean"} 308>
+				<U4 ECID {VfeiName="ISMTFlowChartsV09" VfeiType="U1"} 309>
+				<U4 ECID {VfeiName="CfgWIDAngle" VfeiType="U1"} 310>
+				<U4 ECID {VfeiName="ClampControl" VfeiType="U1"} 311>
+				<U4 ECID {VfeiName="CarrierHoldControl" VfeiType="U1"} 312>
+				<U4 ECID {VfeiName="LoadportClampType" VfeiType="U1"} 313>
+				<U4 ECID {VfeiName="CfgSlotMapVerify" VfeiType="U1"} 314>
+				<U4 ECID {VfeiName="TagReleaseOnCancelOrFail" VfeiType="U1"} 315>
+				<U4 ECID {VfeiName="E40PrJobStateValues" VfeiType="U1"} 316>
+				<U4 ECID {VfeiName="PRMtrlOrder" VfeiType="U1"} 317>
+				<U4 ECID {VfeiName="LoadportAccessModeAlreadyManual" VfeiType="U4"} 318>
+				<U4 ECID {VfeiName="LoadportAccessModeAlreadyAutomatic" VfeiType="U4"} 319>
+				<U4 ECID {VfeiName="LoadportAlreadyInService" VfeiType="U4"} 320>
+				<U4 ECID {VfeiName="LoadportAlreadyOutOfService" VfeiType="U4"} 321>
+				<U4 ECID {VfeiName="CtrlMaxJobSpace" VfeiType="U2"} 322>
+				<U4 ECID {VfeiName="SetUpName" VfeiType="A"} 323>
+				<U4 ECID {VfeiName="CfgS16F28" VfeiType="U1"} 324>
+				<U4 ECID {VfeiName="UnclampLogic" VfeiType="U1"} 325>
+				<U4 ECID {VfeiName="DefaultCarrierCapacity" VfeiType="U1"} 326>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort1" VfeiType="U1"} 327>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort2" VfeiType="U1"} 328>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort3" VfeiType="U1"} 329>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort4" VfeiType="U1"} 330>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort5" VfeiType="U1"} 331>
+				<U4 ECID {VfeiName="DefaultCarrierCapacityPort6" VfeiType="U1"} 332>
+				<U4 ECID {VfeiName="ECSReadyToLoad" VfeiType="U1"} 333>
+				<U4 ECID {VfeiName="CarrierUsage1" VfeiType="A"} 334>
+				<U4 ECID {VfeiName="CarrierUsage2" VfeiType="A"} 335>
+				<U4 ECID {VfeiName="CreateEPTTrackersManually" VfeiType="U1"} 340>
+				<U4 ECID {VfeiName="CreateLocationsManually" VfeiType="U1"} 341>
+				<U4 ECID {VfeiName="CreateSubstLocsManually" VfeiType="U1"} 342>
+				<U4 ECID {VfeiName="CreateLoadPortsManually" VfeiType="U1"} 343>
+				<U4 ECID {VfeiName="CreatePartitionsManually" VfeiType="U1"} 344>
+				<U4 ECID {VfeiName="CreateBatchLocsManually" VfeiType="U1"} 345>
+				<U4 ECID {VfeiName="MtrlStatusInitToZero" VfeiType="Boolean"} 346>
+				<U4 ECID {VfeiName="CfgE39ObjSave" VfeiType="U4"} 347>
+				<U4 ECID {VfeiName="PRMaxJobSpace" VfeiType="U2"} 348>
+				<U4 ECID {VfeiName="SubstrateIDReaderAvailable" VfeiType="Boolean"} 350>
+				<U4 ECID {VfeiName="SubstrateIDReaderUnavailable" VfeiType="Boolean"} 351>
+				<U4 ECID {VfeiName="OptionalS14F9FMT" VfeiType="Boolean"} 353>
+				<U4 ECID {VfeiName="SubstrateIDReaderEnabled" VfeiType="Boolean"} 352>
+				<U4 ECID {VfeiName="DisablePJCJPersistence" VfeiType="Boolean"} 354>
+				<U4 ECID {VfeiName="SemuraiMapEnabled_1" VfeiType="U1"} 1001>
+				<U4 ECID {VfeiName="SemuraiMapEnabled_2" VfeiType="U1"} 1002>
+				<U4 ECID {VfeiName="SemuraiMapEnabled_3" VfeiType="U1"} 1003>
+				<U4 ECID {VfeiName="SemuraiMapEnabled_4" VfeiType="U1"} 1004>
+				<U4 ECID {VfeiName="SemuraiReadCarrierIdEnabled_1" VfeiType="Boolean"} 1005>
+				<U4 ECID {VfeiName="SemuraiReadCarrierIdEnabled_2" VfeiType="Boolean"} 1006>
+				<U4 ECID {VfeiName="SemuraiReadCarrierIdEnabled_3" VfeiType="Boolean"} 1007>
+				<U4 ECID {VfeiName="SemuraiReadCarrierIdEnabled_4" VfeiType="Boolean"} 1008>
+				<U4 ECID {VfeiName="SemuraiWriteCarrierIdEnabled_1" VfeiType="Boolean"} 1009>
+				<U4 ECID {VfeiName="SemuraiWriteCarrierIdEnabled_2" VfeiType="Boolean"} 1010>
+				<U4 ECID {VfeiName="SemuraiWriteCarrierIdEnabled_3" VfeiType="Boolean"} 1011>
+				<U4 ECID {VfeiName="SemuraiWriteCarrierIdEnabled_4" VfeiType="Boolean"} 1012>
+				<U4 ECID {VfeiName="SemuraiReadWaferIdEnabled" VfeiType="Boolean"} 1013>
+				<U4 ECID {VfeiName="SemuraiAMHSEnabled_1" VfeiType="Boolean"} 1014>
+				<U4 ECID {VfeiName="SemuraiAMHSEnabled_2" VfeiType="Boolean"} 1015>
+				<U4 ECID {VfeiName="SemuraiAMHSEnabled_3" VfeiType="Boolean"} 1016>
+				<U4 ECID {VfeiName="SemuraiAMHSEnabled_4" VfeiType="Boolean"} 1017>
+				<U4 ECID {VfeiName="SemuraiOpSwEnabled" VfeiType="Boolean"} 1018>
+				<U4 ECID {VfeiName="SemuraiCheckInsert_1" VfeiType="Boolean"} 1019>
+				<U4 ECID {VfeiName="SemuraiCheckInsert_2" VfeiType="Boolean"} 1020>
+				<U4 ECID {VfeiName="SemuraiCheckInsert_3" VfeiType="Boolean"} 1021>
+				<U4 ECID {VfeiName="SemuraiCheckInsert_4" VfeiType="Boolean"} 1022>
+				<U4 ECID {VfeiName="SemuraiMapAfterProcess" VfeiType="Boolean"} 1023>
+				<U4 ECID {VfeiName="SemuraiReadWaferIdDecision" VfeiType="U1"} 1024>
+				<U4 ECID {VfeiName="SemuraiReadCarrierIdDecision" VfeiType="U1"} 1025>
+				<U4 ECID {VfeiName="SemuraiMapDecision" VfeiType="U1"} 1026>
+				<U4 ECID {VfeiName="SemuraiCarrierIdReadPosition" VfeiType="U1"} 1027>
+				<U4 ECID {VfeiName="SemuraiCarrierIdWritePosition" VfeiType="U1"} 1028>
+				<U4 ECID {VfeiName="SemuraiJobsQueueAutoManagement" VfeiType="Boolean"} 1029>
+				<U4 ECID {VfeiName="SemuraiJobsParallelExecution" VfeiType="Boolean"} 1030>
+				<U4 ECID {VfeiName="SemuraiPortSettingsClampManualLocal" VfeiType="Boolean"} 1031>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUnclampManualLocal" VfeiType="Boolean"} 1032>
+				<U4 ECID {VfeiName="SemuraiPortSettingsReadCarrIDManualLocal" VfeiType="Boolean"} 1033>
+				<U4 ECID {VfeiName="SemuraiPortSettingsMapManualLocal" VfeiType="Boolean"} 1034>
+				<U4 ECID {VfeiName="SemuraiPortSettingsDockManualLocal" VfeiType="Boolean"} 1035>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUndockManualLocal" VfeiType="Boolean"} 1036>
+				<U4 ECID {VfeiName="SemuraiPortSettingsOpenManualLocal" VfeiType="Boolean"} 1037>
+				<U4 ECID {VfeiName="SemuraiPortSettingsCloseManualLocal" VfeiType="Boolean"} 1038>
+				<U4 ECID {VfeiName="SemuraiPortSettingsStartJobManualLocal" VfeiType="Boolean"} 1039>
+				<U4 ECID {VfeiName="SemuraiPortSettingsClampAutoLocal" VfeiType="Boolean"} 1041>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUnclampAutoLocal" VfeiType="Boolean"} 1042>
+				<U4 ECID {VfeiName="SemuraiPortSettingsReadCarrIDAutoLocal" VfeiType="Boolean"} 1043>
+				<U4 ECID {VfeiName="SemuraiPortSettingsMapAutoLocal" VfeiType="Boolean"} 1044>
+				<U4 ECID {VfeiName="SemuraiPortSettingsDockAutoLocal" VfeiType="Boolean"} 1045>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUndockAutoLocal" VfeiType="Boolean"} 1046>
+				<U4 ECID {VfeiName="SemuraiPortSettingsOpenAutoLocal" VfeiType="Boolean"} 1047>
+				<U4 ECID {VfeiName="SemuraiPortSettingsCloseAutoLocal" VfeiType="Boolean"} 1048>
+				<U4 ECID {VfeiName="SemuraiPortSettingsStartJobAutoLocal" VfeiType="Boolean"} 1049>
+				<U4 ECID {VfeiName="SemuraiPortSettingsClampManualRemote" VfeiType="Boolean"} 1061>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUnclampManualRemote" VfeiType="Boolean"} 1062>
+				<U4 ECID {VfeiName="SemuraiPortSettingsReadCarrIdManual" VfeiType="Boolean"} 1063>
+				<U4 ECID {VfeiName="SemuraiPortSettingsMapManualRemote" VfeiType="Boolean"} 1064>
+				<U4 ECID {VfeiName="SemuraiPortSettingsDockManualRemote" VfeiType="Boolean"} 1065>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUndockManualRemote" VfeiType="Boolean"} 1066>
+				<U4 ECID {VfeiName="SemuraiPortSettingsOpenManualRemote" VfeiType="Boolean"} 1067>
+				<U4 ECID {VfeiName="SemuraiPortSettingsCloseManualRemote" VfeiType="Boolean"} 1068>
+				<U4 ECID {VfeiName="SemuraiPortSettingsStartJobManualRemote" VfeiType="Boolean"} 1069>
+				<U4 ECID {VfeiName="SemuraiPortSettingsClampAutoRemote" VfeiType="Boolean"} 1081>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUnclampAutoRemote" VfeiType="Boolean"} 1082>
+				<U4 ECID {VfeiName="SemuraiPortSettingsReadCarrIdAutoRemote" VfeiType="Boolean"} 1083>
+				<U4 ECID {VfeiName="SemuraiPortSettingsMapAutoRemote" VfeiType="Boolean"} 1084>
+				<U4 ECID {VfeiName="SemuraiPortSettingsDockAutoRemote" VfeiType="Boolean"} 1085>
+				<U4 ECID {VfeiName="SemuraiPortSettingsUndockAutoRemote" VfeiType="Boolean"} 1086>
+				<U4 ECID {VfeiName="SemuraiPortSettingsOpenAutoRemote" VfeiType="Boolean"} 1087>
+				<U4 ECID {VfeiName="SemuraiPortSettingsCloseAutoRemote" VfeiType="Boolean"} 1088>
+				<U4 ECID {VfeiName="SemuraiPortSettingsStartJobAutoRemote" VfeiType="Boolean"} 1089>
+				<U4 ECID {VfeiName="SemuraiOpSWLoadStart" VfeiType="Boolean"} 1110>
+				<U4 ECID {VfeiName="SemuraiOpSWLoadEnd" VfeiType="Boolean"} 1111>
+				<U4 ECID {VfeiName="SemuraiOpSWLoadingTimeoutValue" VfeiType="U4"} 1112>
+				<U4 ECID {VfeiName="SemuraiOpSWUnloadStart" VfeiType="Boolean"} 1113>
+				<U4 ECID {VfeiName="SemuraiOpSWUnloadEnd" VfeiType="Boolean"} 1114>
+				<U4 ECID {VfeiName="SemuraiOpSWUnloadingTimeoutValue" VfeiType="U4"} 1115>
+				<U4 ECID {VfeiName="SemuraiOpSwAutoContinueAfterLoadEndTimeout" VfeiType="Boolean"} 1116>
+				<U4 ECID {VfeiName="SemuraiOpSwAutoContinueAfterUnloadEndTimeout" VfeiType="Boolean"} 1117>
+				<U4 ECID {VfeiName="SemuraiCarrIdStartPage" VfeiType="U1"} 1120>
+				<U4 ECID {VfeiName="SemuraiCarrIdLength" VfeiType="U1"} 1121>
+				<U4 ECID {VfeiName="SemuraiCarrIdFormat" VfeiType="U1"} 1122>
+				<U4 ECID {VfeiName="HoldCarrierWaitingForOpSw" VfeiType="Boolean"} 1123>
+				<U4 ECID {VfeiName="SemuraiWaferIDAngle5" VfeiType="F4"} 1130>
+				<U4 ECID {VfeiName="SemuraiWaferIDAngle6" VfeiType="F4"} 1131>
+				<U4 ECID {VfeiName="SemuraiWaferIDAngle8" VfeiType="F4"} 1132>
+				<U4 ECID {VfeiName="SemuraiWaferIDAngle12" VfeiType="F4"} 1133>
+				<U4 ECID {VfeiName="EquipID" VfeiType="U4"} 1200>
+				<U4 ECID {VfeiName="EquipName" VfeiType="A"} 1201>
+				<U4 ECID {VfeiName="OverwriteExistingRecipe" VfeiType="U1"} 1202>
+				<U4 ECID {VfeiName="SemuraiSubNameProcess" VfeiType="A"} 1215>
+				<U4 ECID {VfeiName="SemuraiSubNameProduct" VfeiType="A"} 1216>
+				<U4 ECID {VfeiName="SemuraiSubNameLayer" VfeiType="A"} 1217>
+				<U4 ECID {VfeiName="SemuraiPPLDelimiter" VfeiType="A"} 1218>
+				<U4 ECID {VfeiName="SemuraiUsePPLName" VfeiType="Boolean"} 1219>
+				<U4 ECID {VfeiName="SemuraiUseExpectedDataForAutoProceed" VfeiType="Boolean"} 1220>
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////             VFEI SECS           //////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+VFEI_SECS_SEQUENCES:
+<L
+				<L INITIALIZE
+								<A "CR: S1F13">
+								<A "DR_CLEAR: S2F33 W * Clear all reports" >
+								<A "LER_CLEAR: S2F35 W * Unlink all event reports" >
+								<A "DR_MEASUREMENT: S2F33 W * Define Report for MEASUREMENT">
+								<A "LER_MEASUREMENT: S2F35 W * Link Event Report for DR_MEASUREMENT" >
+				//<A "EDER_ENABLE_ALL: S2F37 W * Enable all event reports" >
+								<A "EDER_INIT_MEASUREMENT: S2F37 W * Enable event reports for MEASUREMENT" >
+								<A "EAS_ENABLE_ALL: S5F3 W * Enable all alarms" >
+								<A "HCS_ONLINE_LOCAL: S2F49 W * Host command send Go Local" >
+				>
+
+				<L GO_REMOTE
+								<A "HCS_ONLINE_REMOTE: S2F49">
+				>
+
+				<L GO_LOCAL
+								<A "HCS_ONLINE_LOCAL: S2F49">
+				>
+
+				<L ECR
+								<A "ECNR_ALL: S2F29">
+								<A "ALL_ECR: S2F13 W * ALL equipment constants request with zero-length list">
+				>
+
+				<L ESVR
+								<A "SVNR_ALL: S1F11">
+								<A "ALL_SSR: S1F3 W * Status queries=> Selected all equipment status request">
+				>
+				<L EDVR
+								<A "EDVR_ALL: S1F21">
+				>
+				<L CER
+								<A "CER_ALL: S1F23">
+				>
+				<L INIT_MINIMUM
+								<A "CR: S1F13">
+								<A "DR_CLEAR: S2F33 W * Clear all reports" >
+								<A "LER_CLEAR: S2F35 W * Unlink all event reports" >
+								<A "EDER_ENABLE_ALL: S2F37 W * Enable all event reports" >
+								<A "HCS_ONLINE_LOCAL: S2F49 W * Host command send Go LOCAL" >
+				>
+
+				<L INIT_REPORT_LOCAL_REMOTE
+								<A "CR: S1F13">
+								<A "DR_CLEAR: S2F33 W * Clear all reports" >
+								<A "LER_CLEAR: S2F35 W * Unlink all event reports" >
+								<A "DR_INIT_LR: S2F33 W * Define Reports LOCAL_REMOTE" >
+								<A "LER_INIT_LR: S2F35 W * Link Report LOCAL_REMOTE" >
+								<A "EDER_INIT_LR: S2F37 W * Enable event reports LOCAL_REMOTE" >
+								<A "HCS_ONLINE_LOCAL: S2F49 W * Host command send Go Local" >
+								<A "HCS_ONLINE_REMOTE: S2F49 W * Host command send Go Remote" >
+				>
+
+				<L INIT_REPORT_MEASURMENT
+								<A "CR: S1F13">
+								<A "DR_CLEAR: S2F33 W * Clear all reports" >
+								<A "LER_CLEAR: S2F35 W * Unlink all event reports" >
+								<A "DR_MEASUREMENT: S2F33 W * Define Report for MEASUREMENT">
+								<A "LER_MEASUREMENT: S2F35 W * Link Event Report for DR_MEASUREMENT" >
+								<A "EDER_ENABLE_ALL: S2F37 W * Enable all event reports" >
+								<A "HCS_ONLINE_LOCAL: S2F49 W * Host command send Go Local" >
+				>
+
+				<L INIT_REPORT_FDC_ONLYEVENTFDC
+								<A "CR: S1F13">
+								<A "DR_CLEAR: S2F33 W * Clear all reports" >
+								<A "LER_CLEAR: S2F35 W * Unlink all event reports" >
+								<A "TRACE_FDC_JOURNALIERE:S2F23 W SVID demandées pour monitoring FDC">
+								<A "TRACE_FDC_HEBDOMADAIRE:S2F23 W SVID demandées pour monitoring FDC" >
+								<A "DR_FDC: S2F33 W * Define Report for FDC">
+								<A "LER_FDC: S2F35 W * Link Event Report for FDC" >
+								<A "EDER_INIT_FDC: S2F37 W * Enable event reports FDC" >
+								<A "HCS_ONLINE_LOCAL: S2F49 W * Host command send Go Local" >
+				>
+
+				<L INIT_REPORT_TRACE_FDC
+								<A "TRACE_FDC_JOURNALIERE:S2F23 W SVID demandées pour monitoring FDC">
+								<A "TRACE_FDC_HEBDOMADAIRE:S2F23 W SVID demandées pour monitoring FDC" >
+								<A "TRACE_FDC_POURTEST:S2F23 W * comme aucuns event lié à la FDC ne remonte... on met toutes les variables dans une trace ; )" >
+				>
+
+				<L INIT_REPORT_FDC
+								<A "DR_FDC: S2F33 W * Define Report for FDC">
+								<A "LER_FDC: S2F35 W * Link Event Report for FDC" >
+				>
+
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////             STATUS VARIABLE           ///////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+STATUSVARIABLES:
+<L
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemAbortLevel" VfeiType="U1"} '101'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemAlarmsEnabled" VfeiType="L"} '102'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemAlarmsSet" VfeiType="L"} '103'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemAlarmState" VfeiType="U1"} '104'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemASer" VfeiType="U4"} '105'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemClock" VfeiType="A"} '106'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="CONTROLSTATE" VfeiType="U1"} '107'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemDataId" VfeiType="U4"} '108'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemEventsEnabled" VfeiType="L"} '109'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemLinkState" VfeiType="U1"} '110'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemMDLN" VfeiType="A"} '111'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemPPExecName" VfeiType="A"} '112'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemPreviousCEID" VfeiType="U4"} '113'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemPreviousCommand" VfeiType="A"} '114'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemPreviousControlState" VfeiType="U1"} '115'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemPreviousProcessState" VfeiType="U1"} '116'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemProcessState" VfeiType="U1"} '117'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSoftrev" VfeiType="A"} '118'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemTime" VfeiType="A"} '119'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolCountActual" VfeiType="U4"} '120'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolCountTotal" VfeiType="U4"} '121'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolFullTime" VfeiType="A"} '122'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolLoadSubstate" VfeiType="U1"} '123'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolStartTime" VfeiType="A"} '124'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolState" VfeiType="U1"} '125'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemSpoolUnloadSubstate" VfeiType="U1"} '126'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemVIDList" VfeiType="L"} '127'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemALIDList" VfeiType="L"} '128'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="GemCEIDList" VfeiType="L"} '129'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc1" VfeiType="U1"} '401'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID1" VfeiType="A"} '402'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID1" VfeiType="A"} '403'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState1" VfeiType="U1"} '404'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc2" VfeiType="U1"} '411'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID2" VfeiType="A"} '412'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID2" VfeiType="A"} '413'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState2" VfeiType="U1"} '414'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc3" VfeiType="U1"} '421'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID3" VfeiType="A"} '422'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID3" VfeiType="A"} '423'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState3" VfeiType="U1"} '424'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc4" VfeiType="U1"} '431'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID4" VfeiType="A"} '432'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID4" VfeiType="A"} '433'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState4" VfeiType="U1"} '434'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc5" VfeiType="U1"} '441'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID5" VfeiType="A"} '442'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID5" VfeiType="A"} '443'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState5" VfeiType="U1"} '444'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc6" VfeiType="U1"} '451'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID6" VfeiType="A"} '452'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID6" VfeiType="A"} '453'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState6" VfeiType="U1"} '454'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc7" VfeiType="U1"} '461'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID7" VfeiType="A"} '462'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID7" VfeiType="A"} '463'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState7" VfeiType="U1"} '464'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLoc8" VfeiType="U1"} '471'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstID8" VfeiType="A"} '472'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocID8" VfeiType="A"} '473'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SubstLocSubstLocState8" VfeiType="U1"} '474'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="CarrierLocationMatrix" VfeiType="L"} '501'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="QueuedCJobs" VfeiType="L"} '502'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="QueueAvailableSpace" VfeiType="Us"} '503'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortList" VfeiType="L"} '510'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAssociationStateList" VfeiType="L"} '511'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortStateInfoList" VfeiType="L"} '512'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortReservationStateList" VfeiType="L"} '513'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortTransferStateList" VfeiType="L"} '514'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAccessModeList" VfeiType="L"} '515'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortCarrierIDList" VfeiType="L"} '516'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LoadPort1" VfeiType="U1"} '520'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortID1" VfeiType="U1"} '521'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAccessMode1" VfeiType="U1"} '522'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAssociationState1" VfeiType="U1"} '523'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortReservationState1" VfeiType="U1"} '524'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortStateInfo1" VfeiType="L"} '525'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortTransferState1" VfeiType="U1"} '526'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortClampState1" VfeiType="U1"} '527'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location1" VfeiType="U1"} '528'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID1" VfeiType="A"} '529'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID1" VfeiType="A"} '530'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location2" VfeiType="U1"} '532'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID2" VfeiType="A"} '533'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID2" VfeiType="A"} '534'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LoadPort2" VfeiType="U1"} '540'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortID2" VfeiType="U1"} '541'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAccessMode2" VfeiType="U1"} '542'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAssociationState2" VfeiType="U1"} '543'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortReservationState2" VfeiType="U1"} '544'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortStateInfo2" VfeiType="L"} '545'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortTransferState2" VfeiType="U1"} '546'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortClampState2" VfeiType="U1"} '547'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location3" VfeiType="U1"} '548'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID3" VfeiType="A"} '549'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID3" VfeiType="A"} '550'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location4" VfeiType="U1"} '552'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID4" VfeiType="A"} '553'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID4" VfeiType="A"} '554'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LoadPort3" VfeiType="U1"} '560'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortID3" VfeiType="U1"} '561'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAccessMode3" VfeiType="U1"} '562'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAssociationState3" VfeiType="U1"} '563'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortReservationState3" VfeiType="U1"} '564'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortStateInfo3" VfeiType="L"} '565'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortTransferState3" VfeiType="U1"} '566'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortClampState3" VfeiType="U1"} '567'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location5" VfeiType="U1"} '568'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID5" VfeiType="A"} '569'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID5" VfeiType="A"} '570'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location6" VfeiType="U1"} '572'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID6" VfeiType="A"} '573'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID6" VfeiType="A"} '574'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LoadPort4" VfeiType="U1"} '580'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortID4" VfeiType="U1"} '581'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAccessMode4" VfeiType="U1"} '582'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortAssociationState4" VfeiType="U1"} '583'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortReservationState4" VfeiType="U1"} '584'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortStateInfo4" VfeiType="L"} '585'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortTransferState4" VfeiType="U1"} '586'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="PortClampState4" VfeiType="U1"} '587'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location7" VfeiType="U1"} '588'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID7" VfeiType="A"} '589'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID7" VfeiType="A"} '590'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Location8" VfeiType="U1"} '592'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationID8" VfeiType="A"} '593'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="LocationCarrierID8" VfeiType="A"} '594'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiAutoResume" VfeiType="U1"} '3003'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiE10State" VfeiType="U1"} '3004'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="ExpectedCarrierSlotMap" VfeiType="U1"} '3005'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCarrierSlotMap1" VfeiType="U1"} '3011'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCarrierSlotMap2" VfeiType="U1"} '3012'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCarrierSlotMap3" VfeiType="U1"} '3013'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCarrierSlotMap4" VfeiType="U1"} '3014'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPortRunCount1" VfeiType="I4"} '3031'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPortRunCount2" VfeiType="I4"} '3032'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPortRunCount3" VfeiType="I4"} '3033'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPortRunCount4" VfeiType="I4"} '3034'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiProcessedWaferCount1" VfeiType="U2"} '3041'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiProcessedWaferCount2" VfeiType="U2"} '3042'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiProcessedWaferCount3" VfeiType="U2"} '3043'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiProcessedWaferCount4" VfeiType="U2"} '3044'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcRedLedState" VfeiType="A"} '3101'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcYellowLedState" VfeiType="A"} '3102'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcGreenLedState" VfeiType="A"} '3103'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcBlueLedState" VfeiType="A"} '3104'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcWhiteLedState" VfeiType="A"} '3105'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiStcBuzzerState" VfeiType="A"} '3106'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWPName" VfeiType="A"} '3200'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWPBopresightX" VfeiType="A"} '3201'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWPBopresightY" VfeiType="A"} '3202'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWPStigmationX" VfeiType="A"} '3203'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWPStigmationY" VfeiType="A"} '3204'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiChamberVacuum" VfeiType="A"} '3221'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="Semuraiiorobe" VfeiType="A"} '3229'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCapacitance" VfeiType="A"} '3272'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiSuppVoltageMonitor" VfeiType="A"} '3280'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiSuppVoltageSetting" VfeiType="A"} '3281'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiExtractorVoltageMonitor" VfeiType="A"} '3282'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiExtractorVoltageSetting" VfeiType="A"} '3283'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiHeatCurrentMonitor" VfeiType="A"} '3284'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiHeatCurrentSetting" VfeiType="A"} '3285'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiMileage" VfeiType="A"} '3290'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiFriction" VfeiType="A"} '3291'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiEncoder" VfeiType="A"} '3292'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiInterfometer" VfeiType="A"} '3293'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiOLC" VfeiType="A"} '3300'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiApertureX" VfeiType="A"} '3301'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiApertureY" VfeiType="A"} '3302'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiScanRotation" VfeiType="A"} '3303'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiScanPerpendicularity" VfeiType="A"} '3304'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiZBoresight" VfeiType="A"} '3305'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiVbooster" VfeiType="A"} '3306'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiVWaferCompensationOffset" VfeiType="A"} '3307'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast" VfeiType="A"} '3308'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness" VfeiType="A"} '3309'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiVaccVwaferCorrection" VfeiType="A"} '3310'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiVaccVwaferOffset" VfeiType="A"} '3311'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceGunX" VfeiType="A"} '3312'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceGunY" VfeiType="A"} '3313'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceStigmation1X" VfeiType="A"} '3314'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceStigmation1Y" VfeiType="A"} '3315'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceStigmation2X" VfeiType="A"} '3316'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceStigmation2Y" VfeiType="A"} '3317'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceApertureX" VfeiType="A"} '3318'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBalanceApertureY" VfeiType="A"} '3319'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiTiltX" VfeiType="A"} '3320'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiTiltY" VfeiType="A"} '3321'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBeamShiftX" VfeiType="A"} '3322'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBeamShiftY" VfeiType="A"} '3323'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiGunAlignmentX" VfeiType="A"} '3324'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiGunAlignmentY" VfeiType="A"} '3325'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskCapacityMC" VfeiType="A"} '3326'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskUsedSpaceMC" VfeiType="A"} '3327'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskFreeSpaceMC" VfeiType="A"} '3328'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskCapacityIPBE" VfeiType="A"} '3329'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskUsedSpaceIPBE" VfeiType="A"} '3330'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiDiskFreeSpaceIPBE" VfeiType="A"} '3331'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiMileageX" VfeiType="A"} '3516'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiMileageY" VfeiType="A"} '3517'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiMileageZ" VfeiType="A"} '3518'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness1" VfeiType="A"} '3519'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness2" VfeiType="A"} '3520'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness3" VfeiType="A"} '3521'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness4" VfeiType="A"} '3522'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness5" VfeiType="A"} '3523'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiBrightness6" VfeiType="A"} '3524'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast1" VfeiType="A"} '3525'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast2" VfeiType="A"} '3526'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast3" VfeiType="A"} '3527'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast4" VfeiType="A"} '3528'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast5" VfeiType="A"} '3529'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPMTContrast6" VfeiType="A"} '3530'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiEMCNoiseCancellationFailure" VfeiType="A"} '3600'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWaterFlow" VfeiType="A"} '3601'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWaterLeak" VfeiType="A"} '3602'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWaterPressure" VfeiType="A"} '3603'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiWaterPressure_Value" VfeiType="A"} '3604'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPickupVacuum" VfeiType="A"} '3605'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPickupVacuum_Value" VfeiType="A"} '3606'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCompressedAir" VfeiType="A"} '3607'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCompressedAir_Value" VfeiType="A"} '3608'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiRobotSafetyAndDoorSwitch" VfeiType="A"} '3609'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiFFU" VfeiType="A"} '3610'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCDA_Ionizer" VfeiType="A"} '3611'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCDA_Vent" VfeiType="A"} '3612'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiNitrogenTurboPump" VfeiType="A"} '3613'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiNitrogenLoadPort" VfeiType="A"} '3614'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiSmokeDetected" VfeiType="A"} '3615'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiLLKTurboPumpState" VfeiType="A"} '3616'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiCHMTurboPumpState" VfeiType="A"} '3617'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SEMuraiSoftwareVersion" VfeiType="A"} '3999'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="ProcessedWaferCount" VfeiType="A"} '4403'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPALDx" VfeiType="A"} '4948'>
+				<V SVID {SecsValueToVfeiText="false" VfeiName="SemuraiPALDy" VfeiType="A"} '4949'>
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////             SECS ITEM TYPES           ///////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+SECSITEM_TYPES:
+<L
+//<SecsType SecsName> [* Secsdescription]
+//If a SECS item is used within different transactions with different types set the SecsType to V (Variant)
+//That is this item can have different types on the same equipment.
+// The VfeiItem property within the specific transaction has to define , which has SECS-Type to be used within this transaction.
+				<I2 ALID > * Alarm identification
+				<B ALED > * Alarm enable-disable code
+				<I2 CEID > * Collection event ID
+				<U1 CMDA > * Command acknowledge code
+// <B CMDA>  *  Command acknowledge code ??
+				<A CPNAME > * Command parameter value
+				<V CPVAL > * Command parameter value
+// <A CPVAL>  *  Command parameter value
+				<U4 DATAID > * Data ID
+				<A DSID > * Data Set ID
+				<A DSPER > * Data sample period, hhmmss
+				<U4 DVID > *  DVID
+				<U4 ECID > * Equipment constant ID
+				<A ECV > * Equipment constant value
+// <I4 ECV>  *  Equipment constant value ???
+				<I2 LENGTH > * Length of program in bytes
+				<A MDLN > * Equipment Model Type
+				<A PPID > * Process program ID
+				<A RCMD > * Remote command code
+				<I2 REPGSZ > * Reporting group size
+				<U4 RPTID > * Report ID
+				<U1 RSDC > *  Request spooled data command code
+				<U4 SVID > * Status variable ID
+				<I2 TOTSMP > * Total samples made
+				<U4 TRID > * Trace request ID
+				<V V > * Variable data
+				<U4 VID > * Variable ID
+				<A TEXT > * Text definition
+>.
