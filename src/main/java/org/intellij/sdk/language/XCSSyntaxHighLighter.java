@@ -22,8 +22,10 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             createTextAttributesKey("XCS_COLLECTION_EVENT", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey EQUIPMENT_CONSTANT =
             createTextAttributesKey("XCS_EQUIPMENT_CONSTANT", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey STATUS_VARIABLE =
+    public static final TextAttributesKey SECSITEM_TYPE =
             createTextAttributesKey("XCS_STATUS_VARIABLE", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey STATUS_VARIABLE =
+            createTextAttributesKey("XCS_SECSITEM_TYPE", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey VFEI_SECS_SEQ =
             createTextAttributesKey("XCS_VFEI_SECS_SEQ", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey COLON =
@@ -67,6 +69,7 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] FUNCTION_NAME_KEYS = new TextAttributesKey[]{FUNCTION_NAME};
     private static final TextAttributesKey[] COLLECTION_EVENT_KEYS = new TextAttributesKey[]{COLLECTION_EVENT};
     private static final TextAttributesKey[] EQUIPMENT_CONSTANT_KEYS = new TextAttributesKey[]{EQUIPMENT_CONSTANT};
+    private static final TextAttributesKey[] SECSITEM_TYPE_KEYS = new TextAttributesKey[]{SECSITEM_TYPE};
     private static final TextAttributesKey[] STATUS_VARIABLE_KEYS = new TextAttributesKey[]{STATUS_VARIABLE};
     private static final TextAttributesKey[] VFEI_SECS_SEQ_KEYS = new TextAttributesKey[]{VFEI_SECS_SEQ};
     private static final TextAttributesKey[] COLON_KEYS = new TextAttributesKey[]{COLON};
@@ -107,6 +110,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             return EQUIPMENT_CONSTANT_KEYS;
         } else if (tokenType.equals(XCSTypes.STATUS_VARIABLE))  {
             return STATUS_VARIABLE_KEYS;
+        } else if (tokenType.equals(XCSTypes.SECS_ITEM_TYPE))  {
+            return SECSITEM_TYPE_KEYS;
         } else if (tokenType.equals(XCSTypes.VFEI_SECS_SEQ))  {
             return VFEI_SECS_SEQ_KEYS;
         } else if (tokenType.equals(XCSTypes.COMMENT))  {

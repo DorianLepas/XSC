@@ -39,10 +39,8 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
                 .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_CE).none()
                 .between(XCSTypes.PROPERTY_NAME_CE,XCSTypes.EQUALS).none()
 
-                .before(XCSTypes.VFEI_SECS_SEQ).none()
-                .between(XCSTypes.VFEI_SECS_SEQ,XCSTypes.COLON).none()
-                .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_VSS).none()
-                .between(XCSTypes.PROPERTY_NAME_VSS,XCSTypes.EQUALS).none()
+                .before(XCSTypes.SECS_ITEM_TYPE).none()
+                .between(XCSTypes.SECS_ITEM_TYPE,XCSTypes.COLON).none()
 
                 .before(XCSTypes.EQUIPMENT_CONSTANT).none()
                 .between(XCSTypes.EQUIPMENT_CONSTANT,XCSTypes.COLON).none()
@@ -53,6 +51,11 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
                 .between(XCSTypes.STATUS_VARIABLE,XCSTypes.COLON).none()
                 .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_SV).none()
                 .between(XCSTypes.PROPERTY_NAME_SV,XCSTypes.EQUALS).none()
+
+                .before(XCSTypes.VFEI_SECS_SEQ).none()
+                .between(XCSTypes.VFEI_SECS_SEQ,XCSTypes.COLON).none()
+                .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_VSS).none()
+                .between(XCSTypes.PROPERTY_NAME_VSS,XCSTypes.EQUALS).none()
                 ;
     }
 
