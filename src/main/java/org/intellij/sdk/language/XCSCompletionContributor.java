@@ -94,6 +94,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("COLLECTIONEVENT_VARIABLES"));
                         resultSet.addElement(LookupElementBuilder.create("EQUIPMENTCONSTANTS"));
+                        resultSet.addElement(LookupElementBuilder.create("STATUSVARIABLES"));
                         resultSet.addElement(LookupElementBuilder.create("VFEI_SECS_SEQUENCES"));
                     }
                 }
@@ -120,18 +121,10 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
-                    }
-                }
-        );
-
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.ASCII_TYPE)),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               @NotNull ProcessingContext context,
-                                               @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
                         resultSet.addElement(LookupElementBuilder.create("ECID"));
+                        resultSet.addElement(LookupElementBuilder.create("SVID"));
+                        resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
                     }
                 }
         );
@@ -143,6 +136,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
                         resultSet.addElement(LookupElementBuilder.create("ECID"));
+                        resultSet.addElement(LookupElementBuilder.create("SVID"));
                         resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
                     }
                 }

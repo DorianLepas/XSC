@@ -14,7 +14,7 @@
 }
 
 xsc_file ::= items *
-private items ::= (collection_event_section|equipment_constant_section|vfei_secs_seq_section|functions|COMMENT)
+private items ::= (collection_event_section|equipment_constant_section|status_variable_section|vfei_secs_seq_section|functions|COMMENT)
 
 
 // SF paragraph treatment
@@ -40,6 +40,14 @@ EC_CORE ::= (CORE_START ASCII_TYPE [ECID] [EC_PROPERTY] ASCII_VALUE CORE_END [FU
             (CORE_START VARIABLE_TYPE [ECID] [EC_PROPERTY] VARIABLE_VALUE CORE_END [FUNCTION_COMMENT])
 EC_PROPERTY ::= PROPERTY_START EC_PROPERTY_+ PROPERTY_END
 EC_PROPERTY_ ::= PROPERTY_NAME_EC EQUALS PROPERTY_VALUE
+
+// SV paragraph treatment
+status_variable_section ::= (STATUS_VARIABLE COLON [FUNCTION_COMMENT] [SV_LIST] FUNCTION_END [FUNCTION_COMMENT])
+SV_LIST ::= (CORE_START LIST_TYPE SV_CORE* CORE_END [FUNCTION_COMMENT])
+SV_CORE ::= (CORE_START ASCII_TYPE [SVID] [SV_PROPERTY] ASCII_VALUE CORE_END [FUNCTION_COMMENT]) |
+            (CORE_START VARIABLE_TYPE [SVID] [SV_PROPERTY] VARIABLE_VALUE CORE_END [FUNCTION_COMMENT])
+SV_PROPERTY ::= PROPERTY_START SV_PROPERTY_+ PROPERTY_END
+SV_PROPERTY_ ::= PROPERTY_NAME_SV EQUALS PROPERTY_VALUE
 
 // VSS paragraph treatment
 vfei_secs_seq_section ::= (VFEI_SECS_SEQ COLON [FUNCTION_COMMENT] [VSS_LIST] FUNCTION_END [FUNCTION_COMMENT])

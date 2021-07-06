@@ -43,6 +43,16 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
                 .between(XCSTypes.VFEI_SECS_SEQ,XCSTypes.COLON).none()
                 .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_VSS).none()
                 .between(XCSTypes.PROPERTY_NAME_VSS,XCSTypes.EQUALS).none()
+
+                .before(XCSTypes.EQUIPMENT_CONSTANT).none()
+                .between(XCSTypes.EQUIPMENT_CONSTANT,XCSTypes.COLON).none()
+                .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_EC).none()
+                .between(XCSTypes.PROPERTY_NAME_EC,XCSTypes.EQUALS).none()
+
+                .before(XCSTypes.STATUS_VARIABLE).none()
+                .between(XCSTypes.STATUS_VARIABLE,XCSTypes.COLON).none()
+                .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_SV).none()
+                .between(XCSTypes.PROPERTY_NAME_SV,XCSTypes.EQUALS).none()
                 ;
     }
 
