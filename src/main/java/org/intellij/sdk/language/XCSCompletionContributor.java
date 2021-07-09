@@ -11,7 +11,40 @@ import org.jetbrains.annotations.NotNull;
 public class XCSCompletionContributor extends CompletionContributor {
 
     public XCSCompletionContributor() {
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().withElementType(XCSTypes.PROPERTY_NAME),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf("{"),
+                new CompletionProvider<CompletionParameters>() {
+                    public void addCompletions(@NotNull CompletionParameters parameters,
+                                               @NotNull ProcessingContext context,
+                                               @NotNull CompletionResultSet resultSet) {
+                        resultSet.addElement(LookupElementBuilder.create("VfeiQualifier"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueAlignment"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueWidth"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueToVfeiText"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsName"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiValue"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiType"));
+                        resultSet.addElement(LookupElementBuilder.create("CheckAck"));
+                        resultSet.addElement(LookupElementBuilder.create("AllowedSecsItemValues"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValue"));
+                        resultSet.addElement(LookupElementBuilder.create("IsTemplate"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiNameTemplateNames"));
+                        resultSet.addElement(LookupElementBuilder.create("ReuseProperties"));
+                        resultSet.addElement(LookupElementBuilder.create("ReusePropertiesNoArrays"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems"));
+                        resultSet.addElement(LookupElementBuilder.create("SendAsList"));
+                        resultSet.addElement(LookupElementBuilder.create("Disabled"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplyMatch"));
+                        resultSet.addElement(LookupElementBuilder.create("WrapInList"));
+                        resultSet.addElement(LookupElementBuilder.create("EventLevel8"));
+                    }
+                }
+        );
+
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_VALUE)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
