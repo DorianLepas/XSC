@@ -81,6 +81,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
+                        resultSet.addElement(LookupElementBuilder.create("DVID"));
                         resultSet.addElement(LookupElementBuilder.create("ECID"));
                         resultSet.addElement(LookupElementBuilder.create("SVID"));
                         resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));
@@ -94,6 +95,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("CEID"));
+                        resultSet.addElement(LookupElementBuilder.create("DVID"));
                         resultSet.addElement(LookupElementBuilder.create("ECID"));
                         resultSet.addElement(LookupElementBuilder.create("SVID"));
                         resultSet.addElement(LookupElementBuilder.create("INITIALIZE"));

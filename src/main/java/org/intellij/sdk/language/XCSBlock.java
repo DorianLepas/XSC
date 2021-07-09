@@ -42,6 +42,7 @@ public class XCSBlock extends AbstractBlock {
                 isAtRootFile() ||
                 (myNode.getPsi() instanceof XCSFunctionCore && myNode.getTreeParent().getPsi() instanceof XCSFunctions) ||
                 (myNode.getPsi() instanceof XCSCeList) || (myNode.getPsi() instanceof XCSCeCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
+                (myNode.getPsi() instanceof XCSDvList) || (myNode.getPsi() instanceof XCSDvCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
                 (myNode.getPsi() instanceof XCSEcList) || (myNode.getPsi() instanceof XCSEcCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
                 (myNode.getPsi() instanceof XCSSitList) || (myNode.getPsi() instanceof XCSSitCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
                 (myNode.getPsi() instanceof XCSSvList) || (myNode.getPsi() instanceof XCSSvCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
@@ -49,6 +50,7 @@ public class XCSBlock extends AbstractBlock {
                 myNode.getPsi() instanceof  XCSProperty || myNode.getPsi() instanceof XCSProperty_ ||
                 myNode.getPsi() instanceof  XCSEcProperty || myNode.getPsi() instanceof XCSEcProperty_ ||
                 myNode.getPsi() instanceof  XCSCeProperty || myNode.getPsi() instanceof XCSCeProperty_ ||
+                myNode.getPsi() instanceof  XCSDvProperty || myNode.getPsi() instanceof XCSDvProperty_ ||
                 myNode.getPsi() instanceof  XCSSvProperty || myNode.getPsi() instanceof XCSSvProperty_ ||
                 myNode.getPsi() instanceof  XCSVssProperty || myNode.getPsi() instanceof XCSVssProperty_
         ){

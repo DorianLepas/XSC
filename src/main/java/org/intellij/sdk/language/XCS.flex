@@ -21,6 +21,7 @@ WHITE_SPACE=[\ \n\t\f]
 
 
 COLLECTION_EVENT=COLLECTIONEVENT_VARIABLES
+DATA_VARIABLE=DATAVARIABLES
 EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
 SECS_ITEM_TYPE=SECSITEM_TYPES
 STATUS_VARIABLE=STATUSVARIABLES
@@ -35,6 +36,7 @@ VARIABLE_TYPE=(U|I)[1248]|F[48]|(B|V|BOOLEAN|Boolean)(\[\d+\])?|J|V
 VARIABLE_NAME=\w+
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
 CEID=CEID
+DVID=DVID
 ECID=ECID
 SVID=SVID
 VFEI_CMD_ITEM_NAME=INITIALIZE
@@ -46,11 +48,12 @@ PROPERTY_NAME=VfeiQualifier|VfeiName|SecsValueAlignment|SecsValueWidth|SecsValue
               VfeiType|CheckAck|AllowedSecsItemValues|SecsItemsToCheck|PutSecsReplyToVfeiReply|SecsType|SecsValue|
               IsTemplate|VfeiNameTemplateNames|ReuseProperties|ReusePropertiesNoArrays|ReplaceVfeiName|ReplaceItems|
               SendAsList|Disabled|ReplyMatch|WrapInList|EventLevel8
-PROPERTY_VALUE=\"\w+\"
 PROPERTY_NAME_CE=VfeiName|SecsType|ReplaceVfeiName|ReplaceItems|EventLevel8
+PROPERTY_NAME_DV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
-PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems
+PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
+PROPERTY_VALUE=\"\w+\"
 
 ASCII_TYPE=A(\[\d+\])?|A
 ASCII_VALUE=(\".*\")|(\'.*\')
@@ -62,6 +65,7 @@ FUNCTION_END=.
 //STATE
 %state FUNCTION_HEADER
 %state CE_HEADER
+%state DV_HEADER
 %state EC_HEADER
 %state SIT_HEADER
 %state SV_HEADER
@@ -81,6 +85,14 @@ FUNCTION_END=.
 %state CE_PROPERTY
 %state CE_PROPERTY_ASCII
 
+//DATA VARIABLE
+%state DV_CORE
+%state DV_LIST
+%state DV_NAME
+%state DV_NAME_ASCII
+%state DV_PROPERTY
+%state DV_PROPERTY_ASCII
+
 //EQUIPMENT CONSTANT
 %state EC_CORE
 %state EC_NAME
@@ -94,6 +106,7 @@ FUNCTION_END=.
 
 //STATUS VARIABLE
 %state SV_CORE
+%state SV_LIST
 %state SV_NAME
 %state SV_NAME_ASCII
 %state SV_PROPERTY
@@ -119,6 +132,7 @@ FUNCTION_END=.
 
 <YYINITIAL>{
     {COLLECTION_EVENT}      { yybegin(CE_HEADER); return XCSTypes.COLLECTION_EVENT; }
+    {DATA_VARIABLE}         { yybegin(DV_HEADER); return XCSTypes.DATA_VARIABLE; }
     {EQUIPMENT_CONSTANT}    { yybegin(EC_HEADER); return XCSTypes.EQUIPMENT_CONSTANT; }
     {SECS_ITEM_TYPE}        { yybegin(SIT_HEADER); return XCSTypes.SECS_ITEM_TYPE; }
     {STATUS_VARIABLE}       { yybegin(SV_HEADER); return XCSTypes.STATUS_VARIABLE; }
@@ -245,6 +259,76 @@ FUNCTION_END=.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/////////////////////////         DV         ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+<DV_HEADER>{
+    {COLON}                        {return XCSTypes.COLON; }
+    {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
+    {CORE_START}                   {yybegin(DV_LIST); return XCSTypes.CORE_START; }
+    {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<DV_LIST>{
+      //LIST
+     {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {yybegin(DV_CORE); return XCSTypes.CORE_START; }
+}
+
+<DV_CORE>{
+      //LIST
+     {LIST_TYPE}                         {yybegin(DV_NAME); return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {return XCSTypes.CORE_START; }
+     //ASCII
+     {ASCII_TYPE}                        {yybegin(DV_NAME_ASCII); return XCSTypes.ASCII_TYPE; }
+     {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
+     //OTHERS
+     {VARIABLE_TYPE}                     {yybegin(DV_NAME); return XCSTypes.VARIABLE_TYPE; }
+     {VARIABLE_VALUE}                    {return XCSTypes.VARIABLE_VALUE; }
+
+     {PROPERTY_START}                    {yybegin(DV_PROPERTY); return XCSTypes.PROPERTY_START; }
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<DV_NAME>{
+    {DVID}              {yybegin(DV_CORE); return XCSTypes.DVID; }
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
+    {VARIABLE_VALUE}    {yybegin(DV_CORE); return XCSTypes.VARIABLE_VALUE; }
+    {PROPERTY_START}    {yybegin(DV_PROPERTY); return XCSTypes.PROPERTY_START; }
+    {CORE_START}        {yybegin(DV_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}          {yybegin(DV_CORE); return XCSTypes.CORE_END ;}
+}
+
+
+<DV_NAME_ASCII>{
+    {DVID}              {yybegin(DV_CORE); return XCSTypes.DVID; }
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
+    {ASCII_VALUE}       {yybegin(DV_CORE); return XCSTypes.ASCII_VALUE; }
+    {PROPERTY_START}    {yybegin(DV_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
+    {CORE_START}        {yybegin(DV_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}          {yybegin(DV_CORE); return XCSTypes.CORE_END ;}
+}
+
+<DV_PROPERTY>{
+    {PROPERTY_NAME_DV}    {return XCSTypes.PROPERTY_NAME_DV; }
+    {EQUALS}              {return XCSTypes.EQUALS; }
+    {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
+    {PROPERTY_END}        {return XCSTypes.PROPERTY_END; }
+    {VARIABLE_VALUE}      {return XCSTypes.VARIABLE_VALUE; }
+    {CORE_START}          {yybegin(DV_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}            {yybegin(DV_CORE); return XCSTypes.CORE_END ;}
+}
+
+<DV_PROPERTY_ASCII>{
+    {PROPERTY_NAME_DV}    {return XCSTypes.PROPERTY_NAME_DV; }
+    {EQUALS}              {return XCSTypes.EQUALS; }
+    {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
+    {PROPERTY_END}        {yybegin(DV_NAME_ASCII); return XCSTypes.PROPERTY_END; }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 /////////////////////////         EC         ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -343,8 +427,14 @@ FUNCTION_END=.
 <SV_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
     {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
-    {CORE_START}                   {yybegin(SV_CORE); return XCSTypes.CORE_START; }
+    {CORE_START}                   {yybegin(SV_LIST); return XCSTypes.CORE_START; }
     {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<SV_LIST>{
+      //LIST
+     {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {yybegin(SV_CORE); return XCSTypes.CORE_START; }
 }
 
 <SV_CORE>{
@@ -366,14 +456,17 @@ FUNCTION_END=.
 
 <SV_NAME>{
     {SVID}              {yybegin(SV_CORE); return XCSTypes.SVID; }
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {VARIABLE_VALUE}    {yybegin(SV_CORE); return XCSTypes.VARIABLE_VALUE; }
     {PROPERTY_START}    {yybegin(SV_PROPERTY); return XCSTypes.PROPERTY_START; }
     {CORE_START}        {yybegin(SV_CORE); return XCSTypes.CORE_START; }
     {CORE_END}          {yybegin(SV_CORE); return XCSTypes.CORE_END ;}
 }
 
+
 <SV_NAME_ASCII>{
     {SVID}              {yybegin(SV_CORE); return XCSTypes.SVID; }
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {ASCII_VALUE}       {yybegin(SV_CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(SV_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
     {CORE_START}        {yybegin(SV_CORE); return XCSTypes.CORE_START; }
@@ -384,7 +477,10 @@ FUNCTION_END=.
     {PROPERTY_NAME_SV}    {return XCSTypes.PROPERTY_NAME_SV; }
     {EQUALS}              {return XCSTypes.EQUALS; }
     {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
-    {PROPERTY_END}        {yybegin(SV_NAME);return XCSTypes.PROPERTY_END; }
+    {PROPERTY_END}        {return XCSTypes.PROPERTY_END; }
+    {VARIABLE_VALUE}      {return XCSTypes.VARIABLE_VALUE; }
+    {CORE_START}          {yybegin(SV_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}            {yybegin(SV_CORE); return XCSTypes.CORE_END ;}
 }
 
 <SV_PROPERTY_ASCII>{

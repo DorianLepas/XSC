@@ -39,6 +39,11 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
                 .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_CE).none()
                 .between(XCSTypes.PROPERTY_NAME_CE,XCSTypes.EQUALS).none()
 
+                .before(XCSTypes.DATA_VARIABLE).none()
+                .between(XCSTypes.DATA_VARIABLE,XCSTypes.COLON).none()
+                .between(XCSTypes.PROPERTY_START,XCSTypes.PROPERTY_NAME_DV).none()
+                .between(XCSTypes.PROPERTY_NAME_DV,XCSTypes.EQUALS).none()
+
                 .before(XCSTypes.SECS_ITEM_TYPE).none()
                 .between(XCSTypes.SECS_ITEM_TYPE,XCSTypes.COLON).none()
 
