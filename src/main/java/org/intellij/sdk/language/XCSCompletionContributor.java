@@ -101,6 +101,10 @@ public class XCSCompletionContributor extends CompletionContributor {
                         resultSet.addElement(LookupElementBuilder.create("U2"));
                         resultSet.addElement(LookupElementBuilder.create("U4"));
                         resultSet.addElement(LookupElementBuilder.create("U8"));
+                        resultSet.addElement(LookupElementBuilder.create("I1"));
+                        resultSet.addElement(LookupElementBuilder.create("I2"));
+                        resultSet.addElement(LookupElementBuilder.create("I4"));
+                        resultSet.addElement(LookupElementBuilder.create("I8"));
                         resultSet.addElement(LookupElementBuilder.create("F4"));
                         resultSet.addElement(LookupElementBuilder.create("F8"));
                         //resultSet.addElement(LookupElementBuilder.create("Boolean"));

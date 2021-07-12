@@ -44,5 +44,6 @@
                     implementationClass="org.intellij.sdk.language.XCSFormattingModelBuilder"/>
     <completion.contributor language="XSC"
                             implementationClass="org.intellij.sdk.language.XCSCompletionContributor"/>
+    <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.XCSBraceMatcher"/>
   </extensions>
 </idea-plugin>
