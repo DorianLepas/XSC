@@ -40,8 +40,11 @@
     <lang.syntaxHighlighterFactory language="XSC"
                                    implementationClass="org.intellij.sdk.language.XCSSyntaxHighLighterFactory"/>
     <colorSettingsPage implementation="org.intellij.sdk.language.XCSColorSettingsPage"/>
+    <langCodeStyleSettingsProvider
+            implementation="org.intellij.sdk.language.XCSLanguageCodeStyleSettingsProvider"/>
     <lang.formatter language="XSC"
                     implementationClass="org.intellij.sdk.language.XCSFormattingModelBuilder"/>
+    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.XCSCodeStyleSettingsProvider"/>
     <completion.contributor language="XSC"
                             implementationClass="org.intellij.sdk.language.XCSCompletionContributor"/>
     <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.XCSBraceMatcher"/>
