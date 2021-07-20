@@ -23,6 +23,7 @@ WHITE_SPACE=[\ \n\t\f]
 COLLECTION_EVENT=COLLECTIONEVENT_VARIABLES
 DATA_VARIABLE=DATAVARIABLES
 EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
+EVENTS=EVENTS
 SCENARIOS=SCENARIOS
 SECS_ITEM_TYPE=SECSITEM_TYPES
 STATUS_VARIABLE=STATUSVARIABLES
@@ -34,7 +35,7 @@ STREAM_FUNCTION=S\d+F\d+(" W")?
 CORE_START=<
 
 VARIABLE_TYPE=(U|I)[1248](\[\d+\])?|F[48](\[\d+\])?|(B|V|BOOLEAN|Boolean)(\[\d+\])?|J|V
-VARIABLE_NAME=\w*[a-zA-Z]\w*
+VARIABLE_NAME=(\$)?\w*[a-zA-Z]\w*
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
 CEID=CEID
 DVID=DVID
@@ -68,6 +69,7 @@ FUNCTION_END=.
 %state CE_HEADER
 %state DV_HEADER
 %state EC_HEADER
+%state EVENTS_HEADER
 %state SCE_HEADER
 %state SIT_HEADER
 %state SV_HEADER
@@ -101,6 +103,11 @@ FUNCTION_END=.
 %state EC_NAME_ASCII
 %state EC_PROPERTY
 %state EC_PROPERTY_ASCII
+
+//EVENTS
+%state EVENTS_CORE
+%state EVENTS_NAME
+%state EVENTS_NAME_ASCII
 
 //SCENARIOS
 %state SCE_CORE
@@ -141,6 +148,7 @@ FUNCTION_END=.
     {COLLECTION_EVENT}      { yybegin(CE_HEADER); return XCSTypes.COLLECTION_EVENT; }
     {DATA_VARIABLE}         { yybegin(DV_HEADER); return XCSTypes.DATA_VARIABLE; }
     {EQUIPMENT_CONSTANT}    { yybegin(EC_HEADER); return XCSTypes.EQUIPMENT_CONSTANT; }
+    {EVENTS}                { yybegin(EVENTS_HEADER); return XCSTypes.EVENTS; }
     {SCENARIOS}             { yybegin(SCE_HEADER); return XCSTypes.SCENARIOS; }
     {SECS_ITEM_TYPE}        { yybegin(SIT_HEADER); return XCSTypes.SECS_ITEM_TYPE; }
     {STATUS_VARIABLE}       { yybegin(SV_HEADER); return XCSTypes.STATUS_VARIABLE; }
@@ -182,6 +190,7 @@ FUNCTION_END=.
     {VARIABLE_NAME}     {yybegin(CORE); return XCSTypes.VARIABLE_NAME; }
     {VARIABLE_VALUE}    {yybegin(CORE); return XCSTypes.VARIABLE_VALUE; }
     {PROPERTY_START}    {yybegin(PROPERTY); return XCSTypes.PROPERTY_START; }
+    {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
     {CORE_START}        {yybegin(CORE); return XCSTypes.CORE_START; }
     {CORE_END}          {yybegin(CORE); return XCSTypes.CORE_END ;}
 }
@@ -190,6 +199,7 @@ FUNCTION_END=.
     {VARIABLE_NAME}     {yybegin(CORE); return XCSTypes.VARIABLE_NAME; }
     {ASCII_VALUE}       {yybegin(CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
+    {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
     {CORE_START}        {yybegin(CORE); return XCSTypes.CORE_START; }
     {CORE_END}          {yybegin(CORE); return XCSTypes.CORE_END ;}
 }
@@ -405,7 +415,44 @@ FUNCTION_END=.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/////////////////////          FUNCTIONS        ////////////////////////////////
+///////////////////////          EVENTS        /////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+<EVENTS_HEADER>{
+    {COLON}                        {return XCSTypes.COLON; }
+    {STREAM_FUNCTION}              {return XCSTypes.STREAM_FUNCTION; }
+    {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
+    {CORE_START}                   {yybegin(EVENTS_CORE); return XCSTypes.CORE_START; }
+    {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<EVENTS_CORE>{
+      //LIST
+     {LIST_TYPE}                         {yybegin(EVENTS_NAME); return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {yybegin(EVENTS_CORE); return XCSTypes.CORE_START; }
+     //ASCII
+     {ASCII_TYPE}                        {yybegin(EVENTS_NAME_ASCII); return XCSTypes.ASCII_TYPE; }
+     {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
+
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<EVENTS_NAME>{
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
+    {CORE_START}        {yybegin(EVENTS_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}          {yybegin(EVENTS_CORE); return XCSTypes.CORE_END ;}
+}
+
+<EVENTS_NAME_ASCII>{
+    {ASCII_VALUE}       {return XCSTypes.ASCII_VALUE; }
+    {CORE_END}          {yybegin(EVENTS_CORE); return XCSTypes.CORE_END ;}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////          SCENARIOS        ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -433,7 +480,7 @@ FUNCTION_END=.
 <SCE_NAME>{
     {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {CORE_START}        {yybegin(SCE_CORE); return XCSTypes.CORE_START; }
-    {CORE_END}          {yybegin(CORE); return XCSTypes.CORE_END ;}
+    {CORE_END}          {yybegin(SCE_CORE); return XCSTypes.CORE_END ;}
 }
 
 <SCE_NAME_ASCII>{

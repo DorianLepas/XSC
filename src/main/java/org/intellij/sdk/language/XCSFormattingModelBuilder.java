@@ -65,6 +65,9 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
 
                 .before(XCSTypes.SCENARIOS).none()
                 .between(XCSTypes.SCENARIOS,XCSTypes.COLON).none()
+
+                .before(XCSTypes.EVENTS).none()
+                .between(XCSTypes.EVENTS,XCSTypes.COLON).none()
                 ;
     }
 

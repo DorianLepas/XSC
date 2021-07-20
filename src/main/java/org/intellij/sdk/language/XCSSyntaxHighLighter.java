@@ -24,6 +24,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             createTextAttributesKey("XCS_DATA_VARIABLE", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey EQUIPMENT_CONSTANT =
             createTextAttributesKey("XCS_EQUIPMENT_CONSTANT", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey EVENTS =
+            createTextAttributesKey("XCS_EVENTS", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey SCENARIOS =
             createTextAttributesKey("XCS_SCENARIOS", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey STATUS_VARIABLE =
@@ -76,7 +78,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] COLLECTION_EVENT_KEYS = new TextAttributesKey[]{COLLECTION_EVENT};
     private static final TextAttributesKey[] DATA_VARIABLE_KEYS = new TextAttributesKey[]{DATA_VARIABLE};
     private static final TextAttributesKey[] EQUIPMENT_CONSTANT_KEYS = new TextAttributesKey[]{EQUIPMENT_CONSTANT};
-    private static final TextAttributesKey[] SCENARIOS_KEYS = new TextAttributesKey[]{SCENARIOS};
+    private static final TextAttributesKey[] SCENARIOS_KEYS = new TextAttributesKey[]{EVENTS};
+    private static final TextAttributesKey[] EVENTS_KEYS = new TextAttributesKey[]{SCENARIOS};
     private static final TextAttributesKey[] SECSITEM_TYPE_KEYS = new TextAttributesKey[]{SECSITEM_TYPE};
     private static final TextAttributesKey[] STATUS_VARIABLE_KEYS = new TextAttributesKey[]{STATUS_VARIABLE};
     private static final TextAttributesKey[] VFEI_SECS_SEQ_KEYS = new TextAttributesKey[]{VFEI_SECS_SEQ};
@@ -119,6 +122,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             return DATA_VARIABLE_KEYS;
         } else if (tokenType.equals(XCSTypes.EQUIPMENT_CONSTANT))  {
             return EQUIPMENT_CONSTANT_KEYS;
+        } else if (tokenType.equals(XCSTypes.EVENTS))  {
+            return EVENTS_KEYS;
         } else if (tokenType.equals(XCSTypes.SCENARIOS))  {
             return SCENARIOS_KEYS;
         } else if (tokenType.equals(XCSTypes.STATUS_VARIABLE))  {
