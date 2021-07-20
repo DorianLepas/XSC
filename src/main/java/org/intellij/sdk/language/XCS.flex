@@ -33,7 +33,7 @@ STREAM_FUNCTION=S\d+F\d+(" W")?
 CORE_START=<
 
 VARIABLE_TYPE=(U|I)[1248](\[\d+\])?|F[48](\[\d+\])?|(B|V|BOOLEAN|Boolean)(\[\d+\])?|J|V
-VARIABLE_NAME=(\$?\w+)&
+VARIABLE_NAME=\w*[a-zA-Z]\w*
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
 CEID=CEID
 DVID=DVID
