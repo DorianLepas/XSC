@@ -23,6 +23,7 @@ WHITE_SPACE=[\ \n\t\f]
 COLLECTION_EVENT=COLLECTIONEVENT_VARIABLES
 DATA_VARIABLE=DATAVARIABLES
 EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
+SCENARIOS=SCENARIOS
 SECS_ITEM_TYPE=SECSITEM_TYPES
 STATUS_VARIABLE=STATUSVARIABLES
 VFEI_SECS_SEQ=VFEI_SECS_SEQUENCES
@@ -56,7 +57,7 @@ PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
 PROPERTY_VALUE=\"\w+\"
 
 ASCII_TYPE=A(\[\d+\])?|A
-ASCII_VALUE=(\".*\")|(\'.*\')
+ASCII_VALUE=(\"[^\"]*\")|(\'[^\']*\')
 LIST_TYPE=L(\[\d+\])?|L
 
 CORE_END=>
@@ -67,6 +68,7 @@ FUNCTION_END=.
 %state CE_HEADER
 %state DV_HEADER
 %state EC_HEADER
+%state SCE_HEADER
 %state SIT_HEADER
 %state SV_HEADER
 %state VSS_HEADER
@@ -99,6 +101,11 @@ FUNCTION_END=.
 %state EC_NAME_ASCII
 %state EC_PROPERTY
 %state EC_PROPERTY_ASCII
+
+//SCENARIOS
+%state SCE_CORE
+%state SCE_NAME
+%state SCE_NAME_ASCII
 
 //SECSITEM TYPES
 %state SIT_CORE
@@ -134,6 +141,7 @@ FUNCTION_END=.
     {COLLECTION_EVENT}      { yybegin(CE_HEADER); return XCSTypes.COLLECTION_EVENT; }
     {DATA_VARIABLE}         { yybegin(DV_HEADER); return XCSTypes.DATA_VARIABLE; }
     {EQUIPMENT_CONSTANT}    { yybegin(EC_HEADER); return XCSTypes.EQUIPMENT_CONSTANT; }
+    {SCENARIOS}             { yybegin(SCE_HEADER); return XCSTypes.SCENARIOS; }
     {SECS_ITEM_TYPE}        { yybegin(SIT_HEADER); return XCSTypes.SECS_ITEM_TYPE; }
     {STATUS_VARIABLE}       { yybegin(SV_HEADER); return XCSTypes.STATUS_VARIABLE; }
     {VFEI_SECS_SEQ}         { yybegin(VSS_HEADER); return XCSTypes.VFEI_SECS_SEQ; }
@@ -394,6 +402,43 @@ FUNCTION_END=.
     {EQUALS}              {return XCSTypes.EQUALS; }
     {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
     {PROPERTY_END}        {yybegin(EC_NAME_ASCII);return XCSTypes.PROPERTY_END; }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////          FUNCTIONS        ////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+<SCE_HEADER>{
+    {COLON}                        {return XCSTypes.COLON; }
+    {STREAM_FUNCTION}              {return XCSTypes.STREAM_FUNCTION; }
+    {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
+    {CORE_START}                   {yybegin(SCE_CORE); return XCSTypes.CORE_START; }
+    {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<SCE_CORE>{
+      //LIST
+     {LIST_TYPE}                         {yybegin(SCE_NAME); return XCSTypes.LIST_TYPE; }
+     {CORE_START}                        {yybegin(SCE_CORE); return XCSTypes.CORE_START; }
+     //ASCII
+     {ASCII_TYPE}                        {yybegin(SCE_NAME_ASCII); return XCSTypes.ASCII_TYPE; }
+     {ASCII_VALUE}                       {return XCSTypes.ASCII_VALUE; }
+
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
+}
+
+<SCE_NAME>{
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
+    {CORE_START}        {yybegin(SCE_CORE); return XCSTypes.CORE_START; }
+    {CORE_END}          {yybegin(CORE); return XCSTypes.CORE_END ;}
+}
+
+<SCE_NAME_ASCII>{
+    {ASCII_VALUE}       {return XCSTypes.ASCII_VALUE; }
+    {CORE_END}          {yybegin(SCE_CORE); return XCSTypes.CORE_END ;}
 }
 
 

@@ -45,6 +45,25 @@ public class XCSLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSetti
                 "<L[0] CollectionEventIdList\n" +
                 ">\n" +
                 ">\n" +
+                ".\n\n" +
+                "LER_INIT_LR: S2F35 W * Link Report LOCAL_REMOTE\n" +
+                "<L\n" +
+                "<U4 2 >\n" +
+                "<L\n" +
+                "<L\n" +
+                "<U4 4 >\n" +
+                "<L\n" +
+                "<U4 10000 >\n" +
+                ">\n" +
+                ">\n" +
+                "<L\n" +
+                "<U4 5 >\n" +
+                "<L\n" +
+                "<U4 10000 >\n" +
+                ">\n" +
+                ">\n" +
+                ">\n" +
+                ">\n" +
                 ".";
     }
 

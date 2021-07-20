@@ -84,6 +84,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull CompletionResultSet resultSet) {
                         resultSet.addElement(LookupElementBuilder.create("COLLECTIONEVENT_VARIABLES"));
                         resultSet.addElement(LookupElementBuilder.create("EQUIPMENTCONSTANTS"));
+                        resultSet.addElement(LookupElementBuilder.create("SCENARIOS"));
                         resultSet.addElement(LookupElementBuilder.create("SECSIEM_TYPES"));
                         resultSet.addElement(LookupElementBuilder.create("STATUSVARIABLES"));
                         resultSet.addElement(LookupElementBuilder.create("VFEI_SECS_SEQUENCES"));
