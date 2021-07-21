@@ -18,22 +18,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             createTextAttributesKey("XCS_FUNCTION_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     public static final TextAttributesKey FUNCTION_NAME =
             createTextAttributesKey("XCS_FUNCTION_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
-    public static final TextAttributesKey COLLECTION_EVENT =
-            createTextAttributesKey("XCS_COLLECTION_EVENT", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey DATA_VARIABLE =
-            createTextAttributesKey("XCS_DATA_VARIABLE", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey EQUIPMENT_CONSTANT =
-            createTextAttributesKey("XCS_EQUIPMENT_CONSTANT", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey EVENTS =
-            createTextAttributesKey("XCS_EVENTS", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey SCENARIOS =
-            createTextAttributesKey("XCS_SCENARIOS", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey STATUS_VARIABLE =
-            createTextAttributesKey("XCS_STATUS_VARIABLE", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey SECSITEM_TYPE =
-            createTextAttributesKey("XCS_SECSITEM_TYPE", DefaultLanguageHighlighterColors.KEYWORD);
-    public static final TextAttributesKey VFEI_SECS_SEQ =
-            createTextAttributesKey("XCS_VFEI_SECS_SEQ", DefaultLanguageHighlighterColors.KEYWORD);
+    public static final TextAttributesKey SECTION_STANDART =
+            createTextAttributesKey("XCS_SECTION_STANDART", DefaultLanguageHighlighterColors.KEYWORD);
     public static final TextAttributesKey COLON =
             createTextAttributesKey("XCS_COLON", DefaultLanguageHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey STREAM_FUNCTION =
@@ -60,29 +46,14 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             createTextAttributesKey("XCS_VARIABLE_NAME", DefaultLanguageHighlighterColors.IDENTIFIER);
     public static final TextAttributesKey VARIABLE_VALUE =
             createTextAttributesKey("XCS_VARIABLE_VALUE", DefaultLanguageHighlighterColors.NUMBER);
-    public static final TextAttributesKey CEID =
-            createTextAttributesKey("XCS_CEID", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
-    public static final TextAttributesKey DVID =
-            createTextAttributesKey("XCS_DVID", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
-    public static final TextAttributesKey ECID =
-            createTextAttributesKey("XCS_ECID", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
-    public static final TextAttributesKey SVID =
-            createTextAttributesKey("XCS_SVID", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
-    public static final TextAttributesKey VFEI_CMD_ITEM_NAME =
-            createTextAttributesKey("XCS_VFEI_CMD_ITEM_NAME", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
+    public static final TextAttributesKey NAMES =
+            createTextAttributesKey("XCS_NAMES", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
 
 
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] FUNCTION_COMMENT_KEYS = new TextAttributesKey[]{FUNCTION_COMMENT};
     private static final TextAttributesKey[] FUNCTION_NAME_KEYS = new TextAttributesKey[]{FUNCTION_NAME};
-    private static final TextAttributesKey[] COLLECTION_EVENT_KEYS = new TextAttributesKey[]{COLLECTION_EVENT};
-    private static final TextAttributesKey[] DATA_VARIABLE_KEYS = new TextAttributesKey[]{DATA_VARIABLE};
-    private static final TextAttributesKey[] EQUIPMENT_CONSTANT_KEYS = new TextAttributesKey[]{EQUIPMENT_CONSTANT};
-    private static final TextAttributesKey[] SCENARIOS_KEYS = new TextAttributesKey[]{EVENTS};
-    private static final TextAttributesKey[] EVENTS_KEYS = new TextAttributesKey[]{SCENARIOS};
-    private static final TextAttributesKey[] SECSITEM_TYPE_KEYS = new TextAttributesKey[]{SECSITEM_TYPE};
-    private static final TextAttributesKey[] STATUS_VARIABLE_KEYS = new TextAttributesKey[]{STATUS_VARIABLE};
-    private static final TextAttributesKey[] VFEI_SECS_SEQ_KEYS = new TextAttributesKey[]{VFEI_SECS_SEQ};
+    private static final TextAttributesKey[] SECTION_STANDART_KEYS = new TextAttributesKey[]{SECTION_STANDART};
     private static final TextAttributesKey[] COLON_KEYS = new TextAttributesKey[]{COLON};
     private static final TextAttributesKey[] STREAM_FUNCTION_KEYS = new TextAttributesKey[]{STREAM_FUNCTION};
     private static final TextAttributesKey[] CORE_START_END_KEYS = new TextAttributesKey[]{CORE_START_END};
@@ -94,11 +65,7 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] VARIABLE_TYPE_KEYS = new TextAttributesKey[]{VARIABLE_TYPE};
     private static final TextAttributesKey[] VARIABLE_NAME_KEYS = new TextAttributesKey[]{VARIABLE_NAME};
     private static final TextAttributesKey[] VARIABLE_VALUE_KEYS = new TextAttributesKey[]{VARIABLE_VALUE};
-    private static final TextAttributesKey[] CEID_KEYS = new TextAttributesKey[]{CEID};
-    private static final TextAttributesKey[] DVID_KEYS = new TextAttributesKey[]{DVID};
-    private static final TextAttributesKey[] ECID_KEYS = new TextAttributesKey[]{ECID};
-    private static final TextAttributesKey[] SVID_KEYS = new TextAttributesKey[]{SVID};
-    private static final TextAttributesKey[] VFEI_CMD_ITEM_NAME_KEYS = new TextAttributesKey[]{VFEI_CMD_ITEM_NAME};
+    private static final TextAttributesKey[] NAMES_KEYS = new TextAttributesKey[]{NAMES};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @NotNull
@@ -117,21 +84,21 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(XCSTypes.COLON))  {
             return COLON_KEYS;
         } else if (tokenType.equals(XCSTypes.COLLECTION_EVENT))  {
-            return COLLECTION_EVENT_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.DATA_VARIABLE))  {
-            return DATA_VARIABLE_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.EQUIPMENT_CONSTANT))  {
-            return EQUIPMENT_CONSTANT_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.EVENTS))  {
-            return EVENTS_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.SCENARIOS))  {
-            return SCENARIOS_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.STATUS_VARIABLE))  {
-            return STATUS_VARIABLE_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.SECS_ITEM_TYPE))  {
-            return SECSITEM_TYPE_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.VFEI_SECS_SEQ))  {
-            return VFEI_SECS_SEQ_KEYS;
+            return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.COMMENT))  {
             return COMMENT_KEYS;
         } else if (tokenType.equals(XCSTypes.CORE_START))  {
@@ -167,15 +134,15 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(XCSTypes.VARIABLE_VALUE))  {
             return VARIABLE_VALUE_KEYS;
         } else if (tokenType.equals(XCSTypes.CEID))  {
-            return CEID_KEYS;
+            return NAMES_KEYS;
         } else if (tokenType.equals(XCSTypes.DVID))  {
-            return DVID_KEYS;
+            return NAMES_KEYS;
         } else if (tokenType.equals(XCSTypes.ECID))  {
-            return ECID_KEYS;
+            return NAMES_KEYS;
         } else if (tokenType.equals(XCSTypes.SVID))  {
-            return SVID_KEYS;
+            return NAMES_KEYS;
         } else if (tokenType.equals(XCSTypes.VFEI_CMD_ITEM_NAME))  {
-            return VFEI_CMD_ITEM_NAME_KEYS;
+            return NAMES_KEYS;
         } else {
             return EMPTY_KEYS;
         }

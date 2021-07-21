@@ -15,7 +15,7 @@ public class XCSColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Function Name", XCSSyntaxHighLighter.FUNCTION_NAME),
-            new AttributesDescriptor("Collection Event", XCSSyntaxHighLighter.COLLECTION_EVENT),
+            new AttributesDescriptor("Section Standart", XCSSyntaxHighLighter.SECTION_STANDART),
             new AttributesDescriptor("Function End Dot", XCSSyntaxHighLighter.FUNCTION_END),
             new AttributesDescriptor("Function Comment", XCSSyntaxHighLighter.FUNCTION_COMMENT),
             new AttributesDescriptor("Colon", XCSSyntaxHighLighter.COLON),
@@ -28,6 +28,7 @@ public class XCSColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Stream Function", XCSSyntaxHighLighter.STREAM_FUNCTION),
             new AttributesDescriptor("Variable Type", XCSSyntaxHighLighter.VARIABLE_TYPE),
             new AttributesDescriptor("Variable Name", XCSSyntaxHighLighter.VARIABLE_NAME),
+            new AttributesDescriptor("Predefined Names", XCSSyntaxHighLighter.NAMES),
             new AttributesDescriptor("Variable Value", XCSSyntaxHighLighter.VARIABLE_VALUE)
     };
 
@@ -84,6 +85,6 @@ public class XCSColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDisplayName() {
-        return "XCS";
+        return "XSC";
     }
 }
