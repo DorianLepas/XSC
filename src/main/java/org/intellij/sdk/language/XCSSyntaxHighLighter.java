@@ -76,7 +76,7 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
 
     @NotNull
     @Override
-    public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+    public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
         if (tokenType.equals(XCSTypes.ASCII_TYPE)) {
             return VARIABLE_TYPE_KEYS;
         } else if (tokenType.equals(XCSTypes.ASCII_VALUE)) {
@@ -92,6 +92,8 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
         } else if (tokenType.equals(XCSTypes.EVENTS))  {
             return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.SCENARIOS))  {
+            return SECTION_STANDART_KEYS;
+        } else if (tokenType.equals(XCSTypes.STANDART_SECTION))  {
             return SECTION_STANDART_KEYS;
         } else if (tokenType.equals(XCSTypes.STATUS_VARIABLE))  {
             return SECTION_STANDART_KEYS;

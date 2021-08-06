@@ -68,6 +68,11 @@ public class XCSFormattingModelBuilder implements FormattingModelBuilder {
 
                 .before(XCSTypes.EVENTS).none()
                 .between(XCSTypes.EVENTS,XCSTypes.COLON).none()
+
+                .before(XCSTypes.STANDART_SECTION).none()
+                .between(XCSTypes.STANDART_SECTION,XCSTypes.COLON).none()
+
+                .before(XCSTypes.FUNCTION_END).lineBreakInCode()
                 ;
     }
 

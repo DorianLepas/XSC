@@ -40,7 +40,7 @@ public class XCSBlock extends AbstractBlock {
     public Indent getIndent() {
         if(isLeaf() ||
                 isAtRootFile() ||
-                (myNode.getPsi() instanceof XCSFunctionCore && myNode.getTreeParent().getPsi() instanceof XCSFunctions) ||
+                (myNode.getPsi() instanceof XCSFunctionCore && (myNode.getTreeParent().getPsi() instanceof XCSFunctions||myNode.getTreeParent().getPsi() instanceof XCSStandartSections)) ||
                 (myNode.getPsi() instanceof XCSEventsCore && myNode.getTreeParent().getPsi() instanceof XCSEventsSection) ||
                 (myNode.getPsi() instanceof XCSScenariosCore && myNode.getTreeParent().getPsi() instanceof XCSScenariosSection) ||
                 (myNode.getPsi() instanceof XCSCeList) || (myNode.getPsi() instanceof XCSCeCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
@@ -61,7 +61,7 @@ public class XCSBlock extends AbstractBlock {
         return Indent.getNormalIndent();
     }
 
-    /* Retourne vrai si le noeud actuel se trouve à la racine du fichier */
+    /* Return true si le noeud actuel se trouve à la racine du fichier */
     private boolean isAtRootFile() {
         return myNode.getTreeParent() != null && myNode.getTreeParent().getPsi() instanceof XCSFile;
     }

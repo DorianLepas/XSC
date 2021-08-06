@@ -33,7 +33,7 @@
   <vendor><!-- --></vendor>
 
   <extensions defaultExtensionNs="com.intellij">
-    <fileType name="XSC File" implementationClass="org.intellij.sdk.language.XCSFileType"
+    <fileType name="XSC" implementationClass="org.intellij.sdk.language.XCSFileType"
               fieldName="INSTANCE" language="XSC" extensions="xsc"/>
     <lang.parserDefinition language="XSC"
                            implementationClass="org.intellij.sdk.language.XCSParserDefinition"/>

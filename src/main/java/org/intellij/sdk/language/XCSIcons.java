@@ -6,6 +6,6 @@ import javax.swing.*;
 
 public class XCSIcons {
 
-    public static final Icon FILE = IconLoader.getIcon("/icons/xcs-icon.png");
+    public static final Icon FILE = IconLoader.getIcon("/icons/xsc.png");
 
 }

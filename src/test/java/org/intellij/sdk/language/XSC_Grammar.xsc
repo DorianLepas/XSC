@@ -286,7 +286,6 @@ LER_CLEAR: S2F35 W * Unlink all event reports
 .
 
 
-
 LER_INIT_LR: S2F35 W * Link Report LOCAL_REMOTE
 <L
   <U4 2>
@@ -1235,7 +1234,7 @@ SECSITEM_TYPES:
 // The VfeiItem property within the specific transaction has to define , which has SECS-Type to be used within this transaction.
   <I2 ALID> * Alarm identification
   <B ALED> * Alarm enable-disable code
-  <I2 CEID> * Collection event ID
+//  <I2 CEID> * Collection event ID
   <U1 CMDA> * Command acknowledge code
 // <B CMDA>  *  Command acknowledge code ??
   <A CPNAME> * Command parameter value
@@ -1261,7 +1260,8 @@ SECSITEM_TYPES:
   <V V> * Variable data
   <U4 VID> * Variable ID
   <A TEXT> * Text definition
->.
+>
+.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////             DATA VARIABLE           ////////////////////////////////
@@ -2135,5 +2135,54 @@ EVENTS: S30F2
   <L S6F11
     <A 'add' '$ALIGNER1_STATUS+=' '' ''>
   >
+>
+.
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////             STANDART SECTION           ///////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+REMOTE_COMMANDS:
+<L
+>
+.
+
+TRACE_DEFINITIONS:
+<L
+>
+.
+
+POLLING_EVENT_DEFINITIONS:
+<L
+>
+.
+
+FORMATTED_RECIPES:
+<L
+>
+.
+
+OVERWRITTEN_SECS_STANDARD_MESSAGES:
+<L
+>
+.
+
+PREDEFINED_FORMATTED_STATUS_LISTS:
+<L
+>
+.
+
+PREDEFINED_UNIQUE_REPORT_ID_REPORTS:
+<L
+>
+.
+
+PREDEFINED_UNIQUE_CEID_REPORTS:
+<L
+>
+.
+
+SECSVALUE_TO_VFEITEXTVALUE_VARIABLES:
+<L
 >
 .

@@ -89,6 +89,15 @@ public class XCSCompletionContributor extends CompletionContributor {
                         resultSet.addElement(LookupElementBuilder.create("SECSIEM_TYPES"));
                         resultSet.addElement(LookupElementBuilder.create("STATUSVARIABLES"));
                         resultSet.addElement(LookupElementBuilder.create("VFEI_SECS_SEQUENCES"));
+                        resultSet.addElement(LookupElementBuilder.create("REMOTE_COMMANDS"));
+                        resultSet.addElement(LookupElementBuilder.create("TRACE_DEFINITIONS"));
+                        resultSet.addElement(LookupElementBuilder.create("POLLING_EVENT_DEFINITIONS"));
+                        resultSet.addElement(LookupElementBuilder.create("FORMATTED_RECIPES"));
+                        resultSet.addElement(LookupElementBuilder.create("OVERWRITTEN_SECS_STANDARD_MESSAGES"));
+                        resultSet.addElement(LookupElementBuilder.create("PREDEFINED_FORMATTED_STATUS_LISTS"));
+                        resultSet.addElement(LookupElementBuilder.create("PREDEFINED_UNIQUE_REPORT_ID_REPORTS"));
+                        resultSet.addElement(LookupElementBuilder.create("PREDEFINED_UNIQUE_CEID_REPORTS"));
+                        resultSet.addElement(LookupElementBuilder.create("SECSVALUE_TO_VFEITEXTVALUE_VARIABLES"));
                     }
                 }
         );

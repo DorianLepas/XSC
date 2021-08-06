@@ -17,7 +17,7 @@ public class XCSFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "XSC File";
+        return "XSC";
     }
 
     @NotNull

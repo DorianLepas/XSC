@@ -26,6 +26,7 @@ EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
 EVENTS=EVENTS
 SCENARIOS=SCENARIOS
 SECS_ITEM_TYPE=SECSITEM_TYPES
+STANDART_SECTION=REMOTE_COMMANDS|TRACE_DEFINITIONS|POLLING_EVENT_DEFINITIONS|FORMATTED_RECIPES|OVERWRITTEN_SECS_STANDARD_MESSAGES|PREDEFINED_FORMATTED_STATUS_LISTS|PREDEFINED_UNIQUE_REPORT_ID_REPORTS|PREDEFINED_UNIQUE_CEID_REPORTS|SECSVALUE_TO_VFEITEXTVALUE_VARIABLES
 STATUS_VARIABLE=STATUSVARIABLES
 VFEI_SECS_SEQ=VFEI_SECS_SEQUENCES
 FUNCTION_NAME=\w+
@@ -72,6 +73,7 @@ FUNCTION_END=.
 %state EVENTS_HEADER
 %state SCE_HEADER
 %state SIT_HEADER
+%state SS_HEADER
 %state SV_HEADER
 %state VSS_HEADER
 
@@ -151,6 +153,7 @@ FUNCTION_END=.
     {EVENTS}                { yybegin(EVENTS_HEADER); return XCSTypes.EVENTS; }
     {SCENARIOS}             { yybegin(SCE_HEADER); return XCSTypes.SCENARIOS; }
     {SECS_ITEM_TYPE}        { yybegin(SIT_HEADER); return XCSTypes.SECS_ITEM_TYPE; }
+    {STANDART_SECTION}      { yybegin(SS_HEADER); return XCSTypes.STANDART_SECTION; }
     {STATUS_VARIABLE}       { yybegin(SV_HEADER); return XCSTypes.STATUS_VARIABLE; }
     {VFEI_SECS_SEQ}         { yybegin(VSS_HEADER); return XCSTypes.VFEI_SECS_SEQ; }
     {FUNCTION_NAME}         { yybegin(FUNCTION_HEADER); return XCSTypes.FUNCTION_NAME; }
@@ -518,6 +521,18 @@ FUNCTION_END=.
     {VARIABLE_NAME}     {yybegin(SIT_CORE); return XCSTypes.VARIABLE_NAME; }
     {CORE_START}        {yybegin(SIT_CORE); return XCSTypes.CORE_START; }
     {CORE_END}          {yybegin(SIT_CORE); return XCSTypes.CORE_END; }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////         SV         ///////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+<SS_HEADER>{
+    {COLON}                        {return XCSTypes.COLON; }
+    {END_OF_FUNCTION_LINE_COMMENT} {return XCSTypes.FUNCTION_COMMENT; }
+    {CORE_START}                   {yybegin(CORE); return XCSTypes.CORE_START; }
+    {FUNCTION_END}                 {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
 }
 
 

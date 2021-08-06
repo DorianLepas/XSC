@@ -6,7 +6,6 @@ import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CodeStyleSettingsCustomizable;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
-import com.intellij.util.PlatformUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class XCSLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {

@@ -14,7 +14,7 @@ public class XCSCommenter implements Commenter {
     @Nullable
     @Override
     public String getBlockCommentPrefix() {
-        return "";
+        return null;
     }
 
     @Nullable
