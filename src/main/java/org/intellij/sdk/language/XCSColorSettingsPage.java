@@ -14,21 +14,21 @@ import java.util.Map;
 public class XCSColorSettingsPage implements ColorSettingsPage {
 
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-            new AttributesDescriptor("Function Name", XCSSyntaxHighLighter.FUNCTION_NAME),
-            new AttributesDescriptor("Section Standart", XCSSyntaxHighLighter.SECTION_STANDART),
-            new AttributesDescriptor("Function End Dot", XCSSyntaxHighLighter.FUNCTION_END),
-            new AttributesDescriptor("Function Comment", XCSSyntaxHighLighter.FUNCTION_COMMENT),
             new AttributesDescriptor("Colon", XCSSyntaxHighLighter.COLON),
-            new AttributesDescriptor("Line Comment", XCSSyntaxHighLighter.COMMENT),
             new AttributesDescriptor("Core Borders", XCSSyntaxHighLighter.CORE_START_END),
             new AttributesDescriptor("Equals", XCSSyntaxHighLighter.PROPERTY_EQUALS),
+            new AttributesDescriptor("Function Comment", XCSSyntaxHighLighter.FUNCTION_COMMENT),
+            new AttributesDescriptor("Function End Dot", XCSSyntaxHighLighter.FUNCTION_END),
+            new AttributesDescriptor("Function Name", XCSSyntaxHighLighter.FUNCTION_NAME),
+            new AttributesDescriptor("Line Comment", XCSSyntaxHighLighter.COMMENT),
+            new AttributesDescriptor("Predefined Names", XCSSyntaxHighLighter.NAMES),
+            new AttributesDescriptor("Property Borders", XCSSyntaxHighLighter.PROPERTY_START_END),
             new AttributesDescriptor("Property Name", XCSSyntaxHighLighter.PROPERTY_NAME),
             new AttributesDescriptor("Property Value", XCSSyntaxHighLighter.PROPERTY_VALUE),
-            new AttributesDescriptor("Property Borders", XCSSyntaxHighLighter.PROPERTY_START_END),
+            new AttributesDescriptor("Section Standart", XCSSyntaxHighLighter.SECTION_STANDART),
             new AttributesDescriptor("Stream Function", XCSSyntaxHighLighter.STREAM_FUNCTION),
-            new AttributesDescriptor("Variable Type", XCSSyntaxHighLighter.VARIABLE_TYPE),
             new AttributesDescriptor("Variable Name", XCSSyntaxHighLighter.VARIABLE_NAME),
-            new AttributesDescriptor("Predefined Names", XCSSyntaxHighLighter.NAMES),
+            new AttributesDescriptor("Variable Type", XCSSyntaxHighLighter.VARIABLE_TYPE),
             new AttributesDescriptor("Variable Value", XCSSyntaxHighLighter.VARIABLE_VALUE)
     };
 

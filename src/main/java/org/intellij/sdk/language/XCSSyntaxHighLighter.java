@@ -50,22 +50,22 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             createTextAttributesKey("XCS_NAMES", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
 
 
-    private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
-    private static final TextAttributesKey[] FUNCTION_COMMENT_KEYS = new TextAttributesKey[]{FUNCTION_COMMENT};
-    private static final TextAttributesKey[] FUNCTION_NAME_KEYS = new TextAttributesKey[]{FUNCTION_NAME};
-    private static final TextAttributesKey[] SECTION_STANDART_KEYS = new TextAttributesKey[]{SECTION_STANDART};
     private static final TextAttributesKey[] COLON_KEYS = new TextAttributesKey[]{COLON};
-    private static final TextAttributesKey[] STREAM_FUNCTION_KEYS = new TextAttributesKey[]{STREAM_FUNCTION};
+    private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] CORE_START_END_KEYS = new TextAttributesKey[]{CORE_START_END};
+    private static final TextAttributesKey[] FUNCTION_COMMENT_KEYS = new TextAttributesKey[]{FUNCTION_COMMENT};
     private static final TextAttributesKey[] FUNCTION_END_KEYS = new TextAttributesKey[]{FUNCTION_END};
-    private static final TextAttributesKey[] PROPERTY_START_END_KEYS = new TextAttributesKey[]{PROPERTY_START_END};
-    private static final TextAttributesKey[] PROPERTY_NAME_KEYS = new TextAttributesKey[]{PROPERTY_NAME};
-    private static final TextAttributesKey[] PROPERTY_EQUALS_KEYS = new TextAttributesKey[]{PROPERTY_EQUALS};
-    private static final TextAttributesKey[] PROPERTY_VALUE_KEYS = new TextAttributesKey[]{PROPERTY_VALUE};
-    private static final TextAttributesKey[] VARIABLE_TYPE_KEYS = new TextAttributesKey[]{VARIABLE_TYPE};
-    private static final TextAttributesKey[] VARIABLE_NAME_KEYS = new TextAttributesKey[]{VARIABLE_NAME};
-    private static final TextAttributesKey[] VARIABLE_VALUE_KEYS = new TextAttributesKey[]{VARIABLE_VALUE};
+    private static final TextAttributesKey[] FUNCTION_NAME_KEYS = new TextAttributesKey[]{FUNCTION_NAME};
     private static final TextAttributesKey[] NAMES_KEYS = new TextAttributesKey[]{NAMES};
+    private static final TextAttributesKey[] PROPERTY_EQUALS_KEYS = new TextAttributesKey[]{PROPERTY_EQUALS};
+    private static final TextAttributesKey[] PROPERTY_NAME_KEYS = new TextAttributesKey[]{PROPERTY_NAME};
+    private static final TextAttributesKey[] PROPERTY_START_END_KEYS = new TextAttributesKey[]{PROPERTY_START_END};
+    private static final TextAttributesKey[] PROPERTY_VALUE_KEYS = new TextAttributesKey[]{PROPERTY_VALUE};
+    private static final TextAttributesKey[] SECTION_STANDART_KEYS = new TextAttributesKey[]{SECTION_STANDART};
+    private static final TextAttributesKey[] STREAM_FUNCTION_KEYS = new TextAttributesKey[]{STREAM_FUNCTION};
+    private static final TextAttributesKey[] VARIABLE_NAME_KEYS = new TextAttributesKey[]{VARIABLE_NAME};
+    private static final TextAttributesKey[] VARIABLE_TYPE_KEYS = new TextAttributesKey[]{VARIABLE_TYPE};
+    private static final TextAttributesKey[] VARIABLE_VALUE_KEYS = new TextAttributesKey[]{VARIABLE_VALUE};
     private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
     @NotNull

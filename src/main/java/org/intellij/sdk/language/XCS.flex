@@ -15,26 +15,36 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
+
+/************************************************
+****************    WORDS   *********************
+*************************************************/
+
+//COMMENTS AND WHITE SPACE
 END_OF_FUNCTION_LINE_COMMENT=("*")[^\r\n]*
 END_OF_LINE_COMMENT=("//")[^\r\n]*
 WHITE_SPACE=[\ \n\t\f]
 
-
+//SECTIONS
 COLLECTION_EVENT=COLLECTIONEVENT_VARIABLES
 DATA_VARIABLE=DATAVARIABLES
 EQUIPMENT_CONSTANT=EQUIPMENTCONSTANTS
 EVENTS=EVENTS
+FUNCTION_NAME=\w+
 SCENARIOS=SCENARIOS
 SECS_ITEM_TYPE=SECSITEM_TYPES
 STANDART_SECTION=REMOTE_COMMANDS|TRACE_DEFINITIONS|POLLING_EVENT_DEFINITIONS|FORMATTED_RECIPES|OVERWRITTEN_SECS_STANDARD_MESSAGES|PREDEFINED_FORMATTED_STATUS_LISTS|PREDEFINED_UNIQUE_REPORT_ID_REPORTS|PREDEFINED_UNIQUE_CEID_REPORTS|SECSVALUE_TO_VFEITEXTVALUE_VARIABLES
 STATUS_VARIABLE=STATUSVARIABLES
 VFEI_SECS_SEQ=VFEI_SECS_SEQUENCES
-FUNCTION_NAME=\w+
 
+//SYMBOLS
 COLON=:
-STREAM_FUNCTION=S\d+F\d+(" W")?
+CORE_END=>
 CORE_START=<
+FUNCTION_END=.
+STREAM_FUNCTION=S\d+F\d+(" W")?
 
+//CORE
 VARIABLE_TYPE=(U|I)[1248](\[\d+\])?|F[48](\[\d+\])?|(B|V|BOOLEAN|Boolean)(\[\d+\])?|J|V
 VARIABLE_NAME=(\$)?\w*[a-zA-Z]\w*
 VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
@@ -44,6 +54,8 @@ ECID=ECID
 SVID=SVID
 VFEI_CMD_ITEM_NAME=INITIALIZE
 
+
+//PROPERTIES
 PROPERTY_START=\{
 PROPERTY_END=\}
 EQUALS=\=
@@ -58,19 +70,23 @@ PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignme
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
 PROPERTY_VALUE=\"\w+\"
 
+//TYPES
 ASCII_TYPE=A(\[\d+\])?|A
 ASCII_VALUE=(\"[^\"]*\")|(\'[^\']*\')
 LIST_TYPE=L(\[\d+\])?|L
 
-CORE_END=>
-FUNCTION_END=.
 
-//STATE
-%state FUNCTION_HEADER
+
+/************************************************
+****************    STATES   ********************
+*************************************************/
+
+//HEADER
 %state CE_HEADER
 %state DV_HEADER
 %state EC_HEADER
 %state EVENTS_HEADER
+%state FUNCTION_HEADER
 %state SCE_HEADER
 %state SIT_HEADER
 %state SS_HEADER
@@ -136,10 +152,12 @@ FUNCTION_END=.
 %state VSS_PROPERTY
 %state VSS_PROPERTY_ASCII
 
-
 %%
 
 
+/************************************************
+**************    STATE MACHINE   ***************
+*************************************************/
 
 {END_OF_LINE_COMMENT}                           {return XCSTypes.COMMENT; }
 <YYINITIAL> {END_OF_FUNCTION_LINE_COMMENT}      { yybegin(YYINITIAL); return XCSTypes.FUNCTION_COMMENT; }
@@ -159,10 +177,10 @@ FUNCTION_END=.
     {FUNCTION_NAME}         { yybegin(FUNCTION_HEADER); return XCSTypes.FUNCTION_NAME; }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////          FUNCTIONS        ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
 
 <FUNCTION_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
@@ -224,6 +242,7 @@ FUNCTION_END=.
      {PROPERTY_END}     {yybegin(NAME_ASCII);return XCSTypes.PROPERTY_END; }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////         CE         ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -284,6 +303,7 @@ FUNCTION_END=.
     {PROPERTY_VALUE}      {return XCSTypes.PROPERTY_VALUE; }
     {PROPERTY_END}        {yybegin(CE_NAME_ASCII);return XCSTypes.PROPERTY_END; }
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////         DV         ///////////////////////////////////
@@ -355,6 +375,7 @@ FUNCTION_END=.
     {PROPERTY_END}        {yybegin(DV_NAME_ASCII); return XCSTypes.PROPERTY_END; }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////         EC         ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -417,10 +438,10 @@ FUNCTION_END=.
     {PROPERTY_END}        {yybegin(EC_NAME_ASCII);return XCSTypes.PROPERTY_END; }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////          EVENTS        /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
 
 <EVENTS_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
@@ -454,10 +475,10 @@ FUNCTION_END=.
     {CORE_END}          {yybegin(EVENTS_CORE); return XCSTypes.CORE_END ;}
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////          SCENARIOS        ////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
 
 <SCE_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
@@ -606,10 +627,10 @@ FUNCTION_END=.
     {PROPERTY_END}        {yybegin(SV_NAME_ASCII);return XCSTypes.PROPERTY_END; }
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////          VSS         ///////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
 
 <VSS_HEADER>{
     {COLON}                        {return XCSTypes.COLON; }
