@@ -125,6 +125,14 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
             return PROPERTY_NAME_KEYS;
         } else if (tokenType.equals(XCSTypes.PROPERTY_NAME_CE))  {
             return PROPERTY_NAME_KEYS;
+        } else if (tokenType.equals(XCSTypes.PROPERTY_NAME_DV))  {
+            return PROPERTY_NAME_KEYS;
+        } else if (tokenType.equals(XCSTypes.PROPERTY_NAME_EC))  {
+            return PROPERTY_NAME_KEYS;
+        } else if (tokenType.equals(XCSTypes.PROPERTY_NAME_SV))  {
+            return PROPERTY_NAME_KEYS;
+        } else if (tokenType.equals(XCSTypes.PROPERTY_NAME_VSS))  {
+            return PROPERTY_NAME_KEYS;
         } else if (tokenType.equals(XCSTypes.PROPERTY_VALUE))  {
             return PROPERTY_VALUE_KEYS;
         } else if (tokenType.equals(XCSTypes.STREAM_FUNCTION))  {

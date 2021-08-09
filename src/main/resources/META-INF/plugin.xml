@@ -3,7 +3,7 @@
 <idea-plugin>
 
   <!-- Unique id for this plugin. Must stay constant for the life of the plugin. -->
-  <id>org.intellij.sdk.language</id>
+  <id>cea.language.xsc</id>
 
   <!-- Text to display as name on Preferences/Settings | Plugin page -->
   <name>XCS Language Sample</name>
