@@ -33,22 +33,22 @@
   <extensions defaultExtensionNs="com.intellij">
 
     <!-- XSC PLUGIN -->
-    <fileType name="XSC" implementationClass="org.intellij.sdk.language.xsc.XCSFileType"
+    <fileType name="XSC" implementationClass="org.intellij.sdk.language.xsc.filetype.XCSFileType"
               fieldName="INSTANCE" language="XSC" extensions="xsc"/>
     <lang.parserDefinition language="XSC"
-                           implementationClass="org.intellij.sdk.language.xsc.XCSParserDefinition"/>
+                           implementationClass="org.intellij.sdk.language.xsc.parser.XCSParserDefinition"/>
     <lang.syntaxHighlighterFactory language="XSC"
-                                   implementationClass="org.intellij.sdk.language.xsc.XCSSyntaxHighLighterFactory"/>
-    <colorSettingsPage implementation="org.intellij.sdk.language.xsc.XCSColorSettingsPage"/>
+                                   implementationClass="org.intellij.sdk.language.xsc.highlighter.XCSSyntaxHighLighterFactory"/>
+    <colorSettingsPage implementation="org.intellij.sdk.language.xsc.highlighter.XCSColorSettingsPage"/>
     <langCodeStyleSettingsProvider
-            implementation="org.intellij.sdk.language.xsc.XCSLanguageCodeStyleSettingsProvider"/>
+            implementation="org.intellij.sdk.language.xsc.codestyle.XCSLanguageCodeStyleSettingsProvider"/>
     <lang.formatter language="XSC"
-                    implementationClass="org.intellij.sdk.language.xsc.XCSFormattingModelBuilder"/>
-    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.xsc.XCSCodeStyleSettingsProvider"/>
+                    implementationClass="org.intellij.sdk.language.xsc.formatter.XCSFormattingModelBuilder"/>
+    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.xsc.codestyle.XCSCodeStyleSettingsProvider"/>
     <completion.contributor language="XSC"
-                            implementationClass="org.intellij.sdk.language.xsc.XCSCompletionContributor"/>
-    <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.xsc.XCSBraceMatcher"/>
-    <lang.commenter language="XSC" implementationClass="org.intellij.sdk.language.xsc.XCSCommenter"/>
+                            implementationClass="org.intellij.sdk.language.xsc.completion.XCSCompletionContributor"/>
+    <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.xsc.bracematcher.XCSBraceMatcher"/>
+    <lang.commenter language="XSC" implementationClass="org.intellij.sdk.language.xsc.commenter.XCSCommenter"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="org.intellij.sdk.language.sml.fileType.SmlFileType"
