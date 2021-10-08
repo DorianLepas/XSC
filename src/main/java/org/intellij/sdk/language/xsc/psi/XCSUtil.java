@@ -66,6 +66,7 @@ public class XCSUtil {
     }
 
     public static List<XCSProperty_> getChild(PsiElement elt, @NotNull Class<? extends XCSProperty_> aClass){
+        //TODO ALGO ARBRE A FAIRE
         int index = 0;
         List<XCSProperty_> prop = new ArrayList<>();
         for (PsiElement child = elt.getFirstChild(); child != null; child = child.getNextSibling()) {
