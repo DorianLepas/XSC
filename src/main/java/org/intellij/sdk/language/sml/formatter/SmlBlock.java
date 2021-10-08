@@ -54,7 +54,7 @@ public class SmlBlock extends AbstractBlock
       return Indent.getNoneIndent();
     }
 
-    return Indent.getContinuationWithoutFirstIndent();
+    return Indent.getNormalIndent();
   }
 
   /* Retourne vrai si le noeud actuel se trouve à la racine du fichier */

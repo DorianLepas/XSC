@@ -13,7 +13,6 @@ import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import org.intellij.sdk.language.xsc.filetype.XCSLanguage;
 import org.intellij.sdk.language.xsc.lexer.XCSLexerAdapter;
-import org.intellij.sdk.language.xsc.parser.XCSParser;
 import org.intellij.sdk.language.xsc.psi.XCSFile;
 import org.intellij.sdk.language.xsc.psi.XCSTypes;
 import org.jetbrains.annotations.NotNull;

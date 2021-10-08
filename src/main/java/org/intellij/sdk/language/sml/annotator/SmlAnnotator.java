@@ -7,15 +7,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.tree.TokenSet;
-import groovyjarjarantlr.Token;
-import groovyjarjarantlr.collections.AST;
 import org.intellij.sdk.language.sml.psi.*;
-import org.intellij.sdk.language.sml.psi.impl.SmlConditionBlockImpl;
 import org.intellij.sdk.language.sml.psi.impl.SmlScriptBlockImpl;
 import org.intellij.sdk.language.sml.psi.impl.SmlStateBlockImpl;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.LinkedList;
 
 public class SmlAnnotator implements Annotator
 {

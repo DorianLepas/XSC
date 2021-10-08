@@ -7,7 +7,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import org.intellij.sdk.language.xsc.filetype.XCSLanguage;
-import org.intellij.sdk.language.xsc.formatter.XCSBlock;
 import org.intellij.sdk.language.xsc.psi.XCSTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
