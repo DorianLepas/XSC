@@ -6,7 +6,6 @@ import com.intellij.openapi.options.colors.AttributesDescriptor;
 import com.intellij.openapi.options.colors.ColorDescriptor;
 import com.intellij.openapi.options.colors.ColorSettingsPage;
 import org.intellij.sdk.language.xsc.filetype.XCSIcons;
-import org.intellij.sdk.language.xsc.highlighter.XCSSyntaxHighLighter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

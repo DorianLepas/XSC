@@ -60,9 +60,8 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
     return new SmlLexerAdapter();
   }
 
-  @NotNull
   @Override
-  public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
+  public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
     /* Commentaires */
     if (tokenType.equals(SmlTypes.COMMENT)) {
       return COMMENT_KEYS;

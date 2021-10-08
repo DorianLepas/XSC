@@ -59,6 +59,9 @@
                                    implementationClass="org.intellij.sdk.language.sml.highlighter.SmlSyntaxHighlighterFactory"/>
     <colorSettingsPage
             implementation="org.intellij.sdk.language.sml.highlighter.SmlColorSettingsPage"/>
+    <langCodeStyleSettingsProvider
+            implementation="org.intellij.sdk.language.sml.codestyle.SmlLanguageCodeStyleSettingsProvider"/>
+    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.sml.codestyle.SmlCodeStyleSettingsProvider"/>
     <annotator language="SML"
                implementationClass="org.intellij.sdk.language.sml.annotator.SmlAnnotator"/>
     <lang.formatter language="SML"

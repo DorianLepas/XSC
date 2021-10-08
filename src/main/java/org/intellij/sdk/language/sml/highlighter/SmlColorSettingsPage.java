@@ -20,11 +20,11 @@ public class SmlColorSettingsPage implements ColorSettingsPage
   private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
           new AttributesDescriptor("Bad Value", SmlSyntaxHighlighter.BAD_CHARACTER),
           new AttributesDescriptor("Comments", SmlSyntaxHighlighter.COMMENT),
-          new AttributesDescriptor("Condition constants", SmlSyntaxHighlighter.CONDITION_CONSTANTES),
-          new AttributesDescriptor("Event definitions and event names", SmlSyntaxHighlighter.EVENT_DEFINITIONS),
-          new AttributesDescriptor("State names", SmlSyntaxHighlighter.STATE_NAMES),
+          new AttributesDescriptor("Condition Constants", SmlSyntaxHighlighter.CONDITION_CONSTANTES),
+          new AttributesDescriptor("Event Definitions And Event Names", SmlSyntaxHighlighter.EVENT_DEFINITIONS),
+          new AttributesDescriptor("State Names", SmlSyntaxHighlighter.STATE_NAMES),
           new AttributesDescriptor("Variables", SmlSyntaxHighlighter.VARIABLES),
-          new AttributesDescriptor("Trace messages", SmlSyntaxHighlighter.TRACE_MESSAGES)
+          new AttributesDescriptor("Trace Messages", SmlSyntaxHighlighter.TRACE_MESSAGES)
   };
 
   // Static code
@@ -71,15 +71,13 @@ public class SmlColorSettingsPage implements ColorSettingsPage
     return null;
   }
 
-  @NotNull
   @Override
-  public AttributesDescriptor[] getAttributeDescriptors() {
+  public AttributesDescriptor @NotNull [] getAttributeDescriptors() {
     return DESCRIPTORS;
   }
 
-  @NotNull
   @Override
-  public ColorDescriptor[] getColorDescriptors() {
+  public ColorDescriptor @NotNull [] getColorDescriptors() {
     return ColorDescriptor.EMPTY_ARRAY;
   }
 
