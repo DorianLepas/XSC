@@ -11,6 +11,8 @@
   elementTypeHolderClass="org.intellij.sdk.language.xsc.psi.XCSTypes"
   elementTypeClass="org.intellij.sdk.language.xsc.psi.XCSElementType"
   tokenTypeClass="org.intellij.sdk.language.xsc.psi.XCSTokenType"
+
+  psiImplUtilClass="org.intellij.sdk.language.xsc.psi.impl.XCSPsiImplUtil"
 }
 
 xsc_file ::= items *
@@ -22,7 +24,9 @@ FUNCTION_CORE ::= (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VA
                   (CORE_START ASCII_TYPE VARIABLE_NAME? PROPERTY? ASCII_VALUE* CORE_END FUNCTION_COMMENT?) |
                   (CORE_START LIST_TYPE VARIABLE_NAME? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) |
 PROPERTY ::= PROPERTY_START PROPERTY_+ PROPERTY_END
-PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE
+PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE { mixin="org.intellij.sdk.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                    implements="org.intellij.sdk.language.xsc.psi.XCSNamedElement"
+                                                    methods = [getValue getName setName getNameIdentifier]}
 
 // CE paragraph treatment
 collection_event_section ::= (COLLECTION_EVENT COLON FUNCTION_COMMENT? CE_LIST? FUNCTION_END FUNCTION_COMMENT?)

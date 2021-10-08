@@ -49,6 +49,9 @@
                             implementationClass="org.intellij.sdk.language.xsc.completion.XCSCompletionContributor"/>
     <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.xsc.bracematcher.XCSBraceMatcher"/>
     <lang.commenter language="XSC" implementationClass="org.intellij.sdk.language.xsc.commenter.XCSCommenter"/>
+    <psi.referenceContributor implementation="org.intellij.sdk.language.xsc.reference.XCSReferenceContributor"/>
+    <lang.refactoringSupport language="XSC"
+                             implementationClass="org.intellij.sdk.language.xsc.reference.XCSRefactoringSupportProvider"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="org.intellij.sdk.language.sml.fileType.SmlFileType"
