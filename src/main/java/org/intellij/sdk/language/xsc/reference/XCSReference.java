@@ -21,7 +21,6 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
     public XCSReference(@NotNull PsiElement element, TextRange textRange) {
         super(element, textRange);
         value = "\"" + element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset()) + "\"";
-        System.out.println("JE PASSE DANS XCSReference(1) : " + value);
     }
 
     @Override
@@ -32,7 +31,6 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
         for (XCSProperty_ property : properties) {
             results.add(new PsiElementResolveResult(property));
         }
-        System.out.println("JE PASSE DANS XCSReference(2) : " + results.size());
         return results.toArray(new ResolveResult[results.size()]);
     }
 
