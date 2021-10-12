@@ -17,6 +17,15 @@ public class XCSPsiImplUtil {
         }
     }
 
+    public static String getProp(XCSProperty_ element) {
+        ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_NAME);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
     public static String getName(XCSProperty_ element) {
         return getValue(element);
     }

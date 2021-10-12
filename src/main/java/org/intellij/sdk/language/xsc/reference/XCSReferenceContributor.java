@@ -21,7 +21,6 @@ public class XCSReferenceContributor extends PsiReferenceContributor {
                         if ((value != null && value.startsWith("xsc" + ":"))) {
                             TextRange property = new TextRange("xsc".length() + ":".length() + 1,
                                     value.length() + 1);
-                            System.out.println("JE SUIS DANS XCSReferenceContributor : " + element + " & " + property);
                             return new PsiReference[]{new XCSReference(element, property)};
                         }
                         return PsiReference.EMPTY_ARRAY;

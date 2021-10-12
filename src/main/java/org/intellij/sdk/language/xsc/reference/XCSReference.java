@@ -38,13 +38,11 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
     @Override
     public PsiElement resolve() {
         ResolveResult[] resolveResults = multiResolve(false);
-        System.out.println("JE PASSE DANS XCSReference(3) : " + (resolveResults.length == 1 ? resolveResults[0].getElement() : null));
         return resolveResults.length == 1 ? resolveResults[0].getElement() : null;
     }
 
     @Override
     public Object @NotNull [] getVariants() {
-        System.out.println("JE PASSE DANS XCSReference(4) : ");
         Project project = myElement.getProject();
         List<XCSProperty_> properties = XCSUtil.findProperties(project);
         List<LookupElement> variants = new ArrayList<>();

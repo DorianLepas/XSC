@@ -23,7 +23,6 @@ public class XCSUtil {
         Collection<VirtualFile> virtualFiles =
                 FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
-            System.out.println("FICHIER : " + virtualFile.getName());
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (xcsFile != null) {
                 Collection<XCSProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile,XCSProperty_.class);
@@ -31,7 +30,6 @@ public class XCSUtil {
                 if (properties.size() != 0) {
                     for (XCSProperty_ property : properties) {
                         if (value.equals(property.getValue())) {
-                            System.out.println("ADD : " + property.getValue());
                             result.add(property);
                         }
                     }

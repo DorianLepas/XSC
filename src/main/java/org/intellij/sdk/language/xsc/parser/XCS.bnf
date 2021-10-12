@@ -26,7 +26,7 @@ FUNCTION_CORE ::= (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VA
 PROPERTY ::= PROPERTY_START PROPERTY_+ PROPERTY_END
 PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE { mixin="org.intellij.sdk.language.xsc.psi.impl.XCSNamedElementImpl"
                                                     implements="org.intellij.sdk.language.xsc.psi.XCSNamedElement"
-                                                    methods = [getValue getName setName getNameIdentifier]}
+                                                    methods = [getProp getValue getName setName getNameIdentifier]}
 
 // CE paragraph treatment
 collection_event_section ::= (COLLECTION_EVENT COLON FUNCTION_COMMENT? CE_LIST? FUNCTION_END FUNCTION_COMMENT?)

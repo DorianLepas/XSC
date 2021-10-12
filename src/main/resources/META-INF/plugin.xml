@@ -52,6 +52,8 @@
     <psi.referenceContributor implementation="org.intellij.sdk.language.xsc.reference.XCSReferenceContributor"/>
     <lang.refactoringSupport language="XSC"
                              implementationClass="org.intellij.sdk.language.xsc.reference.XCSRefactoringSupportProvider"/>
+    <lang.findUsagesProvider language="XSC"
+                             implementationClass="org.intellij.sdk.language.xsc.findusage.XCSFindUsagesProvider"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="org.intellij.sdk.language.sml.fileType.SmlFileType"
