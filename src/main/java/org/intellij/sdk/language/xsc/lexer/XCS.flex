@@ -48,7 +48,7 @@ STREAM_FUNCTION=S\d+F\d+(" W")?
 //CORE
 VARIABLE_TYPE=(U|I)[1248](\s?\[\d+\])?|F[48](\s?\[\d+\])?|(B|V|v|BOOLEAN|Boolean)(\s?\[\d+\])?|J|V|v
 VARIABLE_NAME=(\$)?\w*[a-zA-Z]\w*
-VARIABLE_VALUE=(\w+)|(\'\w+\')|(\-\w+)|(\'\-\w+\')
+VARIABLE_VALUE=([-]?\w+([.,]\w+)?)|(\'[-]?\w+([.,]\w+)?\')
 CEID=CEID
 DVID=DVID
 ECID=ECID
@@ -68,7 +68,7 @@ PROPERTY_NAME_DV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignme
 PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
 PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
-PROPERTY_VALUE=\"\w+\"
+PROPERTY_VALUE=\"\w+(\[\w+\])?\w*\"
 
 //TYPES
 ASCII_TYPE=A(\s?\[\d+\])?|A
