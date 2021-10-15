@@ -6,8 +6,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import org.intellij.sdk.language.xsc.filetype.XCSIcons;
-import org.intellij.sdk.language.xsc.psi.XCSProperty_;
-import org.intellij.sdk.language.xsc.psi.XCSUtil;
+import org.intellij.sdk.language.xsc.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,21 +16,76 @@ import java.util.List;
 public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 
     private final String value;
+    private final String type;
 
-    public XCSReference(@NotNull PsiElement element, TextRange textRange) {
+    public XCSReference(@NotNull PsiElement element, TextRange textRange, String type) {
         super(element, textRange);
-        value = "\"" + element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset()) + "\"";
+        value = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+        this.type = type;
     }
 
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
-        final List<XCSProperty_> properties = XCSUtil.findProperties(project, value);
-        List<ResolveResult> results = new ArrayList<>();
-        for (XCSProperty_ property : properties) {
-            results.add(new PsiElementResolveResult(property));
+        if(type.equals("CEID")) {
+            final List<XCSCeProperty_> properties = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project, value);
+            List<ResolveResult> results = new ArrayList<>();
+            for (XCSCeProperty_ property : properties) {
+                results.add(new PsiElementResolveResult(property));
+            }
+            return results.toArray(new ResolveResult[results.size()]);
         }
-        return results.toArray(new ResolveResult[results.size()]);
+        if(type.equals("DVID")) {
+            final List<XCSDvProperty_> properties = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project, value);
+            List<ResolveResult> results = new ArrayList<>();
+            for (XCSDvProperty_ property : properties) {
+                results.add(new PsiElementResolveResult(property));
+            }
+            return results.toArray(new ResolveResult[results.size()]);
+        }
+        if(type.equals("ECID")) {
+            final List<XCSEcProperty_> properties = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project, value);
+            List<ResolveResult> results = new ArrayList<>();
+            for (XCSEcProperty_ property : properties) {
+                results.add(new PsiElementResolveResult(property));
+            }
+            return results.toArray(new ResolveResult[results.size()]);
+        }
+        if(type.equals("SVID")) {
+            final List<XCSSvProperty_> properties = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project, value);
+            List<ResolveResult> results = new ArrayList<>();
+            for (XCSSvProperty_ property : properties) {
+                results.add(new PsiElementResolveResult(property));
+            }
+            return results.toArray(new ResolveResult[results.size()]);
+        }
+        if(type.equals("")){
+            List<ResolveResult> results = new ArrayList<>();
+
+            final List<XCSCeProperty_> propertiesCe = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project, value);
+            for (XCSCeProperty_ property : propertiesCe) {
+                results.add(new PsiElementResolveResult(property));
+            }
+
+            final List<XCSDvProperty_> propertiesDv = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project, value);
+            for (XCSDvProperty_ property : propertiesDv) {
+                results.add(new PsiElementResolveResult(property));
+            }
+
+            final List<XCSEcProperty_> propertiesEc = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project, value);
+            for (XCSEcProperty_ property : propertiesEc) {
+                results.add(new PsiElementResolveResult(property));
+            }
+
+            final List<XCSSvProperty_> propertiesSv = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project, value);
+            for (XCSSvProperty_ property : propertiesSv) {
+                results.add(new PsiElementResolveResult(property));
+            }
+
+            return results.toArray(new ResolveResult[results.size()]);
+
+        }
+        return new ArrayList<>().toArray(new ResolveResult[0]);
     }
 
     @Nullable

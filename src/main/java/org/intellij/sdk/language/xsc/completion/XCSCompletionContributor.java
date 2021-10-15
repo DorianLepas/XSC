@@ -151,5 +151,4 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
     }
-
 }

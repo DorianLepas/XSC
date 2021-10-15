@@ -1,10 +1,12 @@
 package org.intellij.sdk.language.xsc.psi.impl;
 
 import com.intellij.lang.ASTNode;
+import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import org.intellij.sdk.language.xsc.psi.XCSElementFactory;
-import org.intellij.sdk.language.xsc.psi.XCSProperty_;
-import org.intellij.sdk.language.xsc.psi.XCSTypes;
+import com.intellij.psi.PsiReference;
+import org.intellij.sdk.language.xsc.psi.*;
+import org.intellij.sdk.language.xsc.reference.XCSReference;
+import org.jetbrains.annotations.NotNull;
 
 public class XCSPsiImplUtil {
 
@@ -40,6 +42,7 @@ public class XCSPsiImplUtil {
         return element;
     }
 
+
     public static PsiElement getNameIdentifier(XCSProperty_ element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_VALUE);
         if (valueNode != null) {
@@ -48,5 +51,26 @@ public class XCSPsiImplUtil {
             return null;
         }
     }
+
+    public static PsiReference getReference(@NotNull final XCSProperty_ element) {
+        return new XCSReference(element,
+                new TextRange(element.getText().length()-element.getValue().length(),element.getText().length()),
+                element.getReferenceType());
+    }
+
+    public static String getReferenceType(@NotNull final XCSProperty_ element){
+        PsiElement valueNode =  element.getNode().getPsi().getParent();
+        if (valueNode != null) {
+            valueNode = valueNode.getPrevSibling();
+            while (!valueNode.getText().equals("<")) {
+                if (valueNode.getText().equals("CEID") || valueNode.getText().equals("DVID") || valueNode.getText().equals("ECID") || valueNode.getText().equals("SVID")) {
+                    return valueNode.getText();
+                }
+                valueNode = valueNode.getPrevSibling();
+            }
+        }
+        return "";
+    }
+
 
 }

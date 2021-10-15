@@ -4,14 +4,16 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
+import org.intellij.sdk.language.xsc.psi.XCSFile;
 import org.intellij.sdk.language.xsc.psi.XCSProperty_;
+import org.intellij.sdk.language.xsc.psi.XCSTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class XCSReferenceContributor extends PsiReferenceContributor {
 
     @Override
     public void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(PlatformPatterns.psiElement(PsiLiteralExpression.class),
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(XCSTypes.PROPERTY_VALUE),
                 new PsiReferenceProvider() {
                     @Override
                     public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
@@ -23,7 +25,7 @@ public class XCSReferenceContributor extends PsiReferenceContributor {
                             TextRange property = new TextRange("xsc".length() + ":".length() + 1,
                                     value.length() + 1);
                             //System.out.println(" value = " + value + "\n property" + property);
-                            return new PsiReference[]{new XCSReference(element, property)};
+                            return new PsiReference[]{new XCSReference(element, property,"CEID")};
                         }
                         return PsiReference.EMPTY_ARRAY;
                     }
