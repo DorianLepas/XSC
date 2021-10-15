@@ -53,6 +53,9 @@ public class XCSPsiImplUtil {
     }
 
     public static PsiReference getReference(@NotNull final XCSProperty_ element) {
+        if (!element.getProp().equals("VfeiName")){
+            return null;
+        }
         return new XCSReference(element,
                 new TextRange(element.getText().length()-element.getValue().length(),element.getText().length()),
                 element.getReferenceType());

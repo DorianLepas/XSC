@@ -97,17 +97,50 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
     @Override
     public Object @NotNull [] getVariants() {
+        System.out.println("JE PASSSSSEEEEE DANS GETVARIANTS()");
         Project project = myElement.getProject();
-        List<XCSProperty_> properties = XCSUtil.findProperties(project);
         List<LookupElement> variants = new ArrayList<>();
-        for (final XCSProperty_ property : properties) {
-            if (property.getValue() != null && property.getValue().length() > 0) {
+
+        List<XCSCeProperty_> propertiesCe = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project);
+        for (final XCSCeProperty_ property : propertiesCe) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
                 variants.add(LookupElementBuilder
                         .create(property).withIcon(XCSIcons.FILE)
                         .withTypeText(property.getContainingFile().getName())
                 );
             }
         }
+
+        List<XCSDvProperty_> propertiesDv = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project);
+        for (final XCSDvProperty_ property : propertiesDv) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+                variants.add(LookupElementBuilder
+                        .create(property).withIcon(XCSIcons.FILE)
+                        .withTypeText(property.getContainingFile().getName())
+                );
+            }
+        }
+
+        List<XCSEcProperty_> propertiesEc = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project);
+        for (final XCSEcProperty_ property : propertiesEc) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+                variants.add(LookupElementBuilder
+                        .create(property).withIcon(XCSIcons.FILE)
+                        .withTypeText(property.getContainingFile().getName())
+                );
+            }
+        }
+
+        List<XCSSvProperty_> propertiesSv = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project);
+        for (final XCSSvProperty_ property : propertiesSv) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+                variants.add(LookupElementBuilder
+                        .create(property).withIcon(XCSIcons.FILE)
+                        .withTypeText(property.getContainingFile().getName())
+                );
+            }
+        }
+
         return variants.toArray();
     }
 }

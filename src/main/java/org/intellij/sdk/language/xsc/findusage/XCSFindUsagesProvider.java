@@ -4,11 +4,9 @@ import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import org.intellij.sdk.language.xsc.lexer.XCSLexerAdapter;
-import org.intellij.sdk.language.xsc.psi.XCSProperty_;
-import org.intellij.sdk.language.xsc.psi.XCSTypes;
+import org.intellij.sdk.language.xsc.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +23,10 @@ public class XCSFindUsagesProvider implements FindUsagesProvider {
 
     @Override
     public boolean canFindUsagesFor(@NotNull PsiElement psiElement) {
-        return psiElement instanceof PsiNamedElement;
+        return  (psiElement instanceof XCSCeProperty_ && psiElement.getFirstChild().getText().equals("VfeiName")) ||
+                (psiElement instanceof XCSDvProperty_ && psiElement.getFirstChild().getText().equals("VfeiName")) ||
+                (psiElement instanceof XCSEcProperty_ && psiElement.getFirstChild().getText().equals("VfeiName")) ||
+                (psiElement instanceof XCSSvProperty_ && psiElement.getFirstChild().getText().equals("VfeiName"));
     }
 
     @Nullable
@@ -37,7 +38,7 @@ public class XCSFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof XCSProperty_) {
+        if (element instanceof XCSCeProperty_ || element instanceof XCSDvProperty_ || element instanceof XCSEcProperty_ ||element instanceof XCSSvProperty_) {
             return "XSC property";
         } else {
             return "";
@@ -47,7 +48,7 @@ public class XCSFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getDescriptiveName(@NotNull PsiElement element) {
-        if (element instanceof XCSProperty_) {
+        if (element instanceof XCSCeProperty_ || element instanceof XCSDvProperty_ || element instanceof XCSEcProperty_ ||element instanceof XCSSvProperty_) {
             return ((XCSProperty_) element).getValue().replaceAll("\"","");
         } else {
             return "";
@@ -57,8 +58,8 @@ public class XCSFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        if (element instanceof XCSProperty_) {
-            return "xsc:" + ((XCSProperty_) element).getValue().replaceAll("\"","");
+        if (element instanceof XCSCeProperty_ || element instanceof XCSDvProperty_ || element instanceof XCSEcProperty_ ||element instanceof XCSSvProperty_) {
+            return ((XCSProperty_) element).getValue().replaceAll("\"","");
         } else {
             return "";
         }
