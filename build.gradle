@@ -6,7 +6,11 @@ plugins {
 }
 
 group 'org.intellij.sdk'
-version '1.0'
+version '1.1'
+
+jar {
+    archiveName('XSC_&_SML_Support.jar')
+}
 
 sourceCompatibility = 1.8
 
