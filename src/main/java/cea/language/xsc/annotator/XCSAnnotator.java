@@ -1,5 +1,6 @@
 package cea.language.xsc.annotator;
 
+import cea.language.xsc.quickfix.XCSCreatePropertyQuickFix;
 import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -21,7 +22,8 @@ public class XCSAnnotator implements Annotator {
         }
 
         if (element.getReference().resolve() == null) {
-            HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property");
+            HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property")
+                    .withFix(new XCSCreatePropertyQuickFix(((XCSProperty_) element).getValue(), element));
             HolderCreation.create();
         }
     }
