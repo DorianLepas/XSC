@@ -51,8 +51,6 @@
                             implementationClass="cea.language.xsc.completion.XCSCompletionContributor"/>
     <lang.braceMatcher language="XSC" implementationClass="cea.language.xsc.bracematcher.XCSBraceMatcher"/>
     <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
-    <lang.refactoringSupport language="XSC"
-                             implementationClass="cea.language.xsc.reference.XCSRefactoringSupportProvider"/>
     <lang.findUsagesProvider language="XSC"
                              implementationClass="cea.language.xsc.findusage.XCSFindUsagesProvider"/>
 
