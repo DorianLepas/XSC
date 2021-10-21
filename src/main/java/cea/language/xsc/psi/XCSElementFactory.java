@@ -10,7 +10,7 @@ public class XCSElementFactory {
 
     public static XCSProperty_ createProperty(Project project, String name) {
         final XCSFile file = createFile(project, name);
-        return (XCSProperty_) file.findChildByClass(XCSProperty_.class);
+        return file.findChildByClass(XCSProperty_.class);
     }
 
     public static XCSFile createFile(Project project, String text) {
@@ -19,7 +19,7 @@ public class XCSElementFactory {
                 createFileFromText(name, XCSFileType.INSTANCE, text);
     }
 
-    public static ASTNode createPropertyCe(ASTNode node, String name, String value) {
+    public static void createPropertyCe(ASTNode node, String name, String value) {
         node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_TYPE,"V",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CEID,"CEID",node.getLastChildNode().getTreeNext());
@@ -33,10 +33,9 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_VALUE,"'-1'",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
-        return node;
     }
 
-    public static ASTNode createPropertySv(ASTNode node, String name, String value) {
+    public static void createPropertySv(ASTNode node, String name, String value) {
         node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_TYPE,"V",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CEID,"SVID",node.getLastChildNode().getTreeNext());
@@ -53,10 +52,9 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
-        return node;
     }
 
-    public static ASTNode createPropertyDv(ASTNode node, String name, String value) {
+    public static void createPropertyDv(ASTNode node, String name, String value) {
         node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CEID,"DVID",node.getLastChildNode().getTreeNext());
@@ -70,10 +68,9 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
-        return node;
     }
 
-    public static ASTNode createPropertyEc(ASTNode node, String name, String value) {
+    public static void createPropertyEc(ASTNode node, String name, String value) {
         node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CEID,"ECID",node.getLastChildNode().getTreeNext());
@@ -87,7 +84,6 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
-        return node;
     }
 
     public static PsiElement createCRLF(Project project) {

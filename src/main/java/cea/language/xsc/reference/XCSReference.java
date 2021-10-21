@@ -97,7 +97,6 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
     @Override
     public Object @NotNull [] getVariants() {
-        System.out.println("JE PASSSSSEEEEE DANS GETVARIANTS()");
         Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
 

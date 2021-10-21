@@ -22,7 +22,7 @@ public class XCSAnnotator implements Annotator {
         }
 
         if (element.getReference().resolve() == null) {
-            HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property")
+            HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
                     .withFix(new XCSCreatePropertyQuickFix(((XCSProperty_) element).getValue(), element));
             HolderCreation.create();
         }

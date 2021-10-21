@@ -44,13 +44,13 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.EQUALS)),
-            new CompletionProvider<CompletionParameters>() {
-                public void addCompletions(@NotNull CompletionParameters parameters,
-                                           @NotNull ProcessingContext context,
-                                           @NotNull CompletionResultSet resultSet) {
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(),
+                new CompletionProvider<CompletionParameters>() {
+                    public void addCompletions(@NotNull CompletionParameters parameters,
+                                               @NotNull ProcessingContext context,
+                                               @NotNull CompletionResultSet resultSet) {
+                    }
                 }
-            }
         );
 
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_VALUE)),
