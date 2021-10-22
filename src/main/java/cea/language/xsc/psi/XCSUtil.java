@@ -53,12 +53,10 @@ public class XCSUtil {
             if (xcsFile != null && (xcsFile.getContainingDirectory() == file.getContainingDirectory())) {
                 Collection<XCSCeProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile,XCSCeProperty_.class);
                 if (properties.size() != 0) {
-                    List<XCSCeProperty_> propertiesList = new ArrayList<>(properties);
-                    Collections.addAll(result, (XCSCeProperty_[])propertiesList.toArray());
+                    result.addAll(properties);
                 }
             }
         }
-
         return result;
     }
 
@@ -90,12 +88,10 @@ public class XCSUtil {
             if (xcsFile != null && (xcsFile.getContainingDirectory() == file.getContainingDirectory())) {
                 Collection<XCSDvProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile,XCSDvProperty_.class);
                 if (properties.size() != 0) {
-                    List<XCSDvProperty_> propertiesList = new ArrayList<>(properties);
-                    Collections.addAll(result, (XCSDvProperty_[])propertiesList.toArray());
+                    result.addAll(properties);
                 }
             }
         }
-
         return result;
     }
 
@@ -127,12 +123,10 @@ public class XCSUtil {
             if (xcsFile != null && (xcsFile.getContainingDirectory() == file.getContainingDirectory())) {
                 Collection<XCSEcProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile,XCSEcProperty_.class);
                 if (properties.size() != 0) {
-                    List<XCSEcProperty_> propertiesList = new ArrayList<>(properties);
-                    Collections.addAll(result, (XCSEcProperty_[])propertiesList.toArray());
+                    result.addAll(properties);
                 }
             }
         }
-
         return result;
     }
 
@@ -164,12 +158,10 @@ public class XCSUtil {
             if (xcsFile != null && (xcsFile.getContainingDirectory() == file.getContainingDirectory())) {
                 Collection<XCSSvProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile,XCSSvProperty_.class);
                 if (properties.size() != 0) {
-                    List<XCSSvProperty_> propertiesList = new ArrayList<>(properties);
-                    Collections.addAll(result, (XCSSvProperty_[])propertiesList.toArray());
+                    result.addAll(properties);
                 }
             }
         }
-
         return result;
     }
 

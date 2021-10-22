@@ -81,7 +81,6 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
             for (XCSSvProperty_ property : propertiesSv) {
                 results.add(new PsiElementResolveResult(property));
             }
-
             return results.toArray(new ResolveResult[results.size()]);
 
         }
@@ -104,7 +103,9 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
         for (final XCSCeProperty_ property : propertiesCe) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
                 variants.add(LookupElementBuilder
-                        .create(property).withIcon(XCSIcons.FILE)
+                        .create(property.getLastChild().getText().replace("\"","") +"\"")
+                        .withIcon(XCSIcons.FILE)
+                        .withPresentableText(property.getLastChild().getText().replace("\"",""))
                         .withTypeText(property.getContainingFile().getName())
                 );
             }
@@ -114,7 +115,9 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
         for (final XCSDvProperty_ property : propertiesDv) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
                 variants.add(LookupElementBuilder
-                        .create(property).withIcon(XCSIcons.FILE)
+                        .create(property.getLastChild().getText().replace("\"","") +"\"")
+                        .withIcon(XCSIcons.FILE)
+                        .withPresentableText(property.getLastChild().getText().replace("\"",""))
                         .withTypeText(property.getContainingFile().getName())
                 );
             }
@@ -124,7 +127,9 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
         for (final XCSEcProperty_ property : propertiesEc) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
                 variants.add(LookupElementBuilder
-                        .create(property).withIcon(XCSIcons.FILE)
+                        .create(property.getLastChild().getText().replace("\"","") +"\"")
+                        .withIcon(XCSIcons.FILE)
+                        .withPresentableText(property.getLastChild().getText().replace("\"",""))
                         .withTypeText(property.getContainingFile().getName())
                 );
             }
@@ -134,12 +139,13 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
         for (final XCSSvProperty_ property : propertiesSv) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
                 variants.add(LookupElementBuilder
-                        .create(property).withIcon(XCSIcons.FILE)
+                        .create(property.getLastChild().getText().replace("\"","") +"\"")
+                        .withIcon(XCSIcons.FILE)
+                        .withPresentableText(property.getLastChild().getText().replace("\"",""))
                         .withTypeText(property.getContainingFile().getName())
                 );
             }
         }
-
         return variants.toArray();
     }
 }

@@ -3,11 +3,8 @@ package cea.language.xsc.psi.impl;
 import cea.language.xsc.psi.XCSElementFactory;
 import cea.language.xsc.psi.XCSProperty_;
 import cea.language.xsc.psi.XCSTypes;
-import cea.language.xsc.reference.XCSReference;
 import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.NotNull;
 
 public class XCSPsiImplUtil {
@@ -44,7 +41,6 @@ public class XCSPsiImplUtil {
         return element;
     }
 
-
     public static PsiElement getNameIdentifier(XCSProperty_ element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_VALUE);
         if (valueNode != null) {
@@ -52,15 +48,6 @@ public class XCSPsiImplUtil {
         } else {
             return null;
         }
-    }
-
-    public static PsiReference getReference(@NotNull final XCSProperty_ element) {
-        if (!element.getProp().equals("VfeiName")){
-            return null;
-        }
-        return new XCSReference(element,
-                new TextRange(element.getText().length()-element.getValue().length(),element.getText().length()),
-                element.getReferenceType());
     }
 
     public static String getReferenceType(@NotNull final XCSProperty_ element){

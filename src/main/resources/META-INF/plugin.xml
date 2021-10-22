@@ -53,6 +53,7 @@
     <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
     <lang.findUsagesProvider language="XSC"
                              implementationClass="cea.language.xsc.findusage.XCSFindUsagesProvider"/>
+    <psi.referenceContributor language="XSC" implementation="cea.language.xsc.reference.XCSReferenceContributor"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="cea.language.sml.fileType.SmlFileType"
