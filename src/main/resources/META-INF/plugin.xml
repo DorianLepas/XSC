@@ -33,44 +33,42 @@
   <extensions defaultExtensionNs="com.intellij">
 
     <!-- XSC PLUGIN -->
-    <fileType name="XSC" implementationClass="org.intellij.sdk.language.xsc.filetype.XCSFileType"
+    <fileType name="XSC" implementationClass="cea.language.xsc.filetype.XCSFileType"
               fieldName="INSTANCE" language="XSC" extensions="xsc"/>
     <annotator language="XSC"
-               implementationClass="org.intellij.sdk.language.xsc.annotator.XCSAnnotator"/>
+               implementationClass="cea.language.xsc.annotator.XCSAnnotator"/>
     <lang.parserDefinition language="XSC"
-                           implementationClass="org.intellij.sdk.language.xsc.parser.XCSParserDefinition"/>
+                           implementationClass="cea.language.xsc.parser.XCSParserDefinition"/>
     <lang.syntaxHighlighterFactory language="XSC"
-                                   implementationClass="org.intellij.sdk.language.xsc.highlighter.XCSSyntaxHighLighterFactory"/>
-    <colorSettingsPage implementation="org.intellij.sdk.language.xsc.highlighter.XCSColorSettingsPage"/>
+                                   implementationClass="cea.language.xsc.highlighter.XCSSyntaxHighLighterFactory"/>
+    <colorSettingsPage implementation="cea.language.xsc.highlighter.XCSColorSettingsPage"/>
     <langCodeStyleSettingsProvider
-            implementation="org.intellij.sdk.language.xsc.codestyle.XCSLanguageCodeStyleSettingsProvider"/>
+            implementation="cea.language.xsc.codestyle.XCSLanguageCodeStyleSettingsProvider"/>
     <lang.formatter language="XSC"
-                    implementationClass="org.intellij.sdk.language.xsc.formatter.XCSFormattingModelBuilder"/>
-    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.xsc.codestyle.XCSCodeStyleSettingsProvider"/>
+                    implementationClass="cea.language.xsc.formatter.XCSFormattingModelBuilder"/>
+    <codeStyleSettingsProvider implementation="cea.language.xsc.codestyle.XCSCodeStyleSettingsProvider"/>
     <completion.contributor language="XSC"
-                            implementationClass="org.intellij.sdk.language.xsc.completion.XCSCompletionContributor"/>
-    <lang.braceMatcher language="XSC" implementationClass="org.intellij.sdk.language.xsc.bracematcher.XCSBraceMatcher"/>
-    <lang.commenter language="XSC" implementationClass="org.intellij.sdk.language.xsc.commenter.XCSCommenter"/>
-    <lang.refactoringSupport language="XSC"
-                             implementationClass="org.intellij.sdk.language.xsc.reference.XCSRefactoringSupportProvider"/>
+                            implementationClass="cea.language.xsc.completion.XCSCompletionContributor"/>
+    <lang.braceMatcher language="XSC" implementationClass="cea.language.xsc.bracematcher.XCSBraceMatcher"/>
+    <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
     <lang.findUsagesProvider language="XSC"
-                             implementationClass="org.intellij.sdk.language.xsc.findusage.XCSFindUsagesProvider"/>
+                             implementationClass="cea.language.xsc.findusage.XCSFindUsagesProvider"/>
 
     <!-- SML PLUGIN -->
-    <fileType name="Sml " implementationClass="org.intellij.sdk.language.sml.fileType.SmlFileType"
+    <fileType name="Sml " implementationClass="cea.language.sml.fileType.SmlFileType"
               fieldName="INSTANCE" language="SML" extensions="sml"/>
     <lang.parserDefinition language="SML"
-                           implementationClass="org.intellij.sdk.language.sml.parser.SmlParserDefinition"/>
+                           implementationClass="cea.language.sml.parser.SmlParserDefinition"/>
     <lang.syntaxHighlighterFactory language="SML"
-                                   implementationClass="org.intellij.sdk.language.sml.highlighter.SmlSyntaxHighlighterFactory"/>
+                                   implementationClass="cea.language.sml.highlighter.SmlSyntaxHighlighterFactory"/>
     <colorSettingsPage
-            implementation="org.intellij.sdk.language.sml.highlighter.SmlColorSettingsPage"/>
+            implementation="cea.language.sml.highlighter.SmlColorSettingsPage"/>
     <langCodeStyleSettingsProvider
-            implementation="org.intellij.sdk.language.sml.codestyle.SmlLanguageCodeStyleSettingsProvider"/>
-    <codeStyleSettingsProvider implementation="org.intellij.sdk.language.sml.codestyle.SmlCodeStyleSettingsProvider"/>
+            implementation="cea.language.sml.codestyle.SmlLanguageCodeStyleSettingsProvider"/>
+    <codeStyleSettingsProvider implementation="cea.language.sml.codestyle.SmlCodeStyleSettingsProvider"/>
     <annotator language="SML"
-               implementationClass="org.intellij.sdk.language.sml.annotator.SmlAnnotator"/>
+               implementationClass="cea.language.sml.annotator.SmlAnnotator"/>
     <lang.formatter language="SML"
-                    implementationClass="org.intellij.sdk.language.sml.formatter.SmlFormattingModelBuilder"/>
+                    implementationClass="cea.language.sml.formatter.SmlFormattingModelBuilder"/>
   </extensions>
 </idea-plugin>
