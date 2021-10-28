@@ -48,7 +48,7 @@ public class XCSSyntaxHighLighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey VARIABLE_VALUE =
             createTextAttributesKey("XCS_VARIABLE_VALUE", DefaultLanguageHighlighterColors.NUMBER);
     public static final TextAttributesKey NAMES =
-            createTextAttributesKey("XCS_NAMES", DefaultLanguageHighlighterColors.HIGHLIGHTED_REFERENCE);
+            createTextAttributesKey("XCS_NAMES", DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL);
 
 
     private static final TextAttributesKey[] COLON_KEYS = new TextAttributesKey[]{COLON};

@@ -320,7 +320,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         PsiElement element = parameters.getOriginalPosition();
-                        if ( element.getNode() != null &&
+                        if ( element != null &&
                                 element.getNode().getElementType().toString().equals("XCSTokenType.PROPERTY_VALUE") &&
                                 element.getNode().getTreeParent().getElementType().toString().equals("PROPERTY_")){
                             XCSProperty_ e = (XCSProperty_) element.getNode().getTreeParent().getPsi();

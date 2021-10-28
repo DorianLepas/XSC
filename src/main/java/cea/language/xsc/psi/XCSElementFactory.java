@@ -40,7 +40,7 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.VARIABLE_TYPE,"V",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CEID,"SVID",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.PROPERTY_START,"{",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME," SecsValueToVfeiText",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.PROPERTY_NAME,"SecsValueToVfeiText",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"false\" ",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.PROPERTY_NAME,name,node.getLastChildNode().getTreeNext());
@@ -50,7 +50,7 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"V\"",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.VARIABLE_VALUE,"'-1'",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
     }
 
