@@ -51,8 +51,6 @@
                             implementationClass="cea.language.xsc.completion.XCSCompletionContributor"/>
     <lang.braceMatcher language="XSC" implementationClass="cea.language.xsc.bracematcher.XCSBraceMatcher"/>
     <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
-    <lang.findUsagesProvider language="XSC"
-                             implementationClass="cea.language.xsc.findusage.XCSFindUsagesProvider"/>
     <psi.referenceContributor language="XSC" implementation="cea.language.xsc.reference.XCSReferenceContributor"/>
 
     <!-- SML PLUGIN -->
@@ -71,5 +69,6 @@
                implementationClass="cea.language.sml.annotator.SmlAnnotator"/>
     <lang.formatter language="SML"
                     implementationClass="cea.language.sml.formatter.SmlFormattingModelBuilder"/>
+    <lang.commenter language="SML" implementationClass="cea.language.sml.commenter.SmlCommenter"/>
   </extensions>
 </idea-plugin>
