@@ -4,6 +4,7 @@ package cea.language.xsc.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiReference;
 
 public interface XCSProperty_ extends XCSNamedElement {
 
@@ -17,9 +18,7 @@ public interface XCSProperty_ extends XCSNamedElement {
 
   PsiElement getNameIdentifier();
 
-  //WARNING: getReference(...) is skipped
-  //matching getReference(XCSProperty_, ...)
-  //methods are not found in XCSPsiImplUtil
+  PsiReference getReference();
 
   String getReferenceType();
 

@@ -101,7 +101,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
         List<XCSCeProperty_> propertiesCe = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project);
         for (final XCSCeProperty_ property : propertiesCe) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
                 variants.add(LookupElementBuilder
                         .create(property.getLastChild().getText().replace("\"","") +"\"")
                         .withIcon(XCSIcons.FILE)
@@ -113,7 +113,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
         List<XCSDvProperty_> propertiesDv = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project);
         for (final XCSDvProperty_ property : propertiesDv) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
                 variants.add(LookupElementBuilder
                         .create(property.getLastChild().getText().replace("\"","") +"\"")
                         .withIcon(XCSIcons.FILE)
@@ -125,7 +125,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
         List<XCSEcProperty_> propertiesEc = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project);
         for (final XCSEcProperty_ property : propertiesEc) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
                 variants.add(LookupElementBuilder
                         .create(property.getLastChild().getText().replace("\"","") +"\"")
                         .withIcon(XCSIcons.FILE)
@@ -137,7 +137,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
 
         List<XCSSvProperty_> propertiesSv = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project);
         for (final XCSSvProperty_ property : propertiesSv) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0) {
+            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
                 variants.add(LookupElementBuilder
                         .create(property.getLastChild().getText().replace("\"","") +"\"")
                         .withIcon(XCSIcons.FILE)

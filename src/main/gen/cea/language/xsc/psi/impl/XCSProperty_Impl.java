@@ -1,11 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package cea.language.xsc.psi.impl;
 
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static cea.language.xsc.psi.XCSTypes.*;
 import cea.language.xsc.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class XCSProperty_Impl extends XCSNamedElementImpl implements XCSProperty_ {
 
@@ -39,7 +43,7 @@ public class XCSProperty_Impl extends XCSNamedElementImpl implements XCSProperty
   }
 
   @Override
-  public PsiElement setName(@NotNull String newName) {
+  public PsiElement setName(String newName) {
     return XCSPsiImplUtil.setName(this, newName);
   }
 

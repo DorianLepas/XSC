@@ -1,6 +1,5 @@
 package cea.language.xsc.completion;
 
-import cea.language.xsc.filetype.XCSIcons;
 import cea.language.xsc.filetype.XCSLanguage;
 import cea.language.xsc.psi.XCSProperty_;
 import com.intellij.codeInsight.completion.*;
@@ -21,30 +20,78 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("AllowedSecsItemValues"));
-                        resultSet.addElement(LookupElementBuilder.create("CheckAck"));
-                        resultSet.addElement(LookupElementBuilder.create("Disabled"));
-                        resultSet.addElement(LookupElementBuilder.create("EventLevel8"));
-                        resultSet.addElement(LookupElementBuilder.create("IsTemplate"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplyMatch"));
-                        resultSet.addElement(LookupElementBuilder.create("ReuseProperties"));
-                        resultSet.addElement(LookupElementBuilder.create("ReusePropertiesNoArrays"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsName"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValue"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueAlignment"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueToVfeiText"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueWidth"));
-                        resultSet.addElement(LookupElementBuilder.create("SendAsList"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiNameTemplateNames"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiQualifier"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiType"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiValue"));
-                        resultSet.addElement(LookupElementBuilder.create("WrapInList"));
+                        resultSet.addElement(LookupElementBuilder.create("AllowedSecsItemValues=\"\"")
+                                .withPresentableText("AllowedSecsItemValues")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("CheckAck=\"\"")
+                                .withPresentableText("CheckAck")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("Disabled=\"\"")
+                                .withPresentableText("Disabled")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("EventLevel8=\"\"")
+                                .withPresentableText("EventLevel8")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("IsTemplate=\"\"")
+                                .withPresentableText("IsTemplate")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems=\"\"")
+                                .withPresentableText("ReplaceItems")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName=\"\"")
+                                .withPresentableText("ReplaceVfeiName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplyMatch=\"\"")
+                                .withPresentableText("ReplyMatch")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReuseProperties=\"\"")
+                                .withPresentableText("ReuseProperties")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReusePropertiesNoArrays=\"\"")
+                                .withPresentableText("ReusePropertiesNoArrays")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck=\"\"")
+                                .withPresentableText("SecsItemsToCheck")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsName=\"\"")
+                                .withPresentableText("SecsName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsType=\"\"")
+                                .withPresentableText("SecsType")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValue=\"\"")
+                                .withPresentableText("SecsValue")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueAlignment=\"\"")
+                                .withPresentableText("SecsValueAlignment")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueToVfeiText=\"\"")
+                                .withPresentableText("SecsValueToVfeiText")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueWidth=\"\"")
+                                .withPresentableText("SecsValueWidth")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SendAsList=\"\"")
+                                .withPresentableText("SendAsList")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiName=\"\"")
+                                .withPresentableText("VfeiName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiNameTemplateNames=\"\"")
+                                .withPresentableText("VfeiNameTemplateNames")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiQualifier=\"\"")
+                                .withPresentableText("VfeiQualifier")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiType=\"\"")
+                                .withPresentableText("VfeiType")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiValue=\"\"")
+                                .withPresentableText("VfeiValue")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("WrapInList=\"\"")
+                                .withPresentableText("WrapInList")
+                                .withTypeText("Property"));
                     }
                 }
         );
@@ -54,30 +101,78 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("AllowedSecsItemValues"));
-                        resultSet.addElement(LookupElementBuilder.create("CheckAck"));
-                        resultSet.addElement(LookupElementBuilder.create("Disabled"));
-                        resultSet.addElement(LookupElementBuilder.create("EventLevel8"));
-                        resultSet.addElement(LookupElementBuilder.create("IsTemplate"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("ReplyMatch"));
-                        resultSet.addElement(LookupElementBuilder.create("ReuseProperties"));
-                        resultSet.addElement(LookupElementBuilder.create("ReusePropertiesNoArrays"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsName"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsType"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValue"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueAlignment"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueToVfeiText"));
-                        resultSet.addElement(LookupElementBuilder.create("SecsValueWidth"));
-                        resultSet.addElement(LookupElementBuilder.create("SendAsList"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiName"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiNameTemplateNames"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiQualifier"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiType"));
-                        resultSet.addElement(LookupElementBuilder.create("VfeiValue"));
-                        resultSet.addElement(LookupElementBuilder.create("WrapInList"));
+                        resultSet.addElement(LookupElementBuilder.create("AllowedSecsItemValues=\"\"")
+                                .withPresentableText("AllowedSecsItemValues")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("CheckAck=\"\"")
+                                .withPresentableText("CheckAck")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("Disabled=\"\"")
+                                .withPresentableText("Disabled")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("EventLevel8=\"\"")
+                                .withPresentableText("EventLevel8")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("IsTemplate=\"\"")
+                                .withPresentableText("IsTemplate")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceItems=\"\"")
+                                .withPresentableText("ReplaceItems")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplaceVfeiName=\"\"")
+                                .withPresentableText("ReplaceVfeiName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReplyMatch=\"\"")
+                                .withPresentableText("ReplyMatch")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReuseProperties=\"\"")
+                                .withPresentableText("ReuseProperties")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("ReusePropertiesNoArrays=\"\"")
+                                .withPresentableText("ReusePropertiesNoArrays")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsItemsToCheck=\"\"")
+                                .withPresentableText("SecsItemsToCheck")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsName=\"\"")
+                                .withPresentableText("SecsName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsType=\"\"")
+                                .withPresentableText("SecsType")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValue=\"\"")
+                                .withPresentableText("SecsValue")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueAlignment=\"\"")
+                                .withPresentableText("SecsValueAlignment")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueToVfeiText=\"\"")
+                                .withPresentableText("SecsValueToVfeiText")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SecsValueWidth=\"\"")
+                                .withPresentableText("SecsValueWidth")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("SendAsList=\"\"")
+                                .withPresentableText("SendAsList")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiName=\"\"")
+                                .withPresentableText("VfeiName")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiNameTemplateNames=\"\"")
+                                .withPresentableText("VfeiNameTemplateNames")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiQualifier=\"\"")
+                                .withPresentableText("VfeiQualifier")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiType=\"\"")
+                                .withPresentableText("VfeiType")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("VfeiValue=\"\"")
+                                .withPresentableText("VfeiValue")
+                                .withTypeText("Property"));
+                        resultSet.addElement(LookupElementBuilder.create("WrapInList=\"\"")
+                                .withPresentableText("WrapInList")
+                                .withTypeText("Property"));
                     }
                 }
         );
@@ -145,17 +240,48 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("F4"));
-                        resultSet.addElement(LookupElementBuilder.create("F8"));
-                        resultSet.addElement(LookupElementBuilder.create("I1"));
-                        resultSet.addElement(LookupElementBuilder.create("I2"));
-                        resultSet.addElement(LookupElementBuilder.create("I4"));
-                        resultSet.addElement(LookupElementBuilder.create("I8"));
-                        resultSet.addElement(LookupElementBuilder.create("U1"));
-                        resultSet.addElement(LookupElementBuilder.create("U2"));
-                        resultSet.addElement(LookupElementBuilder.create("U4"));
-                        resultSet.addElement(LookupElementBuilder.create("U8"));
-                        //resultSet.addElement(LookupElementBuilder.create("Boolean"));
+                        resultSet.addElement(LookupElementBuilder.create("L\n>")
+                                .withPresentableText("L")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("V>")
+                                .withPresentableText("V")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("A>")
+                                .withPresentableText("A")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("B>")
+                                .withPresentableText("B")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("F4>")
+                                .withPresentableText("F4")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("F8>")
+                                .withPresentableText("F8")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("I1>")
+                                .withPresentableText("I1")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("I2>")
+                                .withPresentableText("I2")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("I4>")
+                                .withPresentableText("I4")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("I8>")
+                                .withPresentableText("I8")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("U1>")
+                                .withPresentableText("U1")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("U2>")
+                                .withPresentableText("U2")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("U4>")
+                                .withPresentableText("U4")
+                                .withTypeText("Type"));
+                        resultSet.addElement(LookupElementBuilder.create("U8>")
+                                .withPresentableText("U8")
+                                .withTypeText("Type"));
                     }
                 }
         );
@@ -198,10 +324,12 @@ public class XCSCompletionContributor extends CompletionContributor {
                                 element.getNode().getElementType().toString().equals("XCSTokenType.PROPERTY_VALUE") &&
                                 element.getNode().getTreeParent().getElementType().toString().equals("PROPERTY_")){
                             XCSProperty_ e = (XCSProperty_) element.getNode().getTreeParent().getPsi();
-                            Object[] result = new LookupElement[0];
-                            result = e.getReference().getVariants();
-                            for (Object LUElement : result){
-                                resultSet.addElement((LookupElement) LUElement);
+                            if(e.getProp().equals("VfeiName")){
+                                Object[] result;
+                                result = e.getReference().getVariants();
+                                for (Object LUElement : result){
+                                    resultSet.addElement((LookupElement) LUElement);
+                                }
                             }
                         }
                     }

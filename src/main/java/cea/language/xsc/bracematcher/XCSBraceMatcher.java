@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public class XCSBraceMatcher implements PairedBraceMatcher {
 
     private static final BracePair[] PAIRS = new BracePair[]{
-            new BracePair(XCSTypes.CORE_START, XCSTypes.CORE_END, false),
+            new BracePair(XCSTypes.CORE_START, XCSTypes.CORE_END, true),
             new BracePair(XCSTypes.PROPERTY_START, XCSTypes.PROPERTY_END, false)
     };
 
@@ -22,7 +22,7 @@ public class XCSBraceMatcher implements PairedBraceMatcher {
 
     @Override
     public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType t) {
-        return false;
+        return true;
     }
 
     @Override
