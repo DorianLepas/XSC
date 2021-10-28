@@ -70,5 +70,6 @@
     <lang.formatter language="SML"
                     implementationClass="cea.language.sml.formatter.SmlFormattingModelBuilder"/>
     <lang.commenter language="SML" implementationClass="cea.language.sml.commenter.SmlCommenter"/>
+    <lang.braceMatcher language="SML" implementationClass="cea.language.sml.bracematcher.SmlBraceMatcher"/>
   </extensions>
 </idea-plugin>
