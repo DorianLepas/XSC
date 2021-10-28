@@ -27,6 +27,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
+        // Search the reference in file collection_events
         if(type.equals("CEID")) {
             final List<XCSCeProperty_> properties = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project, value);
             List<ResolveResult> results = new ArrayList<>();
@@ -35,6 +36,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
             }
             return results.toArray(new ResolveResult[results.size()]);
         }
+        // Search the reference in file data_variables
         if(type.equals("DVID")) {
             final List<XCSDvProperty_> properties = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project, value);
             List<ResolveResult> results = new ArrayList<>();
@@ -43,6 +45,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
             }
             return results.toArray(new ResolveResult[results.size()]);
         }
+        // Search the reference in file constants
         if(type.equals("ECID")) {
             final List<XCSEcProperty_> properties = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project, value);
             List<ResolveResult> results = new ArrayList<>();
@@ -51,6 +54,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
             }
             return results.toArray(new ResolveResult[results.size()]);
         }
+        // Search the reference in file status_variables
         if(type.equals("SVID")) {
             final List<XCSSvProperty_> properties = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project, value);
             List<ResolveResult> results = new ArrayList<>();
@@ -59,6 +63,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
             }
             return results.toArray(new ResolveResult[results.size()]);
         }
+        // Search in all the files
         if(type.equals("")){
             List<ResolveResult> results = new ArrayList<>();
 
@@ -98,7 +103,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
     public Object @NotNull [] getVariants() {
         Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
-
+        // Create LookUpElement with element of XCSCeProperty_
         List<XCSCeProperty_> propertiesCe = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project);
         for (final XCSCeProperty_ property : propertiesCe) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
@@ -110,7 +115,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
                 );
             }
         }
-
+        // Create LookUpElement with element of XCSDvProperty_
         List<XCSDvProperty_> propertiesDv = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project);
         for (final XCSDvProperty_ property : propertiesDv) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
@@ -122,7 +127,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
                 );
             }
         }
-
+        // Create LookUpElement with element of XCSEcProperty_
         List<XCSEcProperty_> propertiesEc = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project);
         for (final XCSEcProperty_ property : propertiesEc) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
@@ -134,7 +139,7 @@ public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPol
                 );
             }
         }
-
+        // Create LookUpElement with element of XCSSvProperty_
         List<XCSSvProperty_> propertiesSv = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project);
         for (final XCSSvProperty_ property : propertiesSv) {
             if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {

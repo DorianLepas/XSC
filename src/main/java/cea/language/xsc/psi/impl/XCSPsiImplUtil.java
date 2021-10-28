@@ -54,6 +54,7 @@ public class XCSPsiImplUtil {
         PsiElement valueNode =  element.getNode().getPsi().getParent();
         if (valueNode != null) {
             valueNode = valueNode.getPrevSibling();
+            // Search for a Predefined name
             while (!valueNode.getText().equals("<")) {
                 if (valueNode.getText().equals("CEID") || valueNode.getText().equals("DVID") || valueNode.getText().equals("ECID") || valueNode.getText().equals("SVID")) {
                     return valueNode.getText();

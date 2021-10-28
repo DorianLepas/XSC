@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public class XCSCompletionContributor extends CompletionContributor {
 
     public XCSCompletionContributor() {
+        // Property name completion after { (=first property)
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf("{"),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -96,6 +97,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
+        // Property name completion after an other property (!=first property)
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.PROPERTY_VALUE)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -177,6 +179,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
+        // Standart section blocks completion
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(XCSTypes.FUNCTION_NAME).afterSibling(PlatformPatterns.psiElement().whitespace()),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -234,7 +237,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
-
+        // Type completion
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.CORE_START)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -286,6 +289,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
+        // Predefined Names completion after ASCII Types
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.ASCII_TYPE)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -300,6 +304,7 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
+        // Predefined Names completion after Types
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeaf(PlatformPatterns.psiElement(XCSTypes.VARIABLE_TYPE)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
@@ -314,19 +319,22 @@ public class XCSCompletionContributor extends CompletionContributor {
                 }
         );
 
+        // Property value completion with reference (with getVariants())
         extend(CompletionType.BASIC, PlatformPatterns.psiElement().withLanguage(XCSLanguage.INSTANCE),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         PsiElement element = parameters.getOriginalPosition();
+                        // Check if the element is an instance of XCSProperty_
                         if ( element != null &&
                                 element.getNode().getElementType().toString().equals("XCSTokenType.PROPERTY_VALUE") &&
                                 element.getNode().getTreeParent().getElementType().toString().equals("PROPERTY_")){
                             XCSProperty_ e = (XCSProperty_) element.getNode().getTreeParent().getPsi();
+                            // Check if the property name is VfeiName
                             if(e.getProp().equals("VfeiName")){
-                                Object[] result;
-                                result = e.getReference().getVariants();
+                                // Search for the element to complete with
+                                Object[] result = e.getReference().getVariants();
                                 for (Object LUElement : result){
                                     resultSet.addElement((LookupElement) LUElement);
                                 }

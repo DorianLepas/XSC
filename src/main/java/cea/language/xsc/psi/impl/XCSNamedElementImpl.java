@@ -16,6 +16,7 @@ public abstract class XCSNamedElementImpl extends ASTWrapperPsiElement implement
     @Override
     public PsiReference getReference() {
         PsiReference[] referencesFromProviders = ReferenceProvidersRegistry.getReferencesFromProviders(this);
+        // Check if the element has exactly 1 reference
         if (referencesFromProviders.length == 1)
             return referencesFromProviders[0];
         else
@@ -25,6 +26,7 @@ public abstract class XCSNamedElementImpl extends ASTWrapperPsiElement implement
     @NotNull
     @Override
     public PsiReference @NotNull [] getReferences() {
+        // Get all the element references
         return ReferenceProvidersRegistry.getReferencesFromProviders(this);
     }
 

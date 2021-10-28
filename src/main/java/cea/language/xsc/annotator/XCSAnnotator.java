@@ -21,7 +21,9 @@ public class XCSAnnotator implements Annotator {
             return;
         }
 
+        // Check if the element has a reference
         if (element.getReference().resolve() == null) {
+            // Create a WARNING if the element has 0 or multiple references
             HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
                     .withFix(new XCSCreatePropertyQuickFix(((XCSProperty_) element).getValue(), element));
             HolderCreation.create();

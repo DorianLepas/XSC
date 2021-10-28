@@ -57,36 +57,32 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
             Collection<VirtualFile> virtualFiles =
                     FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
             String section = getType();
+            // Search the file where to create the property
             for (VirtualFile virtualFile : virtualFiles) {
                 XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
                 if (xcsFile != null && (xcsFile.getContainingDirectory() == file.getContainingDirectory())) {
+                    // Create Property in collection_events file
                     if (section.equals("CEID") && xcsFile.getName().equals("collection_events.xsc")) {
                         createProperty(project, xcsFile.getVirtualFile());
                         return;
                     }
+                    // Create Property in data_variables file
                     if (section.equals("DVID") && xcsFile.getName().equals("data_variables.xsc")) {
                         createProperty(project, xcsFile.getVirtualFile());
                         return;
                     }
+                    // Create Property in constants file
                     if (section.equals("ECID") && xcsFile.getName().equals("constants.xsc")) {
                         createProperty(project, xcsFile.getVirtualFile());
                         return;
                     }
+                    // Create Property in status_variables file
                     if (section.equals("SVID") && xcsFile.getName().equals("status_variables.xsc")) {
                         createProperty(project, xcsFile.getVirtualFile());
                         return;
                     }
                 }
             }
-            /*
-            final FileChooserDescriptor descriptor =
-                    FileChooserDescriptorFactory.createSingleFileDescriptor(XCSFileType.INSTANCE);
-            descriptor.setRoots(ProjectUtil.guessProjectDir(project));
-            final VirtualFile file1 = FileChooser.chooseFile(descriptor, project, null);
-            if (file1 != null) {
-                createProperty(project, file1);
-            }
-            */
         });
     }
 
@@ -107,6 +103,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
             ASTNode lastChildNode = null;
             VirtualFile dir = Objects.requireNonNull(PsiManager.getInstance(project).findFile(file)).getContainingDirectory().getVirtualFile();
             String section = getType();
+            // Create a CEID property
             if(section.equals("CEID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_event.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
@@ -126,6 +123,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 XCSElementFactory.createPropertyCe(Objects.requireNonNull(lastChildNode), "VfeiName", key);
             }
+            // Create a SVID property
             if(section.equals("SVID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("status_variables.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
@@ -145,6 +143,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 XCSElementFactory.createPropertySv(Objects.requireNonNull(lastChildNode), "VfeiName", key);
             }
+            // Create a ECID property
             if(section.equals("ECID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("equipment_constants.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
@@ -164,6 +163,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 XCSElementFactory.createPropertyEc(Objects.requireNonNull(lastChildNode), "VfeiName", key);
             }
+            // Create a DVID property
             if(section.equals("DVID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("data_variables.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
@@ -183,6 +183,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 XCSElementFactory.createPropertyDv(Objects.requireNonNull(lastChildNode), "VfeiName", key);
             }
+            // Move to where the property has been created
             ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
             Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
         });

@@ -38,6 +38,7 @@ public class XCSBlock extends AbstractBlock {
 
     @Override
     public Indent getIndent() {
+        // Search for the Blocks not to indent
         if(isLeaf() ||
                 isAtRootFile() ||
                 (myNode.getPsi() instanceof XCSFunctionCore && (myNode.getTreeParent().getPsi() instanceof XCSFunctions||myNode.getTreeParent().getPsi() instanceof XCSStandartSections)) ||
