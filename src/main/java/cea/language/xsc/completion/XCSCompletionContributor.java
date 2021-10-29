@@ -243,34 +243,34 @@ public class XCSCompletionContributor extends CompletionContributor {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        resultSet.addElement(LookupElementBuilder.create("L\n>")
+                        resultSet.addElement(LookupElementBuilder.create("L")
                                 .withPresentableText("L")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("V>")
+                        resultSet.addElement(LookupElementBuilder.create("V")
                                 .withPresentableText("V")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("A>")
+                        resultSet.addElement(LookupElementBuilder.create("A")
                                 .withPresentableText("A")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("B>")
+                        resultSet.addElement(LookupElementBuilder.create("B")
                                 .withPresentableText("B")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("F4>")
+                        resultSet.addElement(LookupElementBuilder.create("F4")
                                 .withPresentableText("F4")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("F8>")
+                        resultSet.addElement(LookupElementBuilder.create("F8")
                                 .withPresentableText("F8")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("I1>")
+                        resultSet.addElement(LookupElementBuilder.create("I1")
                                 .withPresentableText("I1")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("I2>")
+                        resultSet.addElement(LookupElementBuilder.create("I2")
                                 .withPresentableText("I2")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("I4>")
+                        resultSet.addElement(LookupElementBuilder.create("I4")
                                 .withPresentableText("I4")
                                 .withTypeText("Type"));
-                        resultSet.addElement(LookupElementBuilder.create("I8>")
+                        resultSet.addElement(LookupElementBuilder.create("I8")
                                 .withPresentableText("I8")
                                 .withTypeText("Type"));
                         resultSet.addElement(LookupElementBuilder.create("U1>")
