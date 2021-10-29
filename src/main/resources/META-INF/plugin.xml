@@ -73,5 +73,6 @@
     <lang.braceMatcher language="SML" implementationClass="cea.language.sml.bracematcher.SmlBraceMatcher"/>
     <completion.contributor language="SML"
                             implementationClass="cea.language.sml.completion.SmlCompletionContributor"/>
+    <psi.referenceContributor implementation="cea.language.sml.reference.SmlReferenceContributor"/>
   </extensions>
 </idea-plugin>

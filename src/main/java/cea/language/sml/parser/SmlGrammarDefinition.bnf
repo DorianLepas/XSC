@@ -12,6 +12,8 @@
   elementTypeClass="cea.language.sml.psi.SmlElementType"
   tokenTypeClass="cea.language.sml.psi.SmlTokenType"
 
+  psiImplUtilClass="cea.language.sml.psi.impl.SmlPsiImplUtil"
+
   pin=1
 }
 
@@ -76,7 +78,10 @@ elseBlock ::= ELSE beginBlock instructions* endBlock
 
 
 /* Règle des définitions d'événements */
-eventsDefinition ::= EVENT_NAME (EVENT_NAME_SEPARATOR EVENT_NAME)* | ALL_EVENTS {name="Events definition"}
+eventsDefinition ::= eventsValue (EVENT_NAME_SEPARATOR eventsValue)* | ALL_EVENTS {name="Events definition"}
+eventsValue ::= EVENT_NAME {name="Events Value" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
+                                                implements="cea.language.sml.psi.SmlNamedElement"
+                                                methods=[getKey getValue getName setName getNameIdentifier]}
 
 
 /* Règle des conditions pour un bloc de condition */

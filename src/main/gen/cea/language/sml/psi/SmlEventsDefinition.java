@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmlEventsDefinition extends PsiElement {
 
+  @NotNull
+  List<SmlEventsValue> getEventsValueList();
+
 }

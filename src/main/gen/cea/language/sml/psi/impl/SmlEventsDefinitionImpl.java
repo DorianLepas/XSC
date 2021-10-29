@@ -27,4 +27,10 @@ public class SmlEventsDefinitionImpl extends ASTWrapperPsiElement implements Sml
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmlEventsValue> getEventsValueList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlEventsValue.class);
+  }
+
 }

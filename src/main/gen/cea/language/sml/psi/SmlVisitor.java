@@ -59,6 +59,10 @@ public class SmlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitEventsValue(@NotNull SmlEventsValue o) {
+    visitNamedElement(o);
+  }
+
   public void visitExecEndInstruction(@NotNull SmlExecEndInstruction o) {
     visitPsiElement(o);
   }
@@ -116,6 +120,10 @@ public class SmlVisitor extends PsiElementVisitor {
   }
 
   public void visitTraceMessage(@NotNull SmlTraceMessage o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull SmlNamedElement o) {
     visitPsiElement(o);
   }
 

@@ -3,9 +3,12 @@ package cea.language.sml.annotator;
 import cea.language.sml.psi.*;
 import cea.language.sml.psi.impl.SmlScriptBlockImpl;
 import cea.language.sml.psi.impl.SmlStateBlockImpl;
+import cea.language.xsc.quickfix.XCSCreatePropertyQuickFix;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
@@ -14,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SmlAnnotator implements Annotator
 {
+  AnnotationBuilder HolderCreation;
   // Inner classes
 
   // Instance fields
@@ -46,6 +50,16 @@ public class SmlAnnotator implements Annotator
     }
     else if(element instanceof SmlBindingBlock) {
       checkOneBindPerLine(element, holder);
+    }
+
+    if(element instanceof SmlEventsValue) {
+      // Check if the element has a reference
+      if (element.getReference().resolve() == null) {
+        // Create a WARNING if the element has 0 or multiple references
+        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
+                .withFix(new XCSCreatePropertyQuickFix(((SmlEventsValue) element).getValue(), element));
+        HolderCreation.create();
+      }
     }
 
     previousElement = element;

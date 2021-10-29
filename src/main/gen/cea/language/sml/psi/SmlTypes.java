@@ -20,6 +20,7 @@ public interface SmlTypes {
   IElementType ELSE_IF_BLOCK = new SmlElementType("ELSE_IF_BLOCK");
   IElementType ENTER_BLOCK = new SmlElementType("ENTER_BLOCK");
   IElementType EVENTS_DEFINITION = new SmlElementType("EVENTS_DEFINITION");
+  IElementType EVENTS_VALUE = new SmlElementType("EVENTS_VALUE");
   IElementType EVENT_BLOCK = new SmlElementType("EVENT_BLOCK");
   IElementType EXEC_END_INSTRUCTION = new SmlElementType("EXEC_END_INSTRUCTION");
   IElementType EXIT_BLOCK = new SmlElementType("EXIT_BLOCK");
@@ -127,6 +128,9 @@ public interface SmlTypes {
       }
       else if (type == EVENTS_DEFINITION) {
         return new SmlEventsDefinitionImpl(node);
+      }
+      else if (type == EVENTS_VALUE) {
+        return new SmlEventsValueImpl(node);
       }
       else if (type == EVENT_BLOCK) {
         return new SmlEventBlockImpl(node);

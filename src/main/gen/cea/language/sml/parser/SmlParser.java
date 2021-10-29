@@ -420,7 +420,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // EVENT_NAME (EVENT_NAME_SEPARATOR EVENT_NAME)* | ALL_EVENTS
+  // eventsValue (EVENT_NAME_SEPARATOR eventsValue)* | ALL_EVENTS
   public static boolean eventsDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "eventsDefinition")) return false;
     if (!nextTokenIs(b, "<Events definition>", ALL_EVENTS, EVENT_NAME)) return false;
@@ -432,19 +432,19 @@ public class SmlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // EVENT_NAME (EVENT_NAME_SEPARATOR EVENT_NAME)*
+  // eventsValue (EVENT_NAME_SEPARATOR eventsValue)*
   private static boolean eventsDefinition_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "eventsDefinition_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeToken(b, EVENT_NAME);
+    r = eventsValue(b, l + 1);
     p = r; // pin = 1
     r = r && eventsDefinition_0_1(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // (EVENT_NAME_SEPARATOR EVENT_NAME)*
+  // (EVENT_NAME_SEPARATOR eventsValue)*
   private static boolean eventsDefinition_0_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "eventsDefinition_0_1")) return false;
     while (true) {
@@ -455,15 +455,28 @@ public class SmlParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // EVENT_NAME_SEPARATOR EVENT_NAME
+  // EVENT_NAME_SEPARATOR eventsValue
   private static boolean eventsDefinition_0_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "eventsDefinition_0_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = consumeTokens(b, 1, EVENT_NAME_SEPARATOR, EVENT_NAME);
+    r = consumeToken(b, EVENT_NAME_SEPARATOR);
     p = r; // pin = 1
+    r = r && eventsValue(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
+  }
+
+  /* ********************************************************** */
+  // EVENT_NAME
+  public static boolean eventsValue(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "eventsValue")) return false;
+    if (!nextTokenIs(b, "<Events Value>", EVENT_NAME)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, EVENTS_VALUE, "<Events Value>");
+    r = consumeToken(b, EVENT_NAME);
+    exit_section_(b, l, m, r, false, null);
+    return r;
   }
 
   /* ********************************************************** */

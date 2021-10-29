@@ -1,8 +1,10 @@
 package cea.language.sml.completion;
 
+import cea.language.sml.psi.SmlEventsValue;
 import cea.language.sml.psi.SmlFile;
 import cea.language.sml.psi.SmlTypes;
 import com.intellij.codeInsight.completion.*;
+import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
@@ -172,6 +174,18 @@ public class SmlCompletionContributor extends CompletionContributor {
                                     .withTypeText("Block Keyword"));
                             resultSet.addElement(LookupElementBuilder.create("script")
                                     .withTypeText("Block Keyword"));
+                        }
+
+                        // Check if the element is an instance of SmlEventsValue
+                        if ( element != null &&
+                                element.getNode().getElementType().toString().equals("SmlTokenType.EVENT_NAME") &&
+                                element.getNode().getTreeParent().getElementType().toString().equals("EventsDefinition")){
+                            SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
+                            // Search for the element to complete with
+                            Object[] result = e.getReference().getVariants();
+                            for (Object LUElement : result){
+                                resultSet.addElement((LookupElement) LUElement);
+                            }
                         }
                     }
                 }
