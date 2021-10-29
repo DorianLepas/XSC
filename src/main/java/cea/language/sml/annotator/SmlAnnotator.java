@@ -52,7 +52,8 @@ public class SmlAnnotator implements Annotator
       checkOneBindPerLine(element, holder);
     }
 
-    if(element instanceof SmlEventsValue) {
+    // Check if we're in an EventBlock
+    if(element instanceof SmlEventsValue && element.getParent().getParent() instanceof SmlEventBlock) {
       // Check if the element has a reference
       if (element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
