@@ -57,8 +57,16 @@ public class SmlAnnotator implements Annotator
       // Check if the element has a reference
       if (element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
-        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
-                .withFix(new XCSCreatePropertyQuickFix(((SmlEventsValue) element).getValue(), element));
+        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times");
+        HolderCreation.create();
+      }
+    }
+
+    if(element instanceof SmlCallJavaFunctionInstruction) {
+      // Check if the element has a reference
+      if (element.getReference().resolve() == null) {
+        // Create a WARNING if the element has 0 or multiple references
+        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function");
         HolderCreation.create();
       }
     }

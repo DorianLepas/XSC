@@ -1,5 +1,6 @@
 package cea.language.sml.reference;
 
+import cea.language.sml.psi.SmlCallJavaFunctionInstruction;
 import cea.language.sml.psi.SmlEventsValue;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
@@ -20,6 +21,18 @@ public class SmlReferenceContributor extends PsiReferenceContributor {
                         SmlEventsValue e = (SmlEventsValue) element;
                         return new PsiReference[]{new SmlEventReference(e,
                                 new TextRange(e.getText().length()-e.getValue().length(),e.getText().length()))};
+                    }
+                });
+
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(SmlCallJavaFunctionInstruction.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
+                                                                           @NotNull ProcessingContext context) {
+                        SmlCallJavaFunctionInstruction e = (SmlCallJavaFunctionInstruction) element;
+                        return new PsiReference[]{new SmlFunctionReference(e,
+                                new TextRange(e.getText().length()-e.getLastChild().getText().length(),e.getText().length()-(e.getLastChild().getText().length()-e.getValue().length())))};
                     }
                 });
     }

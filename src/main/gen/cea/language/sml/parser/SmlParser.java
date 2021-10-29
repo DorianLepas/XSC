@@ -184,9 +184,9 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // CALL JAVA_FUNCTION_CALL
   public static boolean callJavaFunctionInstruction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "callJavaFunctionInstruction")) return false;
-    if (!nextTokenIs(b, CALL)) return false;
+    if (!nextTokenIs(b, "<Call Java Function>", CALL)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, CALL_JAVA_FUNCTION_INSTRUCTION, null);
+    Marker m = enter_section_(b, l, _NONE_, CALL_JAVA_FUNCTION_INSTRUCTION, "<Call Java Function>");
     r = consumeTokens(b, 1, CALL, JAVA_FUNCTION_CALL);
     p = r; // pin = 1
     exit_section_(b, l, m, r, p, null);

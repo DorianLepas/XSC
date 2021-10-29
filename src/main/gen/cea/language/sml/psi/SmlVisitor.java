@@ -24,7 +24,7 @@ public class SmlVisitor extends PsiElementVisitor {
   }
 
   public void visitCallJavaFunctionInstruction(@NotNull SmlCallJavaFunctionInstruction o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitConditionBlock(@NotNull SmlConditionBlock o) {

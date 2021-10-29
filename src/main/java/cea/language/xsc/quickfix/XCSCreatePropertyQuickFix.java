@@ -47,7 +47,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
 
     @Override
     public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
-        return true;
+        return file instanceof XCSFile;
     }
 
     @Override
