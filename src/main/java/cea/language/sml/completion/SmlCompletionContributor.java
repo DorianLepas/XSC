@@ -87,7 +87,7 @@ public class SmlCompletionContributor extends CompletionContributor {
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
                         PsiElement element = parameters.getOriginalPosition();
-                        if (!(element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element)) {
+                        if (element != null && !(element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element)) {
                             // Root and inside Block Keywords
                             resultSet.addElement(LookupElementBuilder.create("state")
                                     .withTypeText("Block Keyword"));
@@ -151,76 +151,6 @@ public class SmlCompletionContributor extends CompletionContributor {
                 }
         );
 
-        // After Intruction
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(),
-                new CompletionProvider<CompletionParameters>() {
-                    public void addCompletions(@NotNull CompletionParameters parameters,
-                                               @NotNull ProcessingContext context,
-                                               @NotNull CompletionResultSet resultSet) {
-                        PsiElement element = parameters.getOriginalPosition();
-                        if (!(element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element)) {
-                            // Root and inside Block Keywords
-                            resultSet.addElement(LookupElementBuilder.create("state")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("alias")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("alarm")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("event")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("trace")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("script")
-                                    .withTypeText("Block Keyword"));
-                            // Only inside Block Keywords
-                            resultSet.addElement(LookupElementBuilder.create("binding")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("enter")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("exit")
-                                    .withTypeText("Block Keyword"));
-                            resultSet.addElement(LookupElementBuilder.create("option")
-                                    .withTypeText("Block Keyword"));
-                            // Only inside Block Instructions
-                            resultSet.addElement(LookupElementBuilder.create("goto state")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("process state")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("call")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("thread state")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("thread_end")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("exec_end")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("consume_event")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("MESSAGE")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("DEBUG")
-                                    .withTypeText("Instruction"));
-                            resultSet.addElement(LookupElementBuilder.create("WARNING")
-                                    .withTypeText("Instruction"));
-                            // Only inside Block Instruction Blocks
-                            resultSet.addElement(LookupElementBuilder.create("condition")
-                                    .withTypeText("Instruction Block"));
-                            resultSet.addElement(LookupElementBuilder.create("if ()")
-                                    .withPresentableText("if")
-                                    .withTypeText("Instruction Block"));
-                            resultSet.addElement(LookupElementBuilder.create("else if ()")
-                                    .withPresentableText("else if")
-                                    .withTypeText("Instruction Block"));
-                            resultSet.addElement(LookupElementBuilder.create("else")
-                                    .withTypeText("Instruction Block"));
-                            resultSet.addElement(LookupElementBuilder.create("script")
-                                    .withTypeText("Instruction Block"));
-                            resultSet.addElement(LookupElementBuilder.create("binding")
-                                    .withTypeText("Instruction Block"));
-                        }
-                    }
-                }
-        );
 
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(),
                 new CompletionProvider<CompletionParameters>() {
@@ -229,7 +159,7 @@ public class SmlCompletionContributor extends CompletionContributor {
                                                @NotNull CompletionResultSet resultSet) {
                         PsiElement element = parameters.getOriginalPosition();
                         // Start a new block
-                        if (element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element){
+                        if (element != null && element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element) {
                             resultSet.addElement(LookupElementBuilder.create("state")
                                     .withTypeText("Block Keyword"));
                             resultSet.addElement(LookupElementBuilder.create("alias")
