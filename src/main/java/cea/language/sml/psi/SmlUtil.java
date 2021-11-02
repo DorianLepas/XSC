@@ -5,9 +5,7 @@ import cea.language.xsc.psi.*;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiJavaFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -66,27 +64,65 @@ public class SmlUtil {
         return result;
     }
 
-    public static  List<PsiMethod> findFunctions(SmlFile file, Project project, String value){
+    public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value) {
         List<PsiMethod> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
             PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
-            if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")){
-                System.out.println(file.getContainingDirectory().getParentDirectory().getParentDirectory().getName());
-                System.out.println(javaFile.getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getName());
-                if(file.getContainingDirectory().getParentDirectory().getParentDirectory().getName().equals("AEQC") && javaFile.getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getName().equals("AEQCGenerator")) {
-                    Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
-                    if (properties.size() != 0) {
-                        for (PsiMethod property : properties) {
-                            if (value.substring(value.lastIndexOf(".") + 1, value.length()).equals(property.getName())) {
-                                result.add(property);
-                            }
+            String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
+            if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
+                PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
+                while (currentJavaFilePath != null) {
+                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
+                        AddFunctionProperties(value, javaFile, result);
+                        break;
+                    }
+                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
+                        AddFunctionProperties(value, javaFile, result);
+                        break;
+                    }
+                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
+                        AddFunctionProperties(value, javaFile, result);
+                        break;
+                    }
+                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
+                        AddFunctionProperties(value, javaFile, result);
+                        SearchInExtends(value, javaFile, project, result);
+                        break;
+                    }
+                    currentJavaFilePath = currentJavaFilePath.getParentDirectory();
+                }
+            }
+        }
+        return result;
+    }
+
+    private static void AddFunctionProperties(String value, PsiJavaFile javaFile, List<PsiMethod> result){
+        Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
+        if (properties.size() != 0) {
+            for (PsiMethod property : properties) {
+                if (value.substring(value.lastIndexOf(".") + 1).equals(property.getName())) {
+                    result.add(property);
+                }
+            }
+        }
+    }
+
+    private static void SearchInExtends(String value, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
+        Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
+        if (extendsClass.size() != 0) {
+            for (PsiClass extend : extendsClass) {
+                PsiElement[] children = extend.getChildren();
+                for(PsiElement child : children){
+                    if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
+                        if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
+                            PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
+                            AddFunctionProperties(value, extendFile, result);
                         }
                     }
                 }
             }
         }
-        return result;
     }
 
 }
