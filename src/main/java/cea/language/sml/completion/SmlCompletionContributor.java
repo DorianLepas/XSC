@@ -1,5 +1,6 @@
 package cea.language.sml.completion;
 
+import cea.language.sml.psi.SmlCallJavaFunctionInstruction;
 import cea.language.sml.psi.SmlEventsValue;
 import cea.language.sml.psi.SmlFile;
 import cea.language.sml.psi.SmlTypes;
@@ -181,6 +182,17 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 element.getNode().getElementType().toString().equals("SmlTokenType.EVENT_NAME") &&
                                 element.getNode().getTreeParent().getElementType().toString().equals("EventsDefinition")){
                             SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
+                            // Search for the element to complete with
+                            Object[] result = e.getReference().getVariants();
+                            for (Object LUElement : result){
+                                resultSet.addElement((LookupElement) LUElement);
+                            }
+                        }
+                        // Check if the element is an instance of SmlCallJavaFunctionInstruction
+                        if ( element != null &&
+                                element.getNode().getElementType() == SmlTypes.JAVA_FUNCTION_CALL &&
+                                element.getNode().getTreeParent().getPsi() instanceof SmlCallJavaFunctionInstruction){
+                            SmlCallJavaFunctionInstruction e = (SmlCallJavaFunctionInstruction) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
                             Object[] result = e.getReference().getVariants();
                             for (Object LUElement : result){

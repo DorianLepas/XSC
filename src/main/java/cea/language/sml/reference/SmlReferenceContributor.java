@@ -31,6 +31,7 @@ public class SmlReferenceContributor extends PsiReferenceContributor {
                     public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
                                                                            @NotNull ProcessingContext context) {
                         SmlCallJavaFunctionInstruction e = (SmlCallJavaFunctionInstruction) element;
+                        if (e.getValue() == null) {return PsiReference.EMPTY_ARRAY;}
                         return new PsiReference[]{new SmlFunctionReference(e,
                                 new TextRange(e.getText().length()-e.getLastChild().getText().length(),e.getText().length()-(e.getLastChild().getText().length()-e.getValue().length())))};
                     }

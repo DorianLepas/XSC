@@ -6,6 +6,8 @@ import cea.language.xsc.filetype.XCSIcons;
 import cea.language.xsc.psi.XCSCeProperty_;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
+import com.intellij.icons.AllIcons;
+import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -29,9 +31,11 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
         Project project = myElement.getProject();
         List<ResolveResult> results = new ArrayList<>();
         // Search in the project java file
-        final List<PsiMethod> properties = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project, value);
-        for (PsiMethod property : properties) {
-            results.add(new PsiElementResolveResult(property));
+        if (!value.equals("")) {
+            final List<PsiMethod> properties = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project, value);
+            for (PsiMethod property : properties) {
+                results.add(new PsiElementResolveResult(property));
+            }
         }
         return results.toArray(new ResolveResult[results.size()]);
     }
@@ -47,17 +51,15 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
     public Object @NotNull [] getVariants() {
         Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
-        // Create LookUpElement with element of XCSCeProperty_
-        List<XCSCeProperty_> propertiesCe = SmlUtil.findProperties((SmlFile) myElement.getContainingFile(), project);
-        for (final XCSCeProperty_ property : propertiesCe) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
-                variants.add(LookupElementBuilder
-                        .create(property.getLastChild().getText().replace("\"",""))
-                        .withIcon(XCSIcons.FILE)
-                        .withPresentableText(property.getLastChild().getText().replace("\"",""))
-                        .withTypeText(property.getContainingFile().getName())
-                );
-            }
+        // Create LookUpElement with element of PsiMethod
+        List<PsiMethod> methods = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project);
+        for (final PsiMethod method : methods) {
+            variants.add(LookupElementBuilder
+                    .create(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
+                    .withIcon(AllIcons.FileTypes.JavaClass)
+                    .withPresentableText(method.getName() + method.getParameterList().getText())
+                    .withTypeText(method.getContainingFile().getName())
+            );
         }
         return variants.toArray();
     }

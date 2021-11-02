@@ -63,6 +63,7 @@ public class SmlPsiImplUtil {
     public static String getValue(SmlCallJavaFunctionInstruction element) {
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (valueNode != null) {
+            if (!valueNode.getText().contains("(")) {return "";}
             return valueNode.getText().substring(0,valueNode.getText().lastIndexOf("("));
         } else {
             return null;

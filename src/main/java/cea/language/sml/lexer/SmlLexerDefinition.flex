@@ -70,7 +70,7 @@ OPERATORS_CONDITIONS = ("+"|"-"|"*"|"/"|"&&"|"||")
 COMPARATORS_CONDITIONS = ("=="|"!="|"<="|"<"|">="|">")
 
 /* Appels d'une fonction dans le code Java */
-JAVA_FUNCTION_CALL = [\w]+\.[\w]+"(".*")"
+JAVA_FUNCTION_CALL = [\w]+(\.)*[\w]*("(".*")")*
 
 /* Nom d'un thread */
 THREAD_NAME = [\w]+
