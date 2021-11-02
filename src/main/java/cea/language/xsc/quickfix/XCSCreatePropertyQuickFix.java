@@ -105,7 +105,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
             String section = getType();
             // Create a CEID property
             if(section.equals("CEID")) {
-                XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_event.xsc");
+                XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_events.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
                 for (ASTNode child : children) {
                     if (child.getFirstChildNode() != null) {
@@ -145,7 +145,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
             }
             // Create a ECID property
             if(section.equals("ECID")) {
-                XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("equipment_constants.xsc");
+                XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("constants.xsc");
                 ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
                 for (ASTNode child : children) {
                     if (child.getFirstChildNode() != null) {

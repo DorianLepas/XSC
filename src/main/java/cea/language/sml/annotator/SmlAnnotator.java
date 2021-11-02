@@ -3,6 +3,8 @@ package cea.language.sml.annotator;
 import cea.language.sml.psi.*;
 import cea.language.sml.psi.impl.SmlScriptBlockImpl;
 import cea.language.sml.psi.impl.SmlStateBlockImpl;
+import cea.language.sml.quickfix.SmlCreateEventQuickFix;
+import cea.language.xsc.psi.XCSProperty_;
 import cea.language.xsc.quickfix.XCSCreatePropertyQuickFix;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationBuilder;
@@ -57,7 +59,8 @@ public class SmlAnnotator implements Annotator
       // Check if the element has a reference
       if (element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
-        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times");
+        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
+                .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()));
         HolderCreation.create();
       }
     }
