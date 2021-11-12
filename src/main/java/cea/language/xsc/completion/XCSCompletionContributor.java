@@ -328,8 +328,8 @@ public class XCSCompletionContributor extends CompletionContributor {
                         PsiElement element = parameters.getOriginalPosition();
                         // Check if the element is an instance of XCSProperty_
                         if ( element != null &&
-                                element.getNode().getElementType().toString().equals("XCSTokenType.PROPERTY_VALUE") &&
-                                element.getNode().getTreeParent().getElementType().toString().equals("PROPERTY_")){
+                                element.getNode().getElementType() == XCSTypes.PROPERTY_VALUE &&
+                                element.getNode().getTreeParent().getPsi() instanceof XCSProperty_){
                             XCSProperty_ e = (XCSProperty_) element.getNode().getTreeParent().getPsi();
                             // Check if the property name is VfeiName
                             if(e.getProp().equals("VfeiName")){

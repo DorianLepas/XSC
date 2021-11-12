@@ -1,9 +1,6 @@
 package cea.language.sml.completion;
 
-import cea.language.sml.psi.SmlCallJavaFunctionInstruction;
-import cea.language.sml.psi.SmlEventsValue;
-import cea.language.sml.psi.SmlFile;
-import cea.language.sml.psi.SmlTypes;
+import cea.language.sml.psi.*;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -179,8 +176,8 @@ public class SmlCompletionContributor extends CompletionContributor {
 
                         // Check if the element is an instance of SmlEventsValue
                         if ( element != null &&
-                                element.getNode().getElementType().toString().equals("SmlTokenType.EVENT_NAME") &&
-                                element.getNode().getTreeParent().getElementType().toString().equals("EventsDefinition")){
+                                element.getNode().getElementType() == SmlTypes.EVENT_NAME &&
+                                element.getNode().getTreeParent().getPsi() instanceof SmlEventsDefinition){
                             SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
                             Object[] result = e.getReference().getVariants();
