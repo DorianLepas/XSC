@@ -8,6 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 
 import java.util.*;
@@ -106,20 +107,19 @@ public class SmlUtil {
             if (javaFile != null) {
                 PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
                 while (currentJavaFilePath != null) {
-                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC") && !javaFile.getClass().isInterface()) {
+                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC") && !javaFile.getClass().isInterface()) {
+                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC")) && !javaFile.getClass().isInterface()) {
+                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName()) &&
-                            !javaFile.getClass().isInterface()) {
+                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
                         AddFunctionProperties(javaFile, result);
                         SearchInExtends(javaFile, project, result);
                         break;

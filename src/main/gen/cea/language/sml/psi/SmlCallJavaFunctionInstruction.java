@@ -11,6 +11,10 @@ public interface SmlCallJavaFunctionInstruction extends SmlNamedElement {
 
   String getValue();
 
+  String[] getParametersList();
+
+  int getParametersCount();
+
   String getName();
 
   PsiElement setName(String newName);

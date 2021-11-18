@@ -37,6 +37,16 @@ public class SmlCallJavaFunctionInstructionImpl extends SmlNamedElementImpl impl
   }
 
   @Override
+  public String[] getParametersList() {
+    return SmlPsiImplUtil.getParametersList(this);
+  }
+
+  @Override
+  public int getParametersCount() {
+    return SmlPsiImplUtil.getParametersCount(this);
+  }
+
+  @Override
   public String getName() {
     return SmlPsiImplUtil.getName(this);
   }

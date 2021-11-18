@@ -6,6 +6,10 @@ import cea.language.sml.psi.SmlEventsValue;
 import cea.language.sml.psi.SmlTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SmlPsiImplUtil {
 
@@ -72,6 +76,28 @@ public class SmlPsiImplUtil {
 
     public static String getName(SmlCallJavaFunctionInstruction element) {
         return getValue(element);
+
+    }
+
+    // Return the parameters list of the JavaCall
+    public static String[] getParametersList(SmlCallJavaFunctionInstruction element){
+        ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);;
+        if (valueNode != null) {
+            String parameters = valueNode.getText().substring(valueNode.getText().lastIndexOf("(")+1,valueNode.getText().lastIndexOf(")"));
+            parameters = parameters.replace(" ","");
+            // 0 arg
+            if (parameters.length() == 0){
+                return new String[0];
+            }
+            // 1 or more arg
+            return parameters.split(",");
+        }
+        return new String[0];
+    }
+
+    // Return the number of parameter of the JavaCall
+    public static int getParametersCount(SmlCallJavaFunctionInstruction element){
+        return element.getParametersList().length;
     }
 
     public static PsiElement setName(SmlCallJavaFunctionInstruction element, String newName) {

@@ -111,7 +111,7 @@ processStateInstruction ::= PROCESS_STATE SEPARATOR stateName identificationKey
 // Instrution call
 callJavaFunctionInstruction ::= CALL JAVA_FUNCTION_CALL {name="Call Java Function" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
                                                                                    implements="cea.language.sml.psi.SmlNamedElement"
-                                                                                    methods=[getKey getValue getName setName getNameIdentifier]}
+                                                                                    methods=[getKey getValue getParametersList getParametersCount getName setName getNameIdentifier]}
 
 // Instruction thread_end
 threadEndInstruction ::= THREAD_END

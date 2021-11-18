@@ -4,14 +4,13 @@ import cea.language.sml.psi.*;
 import cea.language.sml.psi.impl.SmlScriptBlockImpl;
 import cea.language.sml.psi.impl.SmlStateBlockImpl;
 import cea.language.sml.quickfix.SmlCreateEventQuickFix;
-import cea.language.xsc.psi.XCSProperty_;
-import cea.language.xsc.quickfix.XCSCreatePropertyQuickFix;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiMethod;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.tree.TokenSet;
@@ -72,10 +71,24 @@ public class SmlAnnotator implements Annotator
         HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function");
         HolderCreation.create();
       }
+      // Check if the function has the good number of arguments
+      else if(((SmlCallJavaFunctionInstruction) element).getParametersCount() != ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()) {
+        // Too much arguments
+        if(((SmlCallJavaFunctionInstruction) element).getParametersCount() > ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()){
+          HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Too many parameters provided");
+          HolderCreation.create();
+        }
+        // Missing arguments
+        if(((SmlCallJavaFunctionInstruction) element).getParametersCount() < ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()){
+          HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Missing parameters");
+          HolderCreation.create();
+        }
+      }
     }
 
     previousElement = element;
   }
+
 
   //Vérfications pour un état
   private void checkState(@NotNull SmlStateBlockImpl state, @NotNull AnnotationHolder holder) {

@@ -2,12 +2,9 @@ package cea.language.sml.reference;
 
 import cea.language.sml.psi.SmlFile;
 import cea.language.sml.psi.SmlUtil;
-import cea.language.xsc.filetype.XCSIcons;
-import cea.language.xsc.psi.XCSCeProperty_;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.icons.AllIcons;
-import com.intellij.lang.java.JavaLanguage;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
@@ -56,7 +53,7 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
         for (final PsiMethod method : methods) {
             variants.add(LookupElementBuilder
                     .create(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
-                    .withIcon(AllIcons.FileTypes.JavaClass)
+                    .withIcon(method.getContainingFile().getIcon(0))
                     .withPresentableText(method.getName() + method.getParameterList().getText())
                     .withTypeText(method.getContainingFile().getName())
             );
