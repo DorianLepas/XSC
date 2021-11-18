@@ -13,12 +13,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XCSReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
+public class XCSPropertyReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
 
     private final String value;
     private final String type;
 
-    public XCSReference(@NotNull PsiElement element, TextRange textRange, String type) {
+    public XCSPropertyReference(@NotNull PsiElement element, TextRange textRange, String type) {
         super(element, textRange);
         value = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
         this.type = type;

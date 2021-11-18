@@ -8,10 +8,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static cea.language.xsc.psi.XCSTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import cea.language.xsc.psi.*;
 
-public class XCSFunctionCoreImpl extends ASTWrapperPsiElement implements XCSFunctionCore {
+public class XCSFunctionCoreImpl extends XCSNamedElementImpl implements XCSFunctionCore {
 
   public XCSFunctionCoreImpl(@NotNull ASTNode node) {
     super(node);
@@ -37,6 +36,36 @@ public class XCSFunctionCoreImpl extends ASTWrapperPsiElement implements XCSFunc
   @Nullable
   public XCSProperty getProperty() {
     return findChildByClass(XCSProperty.class);
+  }
+
+  @Override
+  public String getSF() {
+    return XCSPsiImplUtil.getSF(this);
+  }
+
+  @Override
+  public int getDepth() {
+    return XCSPsiImplUtil.getDepth(this);
+  }
+
+  @Override
+  public String getValue() {
+    return XCSPsiImplUtil.getValue(this);
+  }
+
+  @Override
+  public String getName() {
+    return XCSPsiImplUtil.getName(this);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return XCSPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
+  public PsiElement getNameIdentifier() {
+    return XCSPsiImplUtil.getNameIdentifier(this);
   }
 
 }

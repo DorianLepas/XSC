@@ -5,12 +5,24 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface XCSFunctionCore extends PsiElement {
+public interface XCSFunctionCore extends XCSNamedElement {
 
   @NotNull
   List<XCSFunctionCore> getFunctionCoreList();
 
   @Nullable
   XCSProperty getProperty();
+
+  String getSF();
+
+  int getDepth();
+
+  String getValue();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
 
 }

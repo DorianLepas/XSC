@@ -68,7 +68,7 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitFunctionCore(@NotNull XCSFunctionCore o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitProperty(@NotNull XCSProperty o) {

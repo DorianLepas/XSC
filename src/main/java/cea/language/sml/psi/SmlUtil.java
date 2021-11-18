@@ -70,10 +70,11 @@ public class SmlUtil {
      *
      * @param file    current file
      * @param project current project
-     * @param value   to check
+     * @param value     to check
+     * @param element   to check
      * @return matching properties
      */
-    public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value) {
+    public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value, PsiElement element) {
         List<PsiMethod> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
         for (VirtualFile virtualFile : virtualFiles) {
@@ -82,21 +83,21 @@ public class SmlUtil {
             if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
                 PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
                 while (currentJavaFilePath != null) {
+                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
+                        AddFunctionProperties(value, element, javaFile, result);
+                        SearchInExtends(value, element, javaFile, project, result);
+                        break;
+                    }
                     if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
-                        AddFunctionProperties(value, javaFile, result);
+                        AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
                     if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
-                        AddFunctionProperties(value, javaFile, result);
+                        AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
                     if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
-                        AddFunctionProperties(value, javaFile, result);
-                        break;
-                    }
-                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
-                        AddFunctionProperties(value, javaFile, result);
-                        SearchInExtends(value, javaFile, project, result);
+                        AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
                     currentJavaFilePath = currentJavaFilePath.getParentDirectory();
@@ -154,7 +155,7 @@ public class SmlUtil {
      * @param result list of matching PsiMethods
      */
 
-    private static void AddFunctionProperties(String value, PsiJavaFile javaFile, List<PsiMethod> result){
+    private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result){
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {
             for (PsiMethod property : properties) {
@@ -162,6 +163,10 @@ public class SmlUtil {
                     result.add(property);
                 }
             }
+        }
+        // Same function but different number of parameter
+        if (result.size()>1){
+            result.removeIf(property -> property.getParameterList().getParametersCount() != ((SmlCallJavaFunctionInstruction) element).getParametersCount());
         }
     }
 
@@ -186,7 +191,7 @@ public class SmlUtil {
      * @param project current project
      * @param result list of matching PsiMethods
      */
-    private static void SearchInExtends(String value, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
+    private static void SearchInExtends(String value, PsiElement element, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
         Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
         if (extendsClass.size() != 0) {
             for (PsiClass extend : extendsClass) {
@@ -195,7 +200,7 @@ public class SmlUtil {
                     if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
                         if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
                             PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
-                            AddFunctionProperties(value, extendFile, result);
+                            AddFunctionProperties(value, element, extendFile, result);
                         }
                     }
                 }

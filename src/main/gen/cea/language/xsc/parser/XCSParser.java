@@ -692,16 +692,16 @@ public class XCSParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VALUE* CORE_END FUNCTION_COMMENT?) |
   //                   (CORE_START ASCII_TYPE VARIABLE_NAME? PROPERTY? ASCII_VALUE* CORE_END FUNCTION_COMMENT?) |
-  //                   (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) |
+  //                   (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?)
   public static boolean FUNCTION_CORE(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FUNCTION_CORE")) return false;
+    if (!nextTokenIs(b, CORE_START)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, FUNCTION_CORE, "<function core>");
+    Marker m = enter_section_(b);
     r = FUNCTION_CORE_0(b, l + 1);
     if (!r) r = FUNCTION_CORE_1(b, l + 1);
     if (!r) r = FUNCTION_CORE_2(b, l + 1);
-    if (!r) r = consumeToken(b, FUNCTION_CORE_3_0);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, FUNCTION_CORE, r);
     return r;
   }
 

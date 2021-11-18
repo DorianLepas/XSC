@@ -29,7 +29,7 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
         List<ResolveResult> results = new ArrayList<>();
         // Search in the project java file
         if (!value.equals("")) {
-            final List<PsiMethod> properties = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project, value);
+            final List<PsiMethod> properties = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project, value, myElement);
             for (PsiMethod property : properties) {
                 results.add(new PsiElementResolveResult(property));
             }

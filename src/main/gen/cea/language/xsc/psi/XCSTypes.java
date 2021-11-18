@@ -64,7 +64,6 @@ public interface XCSTypes {
   IElementType EVENTS = new XCSTokenType("EVENTS");
   IElementType EVENTS_CORE_2_0 = new XCSTokenType("EVENTS_CORE_2_0");
   IElementType FUNCTION_COMMENT = new XCSTokenType("FUNCTION_COMMENT");
-  IElementType FUNCTION_CORE_3_0 = new XCSTokenType("FUNCTION_CORE_3_0");
   IElementType FUNCTION_END = new XCSTokenType("FUNCTION_END");
   IElementType FUNCTION_NAME = new XCSTokenType("FUNCTION_NAME");
   IElementType LIST_TYPE = new XCSTokenType("LIST_TYPE");

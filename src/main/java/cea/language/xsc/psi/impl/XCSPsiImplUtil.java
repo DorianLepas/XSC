@@ -1,8 +1,6 @@
 package cea.language.xsc.psi.impl;
 
-import cea.language.xsc.psi.XCSElementFactory;
-import cea.language.xsc.psi.XCSProperty_;
-import cea.language.xsc.psi.XCSTypes;
+import cea.language.xsc.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
@@ -66,4 +64,57 @@ public class XCSPsiImplUtil {
     }
 
 
+    public static String getValue(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    public static String getSF(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode();
+        while(!(valueNode.getPsi() instanceof XCSFunctions)){
+            valueNode = valueNode.getTreeParent();
+        }
+        String SF = valueNode.findChildByType(XCSTypes.STREAM_FUNCTION).getText();
+        if (SF.contains("W")){
+            SF = SF.substring(0,SF.indexOf(" W"));
+        }
+        return SF;
+    }
+
+    public static int getDepth(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode();
+        int Depth = 0;
+        while(!(valueNode.getPsi() instanceof XCSFunctions)){
+            valueNode = valueNode.getTreeParent();
+            Depth++;
+        }
+        return Depth;
+    }
+
+    public static String getName(XCSFunctionCore element) {
+        return getValue(element);
+    }
+
+    public static PsiElement setName(XCSFunctionCore element, String newName) {
+        ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
+        if (valueNode != null) {
+            XCSProperty_ property = XCSElementFactory.createProperty(element.getProject(), newName);
+            ASTNode newvalueNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(valueNode, newvalueNode);
+        }
+        return element;
+    }
+
+    public static PsiElement getNameIdentifier(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
+        if (valueNode != null) {
+            return valueNode.getPsi();
+        } else {
+            return null;
+        }
+    }
 }

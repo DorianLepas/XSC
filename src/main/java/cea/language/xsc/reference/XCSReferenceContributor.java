@@ -1,5 +1,6 @@
 package cea.language.xsc.reference;
 
+import cea.language.xsc.psi.XCSFunctionCore;
 import cea.language.xsc.psi.XCSProperty_;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.patterns.PlatformPatterns;
@@ -23,9 +24,22 @@ public class XCSReferenceContributor extends PsiReferenceContributor {
                         if (!e.getProp().equals("VfeiName")){
                             return PsiReference.EMPTY_ARRAY;
                         }
-                        return new PsiReference[]{new XCSReference(e,
+                        return new PsiReference[]{new XCSPropertyReference(e,
                                 new TextRange(e.getText().length()-e.getValue().length(),e.getText().length()),
                                 e.getReferenceType())};
+                    }
+                });
+
+        registrar.registerReferenceProvider(PlatformPatterns.psiElement(XCSFunctionCore.class),
+                new PsiReferenceProvider() {
+                    @NotNull
+                    @Override
+                    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
+                                                                           @NotNull ProcessingContext context) {
+                        XCSFunctionCore e = (XCSFunctionCore) element;
+//                        return new PsiReference[]{new XCSReportReference(e,
+//                                new TextRange(e.getText().length()-e.getValue().length(),e.getText().length()))};
+                        return PsiReference.EMPTY_ARRAY;
                     }
                 });
     }

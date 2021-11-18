@@ -22,11 +22,13 @@ private items ::= (collection_event_section|data_variable_section|equipment_cons
 functions ::= (FUNCTION_NAME COLON STREAM_FUNCTION FUNCTION_COMMENT? FUNCTION_CORE* FUNCTION_END FUNCTION_COMMENT?)
 FUNCTION_CORE ::= (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VALUE* CORE_END FUNCTION_COMMENT?) |
                   (CORE_START ASCII_TYPE VARIABLE_NAME? PROPERTY? ASCII_VALUE* CORE_END FUNCTION_COMMENT?) |
-                  (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) |
+                  (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                                                                                                implements="cea.language.xsc.psi.XCSNamedElement"
+                                                                                                                                methods = [getSF getDepth getValue getName setName getNameIdentifier]}
 PROPERTY ::= PROPERTY_START PROPERTY_+ PROPERTY_END
 PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
                                                     implements="cea.language.xsc.psi.XCSNamedElement"
-                                                    methods = [getProp getValue getName setName getNameIdentifier getReference getReferenceType]}
+                                                    methods = [getProp getValue getName setName getNameIdentifier getReferenceType]}
 
 // CE paragraph treatment
 collection_event_section ::= (COLLECTION_EVENT COLON FUNCTION_COMMENT? CE_LIST? FUNCTION_END FUNCTION_COMMENT?)
