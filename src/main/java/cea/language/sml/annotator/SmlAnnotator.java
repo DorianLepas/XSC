@@ -71,7 +71,7 @@ public class SmlAnnotator implements Annotator
         HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function");
         HolderCreation.create();
       }
-      // Check if the function has the good number of arguments
+      // Check if the function has the good number of parameter
       else if(((SmlCallJavaFunctionInstruction) element).getParametersCount() != ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()) {
         // Too much arguments
         if(((SmlCallJavaFunctionInstruction) element).getParametersCount() > ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()){

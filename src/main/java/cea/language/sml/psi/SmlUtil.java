@@ -65,6 +65,14 @@ public class SmlUtil {
         return result;
     }
 
+    /**
+     * Searches the entire project for Java language files with instances of the PsiMethod with the given value.
+     *
+     * @param file    current file
+     * @param project current project
+     * @param value   to check
+     * @return matching properties
+     */
     public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value) {
         List<PsiMethod> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
@@ -98,6 +106,13 @@ public class SmlUtil {
         return result;
     }
 
+    /**
+     * Searches the entire project for Java language files with instances of the PsiMethod
+     *
+     * @param file    current file
+     * @param project current project
+     * @return all properties
+     */
     public static List<PsiMethod> findFunctions(SmlFile file, Project project) {
         List<PsiMethod> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
@@ -131,6 +146,14 @@ public class SmlUtil {
         return result;
     }
 
+    /**
+     * Add all the value matching PsiMethod in the javaFile to the result list
+     *
+     * @param value to check
+     * @param javaFile the file where to search
+     * @param result list of matching PsiMethods
+     */
+
     private static void AddFunctionProperties(String value, PsiJavaFile javaFile, List<PsiMethod> result){
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {
@@ -142,6 +165,12 @@ public class SmlUtil {
         }
     }
 
+    /**
+     * Add all PsiMethod in the javaFile to the result list
+     *
+     * @param javaFile the file where to search
+     * @param result list of matching PsiMethods
+     */
     private static void AddFunctionProperties(PsiJavaFile javaFile, List<PsiMethod> result){
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {
@@ -149,6 +178,14 @@ public class SmlUtil {
         }
     }
 
+    /**
+     *  Search the value matching PsiMethod in the javaFile extends file within the project to the result list
+     *
+     * @param value to check
+     * @param javaFile the file where to search
+     * @param project current project
+     * @param result list of matching PsiMethods
+     */
     private static void SearchInExtends(String value, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
         Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
         if (extendsClass.size() != 0) {
@@ -166,6 +203,13 @@ public class SmlUtil {
         }
     }
 
+    /**
+     *  Search all PsiMethod in the javaFile extends file within the project to the result list
+     *
+     * @param javaFile the file where to search
+     * @param project current project
+     * @param result list of matching PsiMethods
+     */
     private static void SearchInExtends(PsiJavaFile javaFile, Project project, List<PsiMethod> result){
         Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
         if (extendsClass.size() != 0) {
