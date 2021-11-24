@@ -68,7 +68,7 @@ public class SmlAnnotator implements Annotator
       // Check if the element has a reference
       if (((SmlCallJavaFunctionInstruction)element).getValue() != null && element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
-        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function");
+        HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Unknown function");
         HolderCreation.create();
       }
       // Check if the function has the good number of parameter
@@ -93,11 +93,11 @@ public class SmlAnnotator implements Annotator
   //Vérfications pour un état
   private void checkState(@NotNull SmlStateBlockImpl state, @NotNull AnnotationHolder holder) {
     //Si l'état n'a pas de bloc enter
-    if(state.getEnterBlockList().size() == 0) {
-      holder.createWarningAnnotation(state.getFirstChild(), "A state must have a enter bloc");
-    }
+    //if(state.getEnterBlockList().size() == 0) {
+    //  holder.createWarningAnnotation(state.getFirstChild(), "A state must have a enter bloc");
+    //}
     //Si l'état a plus d'un bloc enter
-    else if(state.getEnterBlockList().size() > 1) {
+    if(state.getEnterBlockList().size() > 1) {
       for(int i = 1; i < state.getEnterBlockList().size(); i++) {
         holder.createErrorAnnotation(state.getEnterBlockList().get(i), "A state can only have one enter bloc");
       }

@@ -20,10 +20,10 @@ public class XCSAnnotator implements Annotator {
 
         // Search for XCSFunctionCore in Functions with S2F35 stream function at depth 5
         if (element instanceof XCSFunctionCore && ((XCSFunctionCore)element).getSF().equals("S2F35") && ((XCSFunctionCore)element).getDepth() == 5){
-//            if (element.getReference().resolve() == null) {
-//                HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared report variable or Declared multiples times");
-//                HolderCreation.create();
-//            }
+            if (element.getReference().resolve() == null) {
+                HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared report variable or Declared multiples times");
+                HolderCreation.create();
+            }
         }
 
         // Ensure the Psi Element is a property

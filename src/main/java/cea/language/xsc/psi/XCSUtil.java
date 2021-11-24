@@ -170,7 +170,7 @@ public class XCSUtil {
         Collection<XCSFunctionCore> reports = PsiTreeUtil.findChildrenOfType(file, XCSFunctionCore.class);
         if (reports.size() != 0) {
             for (XCSFunctionCore report : reports) {
-                if (report.getSF().equals("S2F33") && value.equals(report.getValue())) {
+                if ((report.getDepth() == 4 || report.getDepth() == 5) && report.getSF().equals("S2F33") && value.equals(report.getValue())) {
                     result.add(report);
                 }
             }
@@ -183,7 +183,7 @@ public class XCSUtil {
         Collection<XCSFunctionCore> reports = PsiTreeUtil.findChildrenOfType(file, XCSFunctionCore.class);
         if (reports.size() != 0) {
             for (XCSFunctionCore report : reports) {
-                if (report.getSF().equals("S2F33")) {
+                if ((report.getDepth() == 4 || report.getDepth() == 5) && report.getSF().equals("S2F33")) {
                     result.add(report);
                 }
             }
