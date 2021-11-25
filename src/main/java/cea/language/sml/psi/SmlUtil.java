@@ -23,15 +23,22 @@ public class SmlUtil {
      */
     public static List<XCSCeProperty_> findProperties(SmlFile file, Project project, String value) {
         List<XCSCeProperty_> result = new ArrayList<>();
+        // Get all xsc files
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        // Remove all non xsc/*.xsc files
         virtualFiles.removeIf(files -> !files.getParent().getName().equals("xsc"));
+        // Go threw all leaving files
         for (VirtualFile virtualFile : virtualFiles) {
+            // Convert to XCSFile
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // Check if the current file is part of the same project as the sml file
             if (xcsFile != null &&
                     (Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(xcsFile.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory() == Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory())) {
                 Collection<XCSCeProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSCeProperty_.class);
                 if (properties.size() != 0) {
+                    // Go threw all properties find in the current file
                     for (XCSCeProperty_ property : properties) {
+                        // Check if they both have the same property value
                         if (value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText())) {
                             result.add(property);
                         }
@@ -51,10 +58,15 @@ public class SmlUtil {
      */
     public static List<XCSCeProperty_> findProperties(SmlFile file, Project project) {
         List<XCSCeProperty_> result = new ArrayList<>();
+        // Get all xsc files
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        // Remove all non xsc/*.xsc files
         virtualFiles.removeIf(files -> !files.getParent().getName().equals("xsc"));
+        // Go threw all leaving files
         for (VirtualFile virtualFile : virtualFiles) {
+            // Convert to XCSFile
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // Check if the current file is part of the same project as the sml file
             if (xcsFile != null &&
                     (Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(xcsFile.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory() == Objects.requireNonNull(Objects.requireNonNull(file.getOriginalFile().getContainingDirectory().getParentDirectory()).getParentDirectory()).getParentDirectory())) {
                 Collection<XCSCeProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSCeProperty_.class);
@@ -77,29 +89,37 @@ public class SmlUtil {
      */
     public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value, PsiElement element) {
         List<PsiMethod> result = new ArrayList<>();
+        // Get all java files
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        // Go threw all files
         for (VirtualFile virtualFile : virtualFiles) {
+            // Convert to javaFile
             PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
             String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
+            // Check if the java file name is the same as the first part of the JavaCall
             if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
                 PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
                 while (currentJavaFilePath != null) {
                     String dir = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName();
+                    // Found the function in the same project (higher priority)
                     if (!dir.equals("Automation") && currentJavaFilePath.getName().equals(dir)) {
                         AddFunctionProperties(value, element, javaFile, result);
                         SearchInExtends(value, element, javaFile, project, result);
                         break;
                     }
+                    // Found the function in the AEQC (only if the JavaCall file is in the AEQC directory) project (lower priority)
                     if ((result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) ||
                             javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
+                    // Found the function in the FFC (only if the JavaCall file is in the FFC directory) project (lower priority)
                     if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC"))||
-                            javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
+                            javaFile.getVirtualFile().getCanonicalPath().contains("FFCGenerator") && fileType.equals("FFCGenerator")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
+                    // Found the function in the AutomationCommon project (lower priority)
                     if (result.size() == 0 && currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
@@ -120,26 +140,33 @@ public class SmlUtil {
      */
     public static List<PsiMethod> findFunctions(SmlFile file, Project project) {
         List<PsiMethod> result = new ArrayList<>();
+        // Get all java files
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        // Go threw all files
         for (VirtualFile virtualFile : virtualFiles) {
+            // Convert to javaFile
             PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
             String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
             if (javaFile != null) {
                 PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
                 while (currentJavaFilePath != null) {
-                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
+                    // Get all the function the AEQCGenerator project (only in java directory)
+                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
+                    // Get all the function the FFCGenerator project (only in java directory)
+                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
+                    // Get all the function the AutomationCommon project (only in java directory)
+                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC")) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
                         AddFunctionProperties(javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
+                    // Get all the function the same project as the java file (only in java directory)
+                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName()) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
                         AddFunctionProperties(javaFile, result);
                         SearchInExtends(javaFile, project, result);
                         break;
@@ -161,11 +188,16 @@ public class SmlUtil {
 
     private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result){
         PsiMethod leastProperty = null;
+        // Get all the PsiMethod of the javaFile
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
+        // Ensure there is at least 1 PsiMethod
         if (properties.size() != 0) {
+            // Go threw all PsiMethod
             for (PsiMethod property : properties) {
+                // Check the PsiMethod name si the same as the second part of the JavaCall
                 if (value.substring(value.lastIndexOf(".") + 1).equals(property.getName())) {
                     result.add(property);
+                    // Stock the PsiMethod with the least number of parameters
                     if (leastProperty == null || property.getParameterList().getParametersCount() < leastProperty.getParameterList().getParametersCount()){
                         leastProperty = property;
                     }
@@ -174,7 +206,9 @@ public class SmlUtil {
         }
         // Same function but different number of parameter
         if (result.size()>1){
+            // Remove all PsiMethod with a different number of parameters than the JavaCall
             result.removeIf(property -> property.getParameterList().getParametersCount() != ((SmlCallJavaFunctionInstruction) element).getParametersCount());
+            // If they all have a different number of parameters, reference to the PsiMethod with the least number of parameters
             if (result.size() == 0){
                 result.add(leastProperty);
             }
@@ -188,6 +222,7 @@ public class SmlUtil {
      * @param result list of matching PsiMethods
      */
     private static void AddFunctionProperties(PsiJavaFile javaFile, List<PsiMethod> result){
+        // Get all the PsiMethod of the javaFile
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {
             result.addAll(properties);
@@ -203,10 +238,14 @@ public class SmlUtil {
      * @param result list of matching PsiMethods
      */
     private static void SearchInExtends(String value, PsiElement element, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
+        // Get the PsiClass of the javaFile
         Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
+        // Look if there is an extend
         if (extendsClass.size() != 0) {
+            // Go threw all extends
             for (PsiClass extend : extendsClass) {
                 PsiElement[] children = extend.getChildren();
+                // Go threw all the extended files
                 for(PsiElement child : children){
                     if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
                         if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
@@ -227,10 +266,14 @@ public class SmlUtil {
      * @param result list of matching PsiMethods
      */
     private static void SearchInExtends(PsiJavaFile javaFile, Project project, List<PsiMethod> result){
+        // Get the PsiClass of the javaFile
         Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
+        // Look if there is an extend
         if (extendsClass.size() != 0) {
+            // Go threw all extends
             for (PsiClass extend : extendsClass) {
                 PsiElement[] children = extend.getChildren();
+                // Go threw all the extended files
                 for(PsiElement child : children){
                     if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
                         if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {

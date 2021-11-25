@@ -19,6 +19,11 @@ public class SmlPsiImplUtil {
         }
     }
 
+    /**
+     * Get the value of the event section
+     * @param element event section
+     * @return String value
+     */
     public static String getValue(SmlEventsValue element) {
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.EVENT_NAME);
         if (valueNode != null) {
@@ -28,10 +33,22 @@ public class SmlPsiImplUtil {
         }
     }
 
+
+    /**
+     * Get the value of the event section
+     * @param element event section
+     * @return String value
+     */
     public static String getName(SmlEventsValue element) {
         return getValue(element);
     }
 
+    /**
+     * Set the value of the event section with a new value
+     * @param element event section
+     * @param newName new value
+     * @return new event section
+     */
     public static PsiElement setName(SmlEventsValue element, String newName) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.EVENT_NAME);
         if (keyNode != null) {
@@ -43,6 +60,11 @@ public class SmlPsiImplUtil {
         return element;
     }
 
+    /**
+     * Get the value of the event section
+     * @param element event section
+     * @return PsiElement value
+     */
     public static PsiElement getNameIdentifier(SmlEventsValue element) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.EVENT_NAME);
         if (keyNode != null) {
@@ -52,6 +74,11 @@ public class SmlPsiImplUtil {
         }
     }
 
+    /**
+     * Get the call
+     * @param element JavaCall section
+     * @return PsiElement call
+     */
     public static String getKey(SmlCallJavaFunctionInstruction element) {
         ASTNode keyNode = element.getNode().getFirstChildNode();
         if (keyNode != null) {
@@ -61,6 +88,11 @@ public class SmlPsiImplUtil {
         }
     }
 
+    /**
+     * Get the name of the called function
+     * @param element element JavaCall section
+     * @return String function name
+     */
     public static String getValue(SmlCallJavaFunctionInstruction element) {
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (valueNode != null) {
@@ -71,12 +103,21 @@ public class SmlPsiImplUtil {
         }
     }
 
+    /**
+     * Get the name of the called function
+     * @param element element JavaCall section
+     * @return String function name
+     */
     public static String getName(SmlCallJavaFunctionInstruction element) {
         return getValue(element);
 
     }
 
-    // Return the parameters list of the JavaCall
+    /**
+     * Get the parameters list of the JavaCall
+     * @param element JavaCall section
+     * @return the parameters list of the JavaCall
+     */
     public static String[] getParametersList(SmlCallJavaFunctionInstruction element){
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (valueNode != null) {
@@ -92,11 +133,22 @@ public class SmlPsiImplUtil {
         return new String[0];
     }
 
-    // Return the number of parameter of the JavaCall
+    /**
+     * Get the number of parameter of the JavaCall
+     * @param element JavaCall section
+     * @return the number of parameter of the JavaCall
+     */
     public static int getParametersCount(SmlCallJavaFunctionInstruction element){
         return element.getParametersList().length;
     }
 
+
+    /**
+     * Set the value of the JavaCall section with a new value
+     * @param element JavaCall section
+     * @param newName new value
+     * @return new JavaCall section
+     */
     public static PsiElement setName(SmlCallJavaFunctionInstruction element, String newName) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (keyNode != null) {
@@ -107,6 +159,11 @@ public class SmlPsiImplUtil {
         return element;
     }
 
+    /**
+     * Get the value of the JavaCall section
+     * @param element JavaCall section
+     * @return PsiElement value
+     */
     public static PsiElement getNameIdentifier(SmlCallJavaFunctionInstruction element) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (keyNode != null) {

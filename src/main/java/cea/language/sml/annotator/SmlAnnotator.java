@@ -64,6 +64,7 @@ public class SmlAnnotator implements Annotator
       }
     }
 
+    // Check if we're in an JavaCallBlock
     if(element instanceof SmlCallJavaFunctionInstruction && element.getProject().getName().equals("Automation")) {
       // Check if the element has a reference
       if (((SmlCallJavaFunctionInstruction)element).getValue() != null && element.getReference().resolve() == null) {
