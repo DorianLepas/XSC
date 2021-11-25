@@ -84,16 +84,19 @@ public class SmlUtil {
             if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
                 PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
                 while (currentJavaFilePath != null) {
-                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName())) {
+                    String dir = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName();
+                    if (!dir.equals("Automation") && currentJavaFilePath.getName().equals(dir)) {
                         AddFunctionProperties(value, element, javaFile, result);
                         SearchInExtends(value, element, javaFile, project, result);
                         break;
                     }
-                    if (result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
+                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) ||
+                            javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
-                    if (result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
+                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC"))||
+                            javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
