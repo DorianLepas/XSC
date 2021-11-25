@@ -3,7 +3,6 @@ package cea.language.xsc.reference;
 import cea.language.xsc.psi.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
 import cea.language.xsc.filetype.XCSIcons;
@@ -42,7 +41,6 @@ public class XCSReportReference extends PsiReferenceBase<PsiElement> implements 
 
     @Override
     public Object @NotNull [] getVariants() {
-        Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
         // Create LookUpElement with element of XCSFunctionCore
         List<XCSFunctionCore> reports = XCSUtil.findReports((XCSFile) myElement.getContainingFile());

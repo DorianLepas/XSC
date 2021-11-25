@@ -55,6 +55,7 @@ public class SmlCreateEventQuickFix extends BaseIntentionAction {
         ApplicationManager.getApplication().invokeLater(() -> {
             Collection<VirtualFile> virtualFiles =
                     FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+            virtualFiles.removeIf(files -> !files.getParent().getName().equals("xsc"));
             // Search the file where to create the property
             for (VirtualFile virtualFile : virtualFiles) {
                 XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);

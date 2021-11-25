@@ -320,6 +320,8 @@ LIST_TYPE=L(\s?\[\d+\])?|L
       //LIST
      {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
      {CORE_START}                        {yybegin(DV_CORE); return XCSTypes.CORE_START; }
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
 }
 
 <DV_CORE>{
@@ -572,6 +574,8 @@ LIST_TYPE=L(\s?\[\d+\])?|L
       //LIST
      {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
      {CORE_START}                        {yybegin(SV_CORE); return XCSTypes.CORE_START; }
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
 }
 
 <SV_CORE>{
@@ -643,6 +647,8 @@ LIST_TYPE=L(\s?\[\d+\])?|L
       //LIST
      {LIST_TYPE}                         {return XCSTypes.LIST_TYPE; }
      {CORE_START}                        {yybegin(VSS_CORE); return XCSTypes.CORE_START; }
+     {CORE_END}                          {return XCSTypes.CORE_END ;}
+     {FUNCTION_END}                      {yybegin(YYINITIAL); return XCSTypes.FUNCTION_END; }
 }
 
 <VSS_CORE>{
