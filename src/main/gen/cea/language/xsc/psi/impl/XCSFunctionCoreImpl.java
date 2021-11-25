@@ -49,6 +49,11 @@ public class XCSFunctionCoreImpl extends XCSNamedElementImpl implements XCSFunct
   }
 
   @Override
+  public int getCommentSize() {
+    return XCSPsiImplUtil.getCommentSize(this);
+  }
+
+  @Override
   public String getValue() {
     return XCSPsiImplUtil.getValue(this);
   }

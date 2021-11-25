@@ -37,9 +37,9 @@ public class XCSReferenceContributor extends PsiReferenceContributor {
                     public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
                                                                            @NotNull ProcessingContext context) {
                         XCSFunctionCore e = (XCSFunctionCore) element;
-                        if (((XCSFunctionCore) element).getDepth() == 5 && ((XCSFunctionCore) element).getSF().equals("S2F35")) {
+                        if (((XCSFunctionCore) element).getDepth() == 5 && ((XCSFunctionCore) element).getSF().equals("S2F35") && e.getValue() != null) {
                             return new PsiReference[]{new XCSReportReference(e,
-                                    new TextRange(e.getText().length() - e.getValue().length() - 1, e.getText().length() - 1))};
+                                    new TextRange(e.getText().length() - e.getValue().length() - e.getCommentSize() - 1, e.getText().length() - e.getCommentSize() - 1))};
                         }
                         return PsiReference.EMPTY_ARRAY;
                     }

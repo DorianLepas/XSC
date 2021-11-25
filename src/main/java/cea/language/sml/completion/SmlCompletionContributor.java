@@ -180,7 +180,10 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 element.getNode().getTreeParent().getPsi() instanceof SmlEventsDefinition){
                             SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
-                            Object[] result = e.getReference().getVariants();
+                            Object[] result = new Object[0];
+                            if (e.getReference() != null) {
+                                result = e.getReference().getVariants();
+                            }
                             for (Object LUElement : result){
                                 resultSet.addElement((LookupElement) LUElement);
                             }
@@ -191,7 +194,10 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 element.getNode().getTreeParent().getPsi() instanceof SmlCallJavaFunctionInstruction){
                             SmlCallJavaFunctionInstruction e = (SmlCallJavaFunctionInstruction) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
-                            Object[] result = e.getReference().getVariants();
+                            Object[] result = new Object[0];
+                            if (e.getReference() != null) {
+                                result = e.getReference().getVariants();
+                            }
                             for (Object LUElement : result){
                                 resultSet.addElement((LookupElement) LUElement);
                             }

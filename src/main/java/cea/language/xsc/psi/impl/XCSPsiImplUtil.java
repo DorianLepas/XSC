@@ -5,6 +5,8 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class XCSPsiImplUtil {
 
     public static String getValue(XCSProperty_ element) {
@@ -48,8 +50,8 @@ public class XCSPsiImplUtil {
         }
     }
 
-    public static String getReferenceType(@NotNull final XCSProperty_ element){
-        PsiElement valueNode =  element.getNode().getPsi().getParent();
+    public static String getReferenceType(@NotNull final XCSProperty_ element) {
+        PsiElement valueNode = element.getNode().getPsi().getParent();
         if (valueNode != null) {
             valueNode = valueNode.getPrevSibling();
             // Search for a Predefined name
@@ -75,12 +77,15 @@ public class XCSPsiImplUtil {
 
     public static String getSF(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode();
-        while(!(valueNode.getPsi() instanceof XCSFunctions)){
+        while (valueNode != null && !(valueNode.getPsi() instanceof XCSFunctions)) {
             valueNode = valueNode.getTreeParent();
         }
-        String SF = valueNode.findChildByType(XCSTypes.STREAM_FUNCTION).getText();
-        if (SF.contains("W")){
-            SF = SF.substring(0,SF.indexOf(" W"));
+        if (valueNode == null) {
+            return "";
+        }
+        String SF = Objects.requireNonNull(valueNode.findChildByType(XCSTypes.STREAM_FUNCTION)).getText();
+        if (SF.contains("W")) {
+            SF = SF.substring(0, SF.indexOf(" W"));
         }
         return SF;
     }
@@ -88,11 +93,20 @@ public class XCSPsiImplUtil {
     public static int getDepth(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode();
         int Depth = 0;
-        while(!(valueNode.getPsi() instanceof XCSFunctions)){
+        while (!(valueNode.getPsi() instanceof XCSFunctions)) {
             valueNode = valueNode.getTreeParent();
             Depth++;
         }
         return Depth;
+    }
+
+    public static int getCommentSize(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode().findChildByType(XCSTypes.FUNCTION_COMMENT);
+        if (valueNode != null) {
+            return valueNode.getText().length() + 1;
+        } else {
+            return 0;
+        }
     }
 
     public static String getName(XCSFunctionCore element) {

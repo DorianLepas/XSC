@@ -8,7 +8,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 
 import java.util.*;
@@ -25,6 +24,7 @@ public class SmlUtil {
     public static List<XCSCeProperty_> findProperties(SmlFile file, Project project, String value) {
         List<XCSCeProperty_> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        virtualFiles.removeIf(files -> !files.getParent().getName().equals("xsc"));
         for (VirtualFile virtualFile : virtualFiles) {
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (xcsFile != null &&
@@ -52,6 +52,7 @@ public class SmlUtil {
     public static List<XCSCeProperty_> findProperties(SmlFile file, Project project) {
         List<XCSCeProperty_> result = new ArrayList<>();
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        virtualFiles.removeIf(files -> !files.getParent().getName().equals("xsc"));
         for (VirtualFile virtualFile : virtualFiles) {
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (xcsFile != null &&
@@ -88,15 +89,15 @@ public class SmlUtil {
                         SearchInExtends(value, element, javaFile, project, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
+                    if (result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
+                    if (result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
-                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
+                    if (result.size() == 0 && currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
                     }
@@ -156,17 +157,24 @@ public class SmlUtil {
      */
 
     private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result){
+        PsiMethod leastProperty = null;
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {
             for (PsiMethod property : properties) {
                 if (value.substring(value.lastIndexOf(".") + 1).equals(property.getName())) {
                     result.add(property);
+                    if (leastProperty == null || property.getParameterList().getParametersCount() < leastProperty.getParameterList().getParametersCount()){
+                        leastProperty = property;
+                    }
                 }
             }
         }
         // Same function but different number of parameter
         if (result.size()>1){
             result.removeIf(property -> property.getParameterList().getParametersCount() != ((SmlCallJavaFunctionInstruction) element).getParametersCount());
+            if (result.size() == 0){
+                result.add(leastProperty);
+            }
         }
     }
 

@@ -56,6 +56,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
         ApplicationManager.getApplication().invokeLater(() -> {
             Collection<VirtualFile> virtualFiles =
                     FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
+            virtualFiles.removeIf(filexsc -> !filexsc.getParent().getName().equals("xsc"));
             String section = getType();
             // Search the file where to create the property
             for (VirtualFile virtualFile : virtualFiles) {

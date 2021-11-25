@@ -24,9 +24,8 @@ public class XCSReportReference extends PsiReferenceBase<PsiElement> implements 
 
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
-        Project project = myElement.getProject();
         // Search the reference in the same file
-        final List<XCSFunctionCore> reports = XCSUtil.findReports((XCSFile) myElement.getContainingFile(), project, value);
+        final List<XCSFunctionCore> reports = XCSUtil.findReports((XCSFile) myElement.getContainingFile(), value);
         List<ResolveResult> results = new ArrayList<>();
         for (XCSFunctionCore report : reports) {
             results.add(new PsiElementResolveResult(report));
@@ -45,51 +44,15 @@ public class XCSReportReference extends PsiReferenceBase<PsiElement> implements 
     public Object @NotNull [] getVariants() {
         Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
-        // Create LookUpElement with element of XCSCeProperty_
-        List<XCSCeProperty_> propertiesCe = XCSUtil.findPropertiesCe((XCSFile) myElement.getContainingFile(), project);
-        for (final XCSCeProperty_ property : propertiesCe) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
+        // Create LookUpElement with element of XCSFunctionCore
+        List<XCSFunctionCore> reports = XCSUtil.findReports((XCSFile) myElement.getContainingFile());
+        for (final XCSFunctionCore report : reports) {
+            if (report.getValue() != null) {
                 variants.add(LookupElementBuilder
-                        .create(property.getLastChild().getText().replace("\"", "") + "\"")
+                        .create(report.getValue())
                         .withIcon(XCSIcons.FILE)
-                        .withPresentableText(property.getLastChild().getText().replace("\"", ""))
-                        .withTypeText(property.getContainingFile().getName())
-                );
-            }
-        }
-        // Create LookUpElement with element of XCSDvProperty_
-        List<XCSDvProperty_> propertiesDv = XCSUtil.findPropertiesDv((XCSFile) myElement.getContainingFile(), project);
-        for (final XCSDvProperty_ property : propertiesDv) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
-                variants.add(LookupElementBuilder
-                        .create(property.getLastChild().getText().replace("\"", "") + "\"")
-                        .withIcon(XCSIcons.FILE)
-                        .withPresentableText(property.getLastChild().getText().replace("\"", ""))
-                        .withTypeText(property.getContainingFile().getName())
-                );
-            }
-        }
-        // Create LookUpElement with element of XCSEcProperty_
-        List<XCSEcProperty_> propertiesEc = XCSUtil.findPropertiesEc((XCSFile) myElement.getContainingFile(), project);
-        for (final XCSEcProperty_ property : propertiesEc) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
-                variants.add(LookupElementBuilder
-                        .create(property.getLastChild().getText().replace("\"", "") + "\"")
-                        .withIcon(XCSIcons.FILE)
-                        .withPresentableText(property.getLastChild().getText().replace("\"", ""))
-                        .withTypeText(property.getContainingFile().getName())
-                );
-            }
-        }
-        // Create LookUpElement with element of XCSSvProperty_
-        List<XCSSvProperty_> propertiesSv = XCSUtil.findPropertiesSv((XCSFile) myElement.getContainingFile(), project);
-        for (final XCSSvProperty_ property : propertiesSv) {
-            if (property.getLastChild().getText() != null && property.getLastChild().getText().length() > 0 && property.getFirstChild().getText().equals("VfeiName")) {
-                variants.add(LookupElementBuilder
-                        .create(property.getLastChild().getText().replace("\"", "") + "\"")
-                        .withIcon(XCSIcons.FILE)
-                        .withPresentableText(property.getLastChild().getText().replace("\"", ""))
-                        .withTypeText(property.getContainingFile().getName())
+                        .withPresentableText(report.getValue())
+                        .withTypeText(report.getContainingFile().getName())
                 );
             }
         }

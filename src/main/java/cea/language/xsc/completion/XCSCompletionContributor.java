@@ -1,6 +1,7 @@
 package cea.language.xsc.completion;
 
 import cea.language.xsc.filetype.XCSLanguage;
+import cea.language.xsc.psi.XCSFunctionCore;
 import cea.language.xsc.psi.XCSProperty_;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElement;
@@ -327,15 +328,36 @@ public class XCSCompletionContributor extends CompletionContributor {
                                                @NotNull CompletionResultSet resultSet) {
                         PsiElement element = parameters.getOriginalPosition();
                         // Check if the element is an instance of XCSProperty_
-                        if ( element != null &&
+                        if (element != null &&
                                 element.getNode().getElementType() == XCSTypes.PROPERTY_VALUE &&
-                                element.getNode().getTreeParent().getPsi() instanceof XCSProperty_){
+                                element.getNode().getTreeParent().getPsi() instanceof XCSProperty_) {
                             XCSProperty_ e = (XCSProperty_) element.getNode().getTreeParent().getPsi();
                             // Check if the property name is VfeiName
-                            if(e.getProp().equals("VfeiName")){
+                            if (e.getProp().equals("VfeiName")) {
                                 // Search for the element to complete with
-                                Object[] result = e.getReference().getVariants();
-                                for (Object LUElement : result){
+                                Object[] result = new Object[0];
+                                if (e.getReference() != null) {
+                                    result = e.getReference().getVariants();
+                                }
+                                for (Object LUElement : result) {
+                                    resultSet.addElement((LookupElement) LUElement);
+                                }
+                            }
+                        }
+
+                        // Check if the element is an instance of XCSFunctionCore
+                        if (element != null &&
+                                element.getNode().getElementType() == XCSTypes.VARIABLE_VALUE &&
+                                element.getNode().getTreeParent().getPsi() instanceof XCSFunctionCore) {
+                            XCSFunctionCore e = (XCSFunctionCore) element.getNode().getTreeParent().getPsi();
+                            // Check if we're in report definition function
+                            if (!e.getSF().equals("S2F33")) {
+                                // Search for the element to complete with
+                                Object[] result = new Object[0];
+                                if (e.getReference() != null) {
+                                    result = e.getReference().getVariants();
+                                }
+                                for (Object LUElement : result) {
                                     resultSet.addElement((LookupElement) LUElement);
                                 }
                             }

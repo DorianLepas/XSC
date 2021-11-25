@@ -24,7 +24,7 @@ FUNCTION_CORE ::= (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VA
                   (CORE_START ASCII_TYPE VARIABLE_NAME? PROPERTY? ASCII_VALUE* CORE_END FUNCTION_COMMENT?) |
                   (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
                                                                                                                                 implements="cea.language.xsc.psi.XCSNamedElement"
-                                                                                                                                methods = [getSF getDepth getValue getName setName getNameIdentifier]}
+                                                                                                                                methods = [getSF getDepth getCommentSize getValue getName setName getNameIdentifier]}
 PROPERTY ::= PROPERTY_START PROPERTY_+ PROPERTY_END
 PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
                                                     implements="cea.language.xsc.psi.XCSNamedElement"

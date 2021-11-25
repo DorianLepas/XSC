@@ -17,6 +17,8 @@ public interface XCSFunctionCore extends XCSNamedElement {
 
   int getDepth();
 
+  int getCommentSize();
+
   String getValue();
 
   String getName();

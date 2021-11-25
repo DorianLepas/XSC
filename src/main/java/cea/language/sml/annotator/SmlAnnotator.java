@@ -68,7 +68,7 @@ public class SmlAnnotator implements Annotator
       // Check if the element has a reference
       if (((SmlCallJavaFunctionInstruction)element).getValue() != null && element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
-        HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Unknown function");
+        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function");
         HolderCreation.create();
       }
       // Check if the function has the good number of parameter
