@@ -51,7 +51,7 @@
                             implementationClass="cea.language.xsc.completion.XCSCompletionContributor"/>
     <lang.braceMatcher language="XSC" implementationClass="cea.language.xsc.bracematcher.XCSBraceMatcher"/>
     <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
-    <psi.referenceContributor language="XSC" implementation="cea.language.xsc.reference.XCSReferenceContributor"/>s
+    <psi.referenceContributor language="XSC" implementation="cea.language.xsc.reference.XCSReferenceContributor"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="cea.language.sml.fileType.SmlFileType"
