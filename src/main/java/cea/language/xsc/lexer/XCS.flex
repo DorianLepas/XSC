@@ -68,7 +68,7 @@ PROPERTY_NAME_DV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignme
 PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
 PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
-PROPERTY_VALUE=\"[\w.=:?-]+(\[[\w.=:?-].\])?[\w.=:?-]*\"
+PROPERTY_VALUE=(\"[^\"]*\")
 
 //TYPES
 ASCII_TYPE=A(\s?\[\d+\])?|A
@@ -217,7 +217,7 @@ LIST_TYPE=L(\s?\[\d+\])?|L
 }
 
 <NAME_ASCII>{
-    {VARIABLE_NAME}     {yybegin(CORE); return XCSTypes.VARIABLE_NAME; }
+    {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {ASCII_VALUE}       {yybegin(CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
     {END_OF_FUNCTION_LINE_COMMENT}      {return XCSTypes.FUNCTION_COMMENT; }
@@ -280,7 +280,7 @@ LIST_TYPE=L(\s?\[\d+\])?|L
 }
 
 <CE_NAME_ASCII>{
-    {CEID}              {yybegin(CE_CORE); return XCSTypes.CEID; }
+    {CEID}              {return XCSTypes.CEID; }
     {ASCII_VALUE}       {yybegin(CE_CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(CE_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
     {CORE_START}        {yybegin(CE_CORE); return XCSTypes.CORE_START; }
@@ -352,7 +352,7 @@ LIST_TYPE=L(\s?\[\d+\])?|L
 
 
 <DV_NAME_ASCII>{
-    {DVID}              {yybegin(DV_CORE); return XCSTypes.DVID; }
+    {DVID}              {return XCSTypes.DVID; }
     {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {ASCII_VALUE}       {yybegin(DV_CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(DV_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
@@ -415,7 +415,7 @@ LIST_TYPE=L(\s?\[\d+\])?|L
 }
 
 <EC_NAME_ASCII>{
-    {ECID}              {yybegin(EC_CORE); return XCSTypes.ECID; }
+    {ECID}              {return XCSTypes.ECID; }
     {ASCII_VALUE}       {yybegin(EC_CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(EC_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
     {CORE_START}        {yybegin(EC_CORE); return XCSTypes.CORE_START; }
@@ -606,7 +606,7 @@ LIST_TYPE=L(\s?\[\d+\])?|L
 
 
 <SV_NAME_ASCII>{
-    {SVID}              {yybegin(SV_CORE); return XCSTypes.SVID; }
+    {SVID}              {return XCSTypes.SVID; }
     {VARIABLE_NAME}     {return XCSTypes.VARIABLE_NAME; }
     {ASCII_VALUE}       {yybegin(SV_CORE); return XCSTypes.ASCII_VALUE; }
     {PROPERTY_START}    {yybegin(SV_PROPERTY_ASCII); return XCSTypes.PROPERTY_START; }
