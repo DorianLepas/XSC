@@ -9,6 +9,11 @@ import java.util.Objects;
 
 public class XCSPsiImplUtil {
 
+    /**
+     * Get the value of the property section
+     * @param element property section
+     * @return String value
+     */
     public static String getValue(XCSProperty_ element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_VALUE);
         if (valueNode != null) {
@@ -18,6 +23,11 @@ public class XCSPsiImplUtil {
         }
     }
 
+    /**
+     * Get the name before the value of the property section
+     * @param element property section
+     * @return String value
+     */
     public static String getProp(XCSProperty_ element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_NAME);
         if (valueNode != null) {
@@ -27,10 +37,21 @@ public class XCSPsiImplUtil {
         }
     }
 
+    /**
+     * Get the value of the property section
+     * @param element property section
+     * @return String value
+     */
     public static String getName(XCSProperty_ element) {
         return getValue(element);
     }
 
+    /**
+     * Set the value of the property section with a new value
+     * @param element property section
+     * @param newName new value
+     * @return new property section
+     */
     public static PsiElement setName(XCSProperty_ element, String newName) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_VALUE);
         if (valueNode != null) {
@@ -41,6 +62,11 @@ public class XCSPsiImplUtil {
         return element;
     }
 
+    /**
+     * Get the value of the property section
+     * @param element property section
+     * @return PsiElement value
+     */
     public static PsiElement getNameIdentifier(XCSProperty_ element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.PROPERTY_VALUE);
         if (valueNode != null) {
@@ -50,6 +76,11 @@ public class XCSPsiImplUtil {
         }
     }
 
+    /**
+     * Get the property type
+     * @param element property section
+     * @return String type
+     */
     public static String getReferenceType(@NotNull final XCSProperty_ element) {
         PsiElement valueNode = element.getNode().getPsi().getParent();
         if (valueNode != null) {
@@ -65,7 +96,11 @@ public class XCSPsiImplUtil {
         return "";
     }
 
-
+    /**
+     * Get the value of the function core
+     * @param element function core
+     * @return String value
+     */
     public static String getValue(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
         if (valueNode != null) {
@@ -75,6 +110,11 @@ public class XCSPsiImplUtil {
         }
     }
 
+    /**
+     * Get the stream function of the function core
+     * @param element function core
+     * @return String stream function
+     */
     public static String getSF(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode();
         while (valueNode != null && !(valueNode.getPsi() instanceof XCSFunctions)) {
@@ -90,6 +130,11 @@ public class XCSPsiImplUtil {
         return SF;
     }
 
+    /**
+     * Get the depth of the function core
+     * @param element function core
+     * @return Int depth
+     */
     public static int getDepth(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode();
         int Depth = 0;
@@ -100,6 +145,11 @@ public class XCSPsiImplUtil {
         return Depth;
     }
 
+    /**
+     * Get the comment size of the function core
+     * @param element function core
+     * @return Int comment size
+     */
     public static int getCommentSize(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.FUNCTION_COMMENT);
         if (valueNode != null) {
@@ -109,10 +159,21 @@ public class XCSPsiImplUtil {
         }
     }
 
+    /**
+     * Get the value of the function core
+     * @param element function core
+     * @return String value
+     */
     public static String getName(XCSFunctionCore element) {
         return getValue(element);
     }
 
+    /**
+     * Set the value of the function core section with a new value
+     * @param element function core section
+     * @param newName new value
+     * @return new function core section
+     */
     public static PsiElement setName(XCSFunctionCore element, String newName) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
         if (valueNode != null) {
@@ -123,6 +184,11 @@ public class XCSPsiImplUtil {
         return element;
     }
 
+    /**
+     * Get the value of the function core
+     * @param element function core
+     * @return String value
+     */
     public static PsiElement getNameIdentifier(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.VARIABLE_VALUE);
         if (valueNode != null) {

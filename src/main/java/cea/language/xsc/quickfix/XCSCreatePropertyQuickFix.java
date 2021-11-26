@@ -54,6 +54,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
     public void invoke(@NotNull final Project project, final Editor editor, PsiFile file) throws
             IncorrectOperationException {
         ApplicationManager.getApplication().invokeLater(() -> {
+            // Get all XCSFile in the xsc directory
             Collection<VirtualFile> virtualFiles =
                     FileTypeIndex.getFiles(XCSFileType.INSTANCE, GlobalSearchScope.allScope(project));
             virtualFiles.removeIf(filexsc -> !filexsc.getParent().getName().equals("xsc"));
@@ -87,6 +88,10 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
         });
     }
 
+    /**
+     * Check the property type
+     * @return String type
+     */
     private String getType() {
         PsiElement valueNode = element.getNode().getPsi().getParent();
         valueNode = valueNode.getPrevSibling();

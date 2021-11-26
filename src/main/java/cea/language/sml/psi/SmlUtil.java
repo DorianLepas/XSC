@@ -187,6 +187,10 @@ public class SmlUtil {
      */
 
     private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result){
+        // Check if the file is an interface
+        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()){
+            return;
+        }
         PsiMethod leastProperty = null;
         // Get all the PsiMethod of the javaFile
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
@@ -222,6 +226,10 @@ public class SmlUtil {
      * @param result list of matching PsiMethods
      */
     private static void AddFunctionProperties(PsiJavaFile javaFile, List<PsiMethod> result){
+        // Check if the file is an interface
+        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()){
+            return;
+        }
         // Get all the PsiMethod of the javaFile
         Collection<PsiMethod> properties = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethod.class);
         if (properties.size() != 0) {

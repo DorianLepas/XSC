@@ -62,7 +62,7 @@ EQUALS=\=
 PROPERTY_NAME=VfeiQualifier|VfeiName|SecsValueAlignment|SecsValueWidth|SecsValueToVfeiText|SecsName|VfeiValue|
               VfeiType|CheckAck|AllowedSecsItemValues|SecsItemsToCheck|PutSecsReplyToVfeiReply|SecsType|SecsValue|
               IsTemplate|VfeiNameTemplateNames|ReuseProperties|ReusePropertiesNoArrays|ReplaceVfeiName|ReplaceItems|
-              SendAsList|Disabled|ReplyMatch|WrapInList|EventLevel8
+              SendAsList|Disabled|ReplyMatch|WrapInList|EventLevel8|SxFy
 PROPERTY_NAME_CE=VfeiName|SecsType|ReplaceVfeiName|ReplaceItems|EventLevel8
 PROPERTY_NAME_DV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
