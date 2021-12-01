@@ -111,6 +111,22 @@ public class XCSPsiImplUtil {
     }
 
     /**
+     * Get the name of the containing function
+     * @param element function core
+     * @return String value
+     */
+    public static String getFunctionName(XCSFunctionCore element) {
+        ASTNode valueNode = element.getNode();
+        while (valueNode != null && !(valueNode.getPsi() instanceof XCSFunctions)) {
+            valueNode = valueNode.getTreeParent();
+        }
+        if (valueNode == null) {
+            return "";
+        }
+        return Objects.requireNonNull(valueNode.findChildByType(XCSTypes.FUNCTION_NAME)).getText();
+    }
+
+    /**
      * Get the stream function of the function core
      * @param element function core
      * @return String stream function

@@ -39,6 +39,11 @@ public class XCSFunctionCoreImpl extends XCSNamedElementImpl implements XCSFunct
   }
 
   @Override
+  public String getFunctionName() {
+    return XCSPsiImplUtil.getFunctionName(this);
+  }
+
+  @Override
   public String getSF() {
     return XCSPsiImplUtil.getSF(this);
   }

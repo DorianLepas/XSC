@@ -13,6 +13,8 @@ public interface XCSFunctionCore extends XCSNamedElement {
   @Nullable
   XCSProperty getProperty();
 
+  String getFunctionName();
+
   String getSF();
 
   int getDepth();

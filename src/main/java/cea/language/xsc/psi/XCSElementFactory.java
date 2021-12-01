@@ -5,6 +5,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.TokenType;
 
 public class XCSElementFactory {
 
@@ -84,6 +85,42 @@ public class XCSElementFactory {
         node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
         node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+    }
+
+    public static void createReport(ASTNode node, PsiElement element){
+        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L\n",node.getLastChildNode().getTreeNext());
+        node.addChild(element.copy().getNode());
+        node.addLeaf(XCSTypes.CORE_START,"\n\t\t\t<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n\t\t\t>",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n\t\t>",node.getLastChildNode().getTreeNext());
+    }
+
+    public static void createFunctionReport(ASTNode node, PsiElement element){
+        String new_name = "DR_" + ((XCSFunctionCore)element).getFunctionName().replace("LER_","");
+        node.addLeaf(XCSTypes.FUNCTION_NAME,new_name,node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.COLON,":",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.STREAM_FUNCTION,"S2F33",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.FUNCTION_COMMENT,"* Define Report for " + new_name.substring(new_name.lastIndexOf("_") + 1),node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_START,"\n<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_START,"\n\t<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.VARIABLE_VALUE,"1",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_START,"\n\t<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_START,"\n\t\t<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L\n",node.getLastChildNode().getTreeNext());
+        node.addChild(element.copy().getNode());
+        node.addLeaf(XCSTypes.CORE_START,"\n\t\t\t<",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n\t\t\t>",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n\t\t>",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n\t>",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.CORE_END,"\n>",node.getLastChildNode().getTreeNext());
+        node.addLeaf(XCSTypes.FUNCTION_END,".",node.getLastChildNode().getTreeNext());
     }
 
     public static PsiElement createCRLF(Project project) {

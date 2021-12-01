@@ -17,9 +17,11 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -58,35 +60,54 @@ public class XCSCreateReportQuickFix extends BaseIntentionAction {
             if (xcsFile != null) {
                 // Create Report in the file
                 createProperty(project, xcsFile.getVirtualFile());
-
             }
         });
     }
 
     private void createProperty(final Project project, final VirtualFile file) {
         WriteCommandAction.writeCommandAction(project).run(() -> {
+            boolean done = false;
             ASTNode lastChildNode = null;
             // Create a report
             XCSFile xcsFile = (XCSFile) PsiManager.getInstance(project).findFile(file);
-            ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-            for (ASTNode child : children) {
-                if (child.getFirstChildNode() != null) {
-                    if (child.getFirstChildNode().getElementType().equals(XCSTypes.COLLECTION_EVENT)) {
-                        if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                            lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                        } else {
-                            return;
+            Collection<XCSFunctions> functions = PsiTreeUtil.findChildrenOfType(xcsFile, XCSFunctions.class);
+            for (XCSFunctions function : functions) {
+                String name = function.getNode().findChildByType(XCSTypes.FUNCTION_NAME).getText();
+                String SF = function.getNode().findChildByType(XCSTypes.STREAM_FUNCTION).getText();
+                if (SF.contains("S2F33") && name.replace("DR_","").equals(((XCSFunctionCore)element).getFunctionName().replace("LER_",""))) {
+                    XCSFunctionCore List = PsiTreeUtil.findChildOfType(function,XCSFunctionCore.class);
+                    if (List != null) {
+                        PsiElement[] Cores = List.getChildren();
+                        if (Cores[Cores.length-1] != null && Cores[Cores.length-1] instanceof XCSFunctionCore){
+                            PsiElement[] InnerCores = ((XCSFunctionCore)Cores[Cores.length-1]).getChildren();
+                            if (InnerCores[InnerCores.length-1] != null && InnerCores[InnerCores.length-1] instanceof XCSFunctionCore){
+                                lastChildNode = ((XCSFunctionCore)InnerCores[InnerCores.length-1]).getNode();
+                                lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                                XCSElementFactory.createReport(Objects.requireNonNull(lastChildNode), element);
+                                // Move to where the property has been created
+                                ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
+                                Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
+                                done = true;
+                            }
                         }
                     }
                 }
             }
-            if (lastChildNode != null) {
-                lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+            if (!done){
+                ASTNode valueNode = element.getNode();
+                while (valueNode != null && !(valueNode.getPsi() instanceof XCSFunctions)) {
+                    valueNode = valueNode.getTreeParent();
+                }
+                if (valueNode != null){
+                    lastChildNode = valueNode;
+                    lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    XCSElementFactory.createFunctionReport(Objects.requireNonNull(lastChildNode), element);
+                    // Move to where the property has been created
+                    ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
+                    Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
+                }
             }
-            XCSElementFactory.createPropertyCe(Objects.requireNonNull(lastChildNode), "VfeiName", key);
-            // Move to where the property has been created
-            ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
-            Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
         });
     }
 
