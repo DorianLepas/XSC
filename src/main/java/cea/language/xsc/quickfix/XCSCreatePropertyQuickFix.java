@@ -16,7 +16,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -90,6 +90,7 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
 
     /**
      * Check the property type
+     *
      * @return String type
      */
     private String getType() {
@@ -110,84 +111,60 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
             VirtualFile dir = Objects.requireNonNull(PsiManager.getInstance(project).findFile(file)).getContainingDirectory().getVirtualFile();
             String section = getType();
             // Create a CEID property
-            if(section.equals("CEID")) {
+            if (section.equals("CEID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_events.xsc");
-                ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-                for (ASTNode child : children) {
-                    if (child.getFirstChildNode() != null) {
-                        if (child.getFirstChildNode().getElementType().equals(XCSTypes.COLLECTION_EVENT)) {
-                            if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                                lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                            } else {
-                                return;
-                            }
-                        }
-                    }
+                XCSCollectionEventSection CE = PsiTreeUtil.findChildOfType(xcsFile, XCSCollectionEventSection.class);
+                if (CE != null && CE.getChildren()[0].getChildren().length != 0) {
+                    lastChildNode = CE.getChildren()[0].getChildren()[CE.getChildren()[0].getChildren().length - 1].getNode();
+                } else {
+                    return;
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                 }
-                XCSElementFactory.createPropertyCe(Objects.requireNonNull(lastChildNode), "VfeiName", key);
+                lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName",key,project).getNode());
             }
             // Create a SVID property
-            if(section.equals("SVID")) {
+            if (section.equals("SVID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("status_variables.xsc");
-                ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-                for (ASTNode child : children) {
-                    if (child.getFirstChildNode() != null) {
-                        if (child.getFirstChildNode().getElementType().equals(XCSTypes.STATUS_VARIABLE)) {
-                            if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                                lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                            } else {
-                                return;
-                            }
-                        }
-                    }
+                XCSStatusVariableSection SV = PsiTreeUtil.findChildOfType(xcsFile, XCSStatusVariableSection.class);
+                if (SV != null && SV.getChildren()[0].getChildren().length != 0) {
+                    lastChildNode = SV.getChildren()[0].getChildren()[SV.getChildren()[0].getChildren().length - 1].getNode();
+                } else {
+                    return;
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                 }
-                XCSElementFactory.createPropertySv(Objects.requireNonNull(lastChildNode), "VfeiName", key);
+                lastChildNode.addChild(XCSElementFactory.createPropertySv("VfeiName",key,project).getNode());
             }
             // Create a ECID property
-            if(section.equals("ECID")) {
+            if (section.equals("ECID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("constants.xsc");
-                ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-                for (ASTNode child : children) {
-                    if (child.getFirstChildNode() != null) {
-                        if (child.getFirstChildNode().getElementType().equals(XCSTypes.EQUIPMENT_CONSTANT)) {
-                            if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                                lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                            } else {
-                                return;
-                            }
-                        }
-                    }
+                XCSEquipmentConstantSection EC = PsiTreeUtil.findChildOfType(xcsFile, XCSEquipmentConstantSection.class);
+                if (EC != null && EC.getChildren()[0].getChildren().length != 0) {
+                    lastChildNode = EC.getChildren()[0].getChildren()[EC.getChildren()[0].getChildren().length - 1].getNode();
+                } else {
+                    return;
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                 }
-                XCSElementFactory.createPropertyEc(Objects.requireNonNull(lastChildNode), "VfeiName", key);
+                lastChildNode.addChild(XCSElementFactory.createPropertyEc("VfeiName",key,project).getNode());
             }
             // Create a DVID property
-            if(section.equals("DVID")) {
+            if (section.equals("DVID")) {
                 XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("data_variables.xsc");
-                ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-                for (ASTNode child : children) {
-                    if (child.getFirstChildNode() != null) {
-                        if (child.getFirstChildNode().getElementType().equals(XCSTypes.DATA_VARIABLE)) {
-                            if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                                lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                            } else {
-                                return;
-                            }
-                        }
-                    }
+                XCSDataVariableSection DV = PsiTreeUtil.findChildOfType(xcsFile, XCSDataVariableSection.class);
+                if (DV != null && DV.getChildren()[0].getChildren().length != 0) {
+                    lastChildNode = DV.getChildren()[0].getChildren()[DV.getChildren()[0].getChildren().length - 1].getNode();
+                } else {
+                    return;
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                 }
-                XCSElementFactory.createPropertyDv(Objects.requireNonNull(lastChildNode), "VfeiName", key);
+                lastChildNode.addChild(XCSElementFactory.createPropertyDv("VfeiName",key,project).getNode());
             }
             // Move to where the property has been created
             ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);

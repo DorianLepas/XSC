@@ -5,7 +5,8 @@ import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.TokenType;
+import com.intellij.psi.util.PsiTreeUtil;
+
 
 public class XCSElementFactory {
 
@@ -20,107 +21,70 @@ public class XCSElementFactory {
                 createFileFromText(name, XCSFileType.INSTANCE, text);
     }
 
-    public static void createPropertyCe(ASTNode node, String name, String value) {
-        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_TYPE,"V",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CEID,"CEID",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_START,"{",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME,name,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,value,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME," EventLevel8",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"Report\"",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"'-1'",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+    public static PsiElement createPropertyCe(String name, String value,Project project) {
+        final XCSFile file = createFile(project, "COLLECTIONEVENT_VARIABLES:\n<L\n" +
+                "<V CEID {"+ name +"="+ value +" EventLevel8=\"Report\"} '-1'>" +
+                "\n>\n."
+        );
+        return PsiTreeUtil.findChildOfType(file,XCSCeCore.class);
     }
 
-    public static void createPropertySv(ASTNode node, String name, String value) {
-        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_TYPE,"V",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CEID,"SVID",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_START,"{",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME,"SecsValueToVfeiText",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"false\" ",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME,name,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,value,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME," VfeiType",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"V\"",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"'-1'",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+    public static PsiElement createPropertySv(String name, String value,Project project) {
+        final XCSFile file = createFile(project, "STATUSVARIABLES:\n<L\n" +
+                "<V SVID {SecsValueToVfeiText=\"false\" "+ name +"="+ value +" VfeiType=\"V\"} '-1'>" +
+                "\n>\n."
+        );
+        return PsiTreeUtil.findChildOfType(file,XCSSvCore.class);
     }
 
-    public static void createPropertyDv(ASTNode node, String name, String value) {
-        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CEID,"DVID",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_START,"{",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME,name,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,value,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME," VfeiType",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"V\"",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+    public static PsiElement createPropertyDv(String name, String value,Project project) {
+        final XCSFile file = createFile(project, "DATAVARIABLES:\n<L\n" +
+                "<U4 DVID {"+ name +"="+ value +" VfeiType=\"V\"} -1>" +
+                "\n>\n."
+        );
+        return PsiTreeUtil.findChildOfType(file,XCSDvCore.class);
     }
 
-    public static void createPropertyEc(ASTNode node, String name, String value) {
-        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CEID,"ECID",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_START,"{",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME,name,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,value,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_NAME," VfeiType",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.EQUALS,"=",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_VALUE,"\"V\"",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.PROPERTY_END,"}",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"-1",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
+    public static PsiElement createPropertyEc(String name, String value,Project project) {
+        final XCSFile file = createFile(project, "EQUIPMENTCONSTANTS:\n<L\n" +
+                "<U4 ECID {"+ name +"="+ value +" VfeiType=\"V\"} -1>" +
+                "\n>\n."
+        );
+        return PsiTreeUtil.findChildOfType(file,XCSEcCore.class);
     }
 
-    public static void createReport(ASTNode node, PsiElement element){
-        node.addLeaf(XCSTypes.CORE_START,"<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L\n",node.getLastChildNode().getTreeNext());
-        node.addChild(element.copy().getNode());
-        node.addLeaf(XCSTypes.CORE_START,"\n\t\t\t<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n\t\t\t>",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n\t\t>",node.getLastChildNode().getTreeNext());
-    }
-
-    public static void createFunctionReport(ASTNode node, PsiElement element){
+    public static PsiElement createReport(ASTNode node, PsiElement element,Project project){
         String new_name = "DR_" + ((XCSFunctionCore)element).getFunctionName().replace("LER_","");
-        node.addLeaf(XCSTypes.FUNCTION_NAME,new_name,node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.COLON,":",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.STREAM_FUNCTION,"S2F33",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.FUNCTION_COMMENT,"* Define Report for " + new_name.substring(new_name.lastIndexOf("_") + 1),node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_START,"\n<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_START,"\n\t<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_TYPE,"U4",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.VARIABLE_VALUE,"1",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,">",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_START,"\n\t<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_START,"\n\t\t<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L\n",node.getLastChildNode().getTreeNext());
-        node.addChild(element.copy().getNode());
-        node.addLeaf(XCSTypes.CORE_START,"\n\t\t\t<",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.LIST_TYPE,"L",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n\t\t\t>",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n\t\t>",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n\t>",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.CORE_END,"\n>",node.getLastChildNode().getTreeNext());
-        node.addLeaf(XCSTypes.FUNCTION_END,".",node.getLastChildNode().getTreeNext());
+        final XCSFile file = createFile(project,
+                "TEMPORARY: S0F0" +
+                "<L\n" +
+                element.getText() + "\n" +
+                "<L\n" +
+                ">\n" +
+                ">" +
+                "\n."
+        );
+        System.out.println(file.getText());
+        return PsiTreeUtil.findChildOfType(file,XCSFunctionCore.class);
+    }
+
+    public static PsiElement createFunctionReport(ASTNode node, PsiElement element,Project project){
+        String new_name = "DR_" + ((XCSFunctionCore)element).getFunctionName().replace("LER_","");
+        final XCSFile file = createFile(project,
+                new_name + ": S2F33 * Define Report for " + new_name.substring(new_name.lastIndexOf("_") + 1) + "\n" +
+                "<L\n" +
+                "<U4 1>\n" +
+                "<L\n" +
+                "<L\n" +
+                element.getText() + "\n" +
+                "<L\n" +
+                ">\n" +
+                ">\n" +
+                ">\n" +
+                ">" +
+                "\n."
+        );
+        return PsiTreeUtil.findChildOfType(file,XCSFunctions.class);
     }
 
     public static PsiElement createCRLF(Project project) {

@@ -41,15 +41,16 @@ public class XCSBlock extends AbstractBlock {
         // Search for the Blocks not to indent
         if(isLeaf() ||
                 isAtRootFile() ||
-                (myNode.getPsi() instanceof XCSFunctionCore && (myNode.getTreeParent().getPsi() instanceof XCSFunctions||myNode.getTreeParent().getPsi() instanceof XCSStandartSections)) ||
+                myNode.getPsi() instanceof XCSFunctions ||
+                (myNode.getPsi() instanceof XCSFunctionCore && (myNode.getTreeNext() == null || (myNode.getTreeParent().getPsi() instanceof XCSFunctions||myNode.getTreeParent().getPsi() instanceof XCSStandartSections))) ||
                 (myNode.getPsi() instanceof XCSEventsCore && myNode.getTreeParent().getPsi() instanceof XCSEventsSection) ||
                 (myNode.getPsi() instanceof XCSScenariosCore && myNode.getTreeParent().getPsi() instanceof XCSScenariosSection) ||
-                (myNode.getPsi() instanceof XCSCeList) || (myNode.getPsi() instanceof XCSCeCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
-                (myNode.getPsi() instanceof XCSDvList) || (myNode.getPsi() instanceof XCSDvCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
-                (myNode.getPsi() instanceof XCSEcList) || (myNode.getPsi() instanceof XCSEcCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
-                (myNode.getPsi() instanceof XCSSitList) || (myNode.getPsi() instanceof XCSSitCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
-                (myNode.getPsi() instanceof XCSSvList) || (myNode.getPsi() instanceof XCSSvCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
-                (myNode.getPsi() instanceof XCSVssList) || (myNode.getPsi() instanceof XCSVssCore && myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode())) ||
+                (myNode.getPsi() instanceof XCSCeList) || (myNode.getPsi() instanceof XCSCeCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
+                (myNode.getPsi() instanceof XCSDvList) || (myNode.getPsi() instanceof XCSDvCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
+                (myNode.getPsi() instanceof XCSEcList) || (myNode.getPsi() instanceof XCSEcCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
+                (myNode.getPsi() instanceof XCSSitList) || (myNode.getPsi() instanceof XCSSitCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
+                (myNode.getPsi() instanceof XCSSvList) || (myNode.getPsi() instanceof XCSSvCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
+                (myNode.getPsi() instanceof XCSVssList) || (myNode.getPsi() instanceof XCSVssCore && (myNode.getTreeNext() == null || myNode.getPsi().equals(myNode.getTreeNext().getFirstChildNode()))) ||
                 myNode.getPsi() instanceof  XCSProperty || myNode.getPsi() instanceof XCSProperty_ ||
                 myNode.getPsi() instanceof XCSEcProperty || myNode.getPsi() instanceof XCSEcProperty_ ||
                 myNode.getPsi() instanceof XCSCeProperty || myNode.getPsi() instanceof XCSCeProperty_ ||

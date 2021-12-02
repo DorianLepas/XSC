@@ -2,6 +2,7 @@ package cea.language.sml.quickfix;
 
 import cea.language.sml.psi.SmlFile;
 import cea.language.xsc.filetype.XCSFileType;
+import cea.language.xsc.psi.XCSCollectionEventSection;
 import cea.language.xsc.psi.XCSElementFactory;
 import cea.language.xsc.psi.XCSFile;
 import cea.language.xsc.psi.XCSTypes;
@@ -19,6 +20,7 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.TokenSet;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,22 +78,16 @@ public class SmlCreateEventQuickFix extends BaseIntentionAction {
             VirtualFile dir = Objects.requireNonNull(PsiManager.getInstance(project).findFile(file)).getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().findSubdirectory("EQS").findSubdirectory("src").findSubdirectory("xsc").getVirtualFile();
             // Create a CEID property
             XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_events.xsc");
-            ASTNode @NotNull [] children = Objects.requireNonNull(xcsFile).getNode().getChildren(TokenSet.ANY);
-            for (ASTNode child : children) {
-                if (child.getFirstChildNode() != null) {
-                    if (child.getFirstChildNode().getElementType().equals(XCSTypes.COLLECTION_EVENT)) {
-                        if (child.getPsi().getChildren()[0].getChildren().length != 0) {
-                            lastChildNode = child.getPsi().getChildren()[0].getChildren()[child.getPsi().getChildren()[0].getChildren().length - 1].getNode();
-                        } else {
-                            return;
-                        }
-                    }
-                }
+            XCSCollectionEventSection CE = PsiTreeUtil.findChildOfType(xcsFile, XCSCollectionEventSection.class);
+            if (CE != null && CE.getChildren()[0].getChildren().length != 0) {
+                lastChildNode = CE.getChildren()[0].getChildren()[CE.getChildren()[0].getChildren().length - 1].getNode();
+            } else {
+                return;
             }
             if (lastChildNode != null) {
                 lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
             }
-            XCSElementFactory.createPropertyCe(Objects.requireNonNull(lastChildNode), "VfeiName", "\"" + key + "\"");
+            lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName","\"" + key + "\"",project).getNode());
             // Move to where the property has been created
             ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
             Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);

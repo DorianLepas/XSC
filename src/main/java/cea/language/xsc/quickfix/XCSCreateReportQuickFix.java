@@ -83,7 +83,8 @@ public class XCSCreateReportQuickFix extends BaseIntentionAction {
                             if (InnerCores[InnerCores.length-1] != null && InnerCores[InnerCores.length-1] instanceof XCSFunctionCore){
                                 lastChildNode = ((XCSFunctionCore)InnerCores[InnerCores.length-1]).getNode();
                                 lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
-                                XCSElementFactory.createReport(Objects.requireNonNull(lastChildNode), element);
+                                lastChildNode.addChild(XCSElementFactory.createReport(lastChildNode,element,project).getNode());
+                                //XCSElementFactory.createReport(Objects.requireNonNull(lastChildNode), element);
                                 // Move to where the property has been created
                                 ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
                                 Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
@@ -102,7 +103,7 @@ public class XCSCreateReportQuickFix extends BaseIntentionAction {
                     lastChildNode = valueNode;
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
-                    XCSElementFactory.createFunctionReport(Objects.requireNonNull(lastChildNode), element);
+                    lastChildNode.addChild(XCSElementFactory.createFunctionReport(lastChildNode,element,project).getNode());
                     // Move to where the property has been created
                     ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
                     Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);
