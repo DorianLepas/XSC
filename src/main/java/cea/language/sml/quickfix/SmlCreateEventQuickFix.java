@@ -5,7 +5,6 @@ import cea.language.xsc.filetype.XCSFileType;
 import cea.language.xsc.psi.XCSCollectionEventSection;
 import cea.language.xsc.psi.XCSElementFactory;
 import cea.language.xsc.psi.XCSFile;
-import cea.language.xsc.psi.XCSTypes;
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.application.ApplicationManager;
@@ -19,7 +18,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +72,7 @@ public class SmlCreateEventQuickFix extends BaseIntentionAction {
 
     private void createProperty(final Project project, final VirtualFile file) {
         WriteCommandAction.writeCommandAction(project).run(() -> {
-            ASTNode lastChildNode = null;
+            ASTNode lastChildNode;
             VirtualFile dir = Objects.requireNonNull(PsiManager.getInstance(project).findFile(file)).getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().findSubdirectory("EQS").findSubdirectory("src").findSubdirectory("xsc").getVirtualFile();
             // Create a CEID property
             XCSFile xcsFile = (XCSFile) Objects.requireNonNull(PsiManager.getInstance(project).findDirectory(dir)).findFile("collection_events.xsc");
@@ -86,8 +84,8 @@ public class SmlCreateEventQuickFix extends BaseIntentionAction {
             }
             if (lastChildNode != null) {
                 lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName","\"" + key + "\"",project).getNode());
             }
-            lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName","\"" + key + "\"",project).getNode());
             // Move to where the property has been created
             ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
             Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);

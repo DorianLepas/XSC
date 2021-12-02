@@ -1,7 +1,6 @@
 package cea.language.xsc.psi;
 
 import cea.language.xsc.filetype.XCSFileType;
-import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFileFactory;
@@ -53,8 +52,7 @@ public class XCSElementFactory {
         return PsiTreeUtil.findChildOfType(file,XCSEcCore.class);
     }
 
-    public static PsiElement createReport(ASTNode node, PsiElement element,Project project){
-        String new_name = "DR_" + ((XCSFunctionCore)element).getFunctionName().replace("LER_","");
+    public static PsiElement createReport(PsiElement element,Project project){
         final XCSFile file = createFile(project,
                 "TEMPORARY: S0F0" +
                 "<L\n" +
@@ -68,7 +66,7 @@ public class XCSElementFactory {
         return PsiTreeUtil.findChildOfType(file,XCSFunctionCore.class);
     }
 
-    public static PsiElement createFunctionReport(ASTNode node, PsiElement element,Project project){
+    public static PsiElement createFunctionReport(PsiElement element,Project project){
         String new_name = "DR_" + ((XCSFunctionCore)element).getFunctionName().replace("LER_","");
         final XCSFile file = createFile(project,
                 new_name + ": S2F33 * Define Report for " + new_name.substring(new_name.lastIndexOf("_") + 1) + "\n" +

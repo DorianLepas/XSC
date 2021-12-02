@@ -121,8 +121,8 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName",key,project).getNode());
                 }
-                lastChildNode.addChild(XCSElementFactory.createPropertyCe("VfeiName",key,project).getNode());
             }
             // Create a SVID property
             if (section.equals("SVID")) {
@@ -135,8 +135,8 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    lastChildNode.addChild(XCSElementFactory.createPropertySv("VfeiName",key,project).getNode());
                 }
-                lastChildNode.addChild(XCSElementFactory.createPropertySv("VfeiName",key,project).getNode());
             }
             // Create a ECID property
             if (section.equals("ECID")) {
@@ -149,8 +149,8 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    lastChildNode.addChild(XCSElementFactory.createPropertyEc("VfeiName",key,project).getNode());
                 }
-                lastChildNode.addChild(XCSElementFactory.createPropertyEc("VfeiName",key,project).getNode());
             }
             // Create a DVID property
             if (section.equals("DVID")) {
@@ -163,8 +163,8 @@ public class XCSCreatePropertyQuickFix extends BaseIntentionAction {
                 }
                 if (lastChildNode != null) {
                     lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
+                    lastChildNode.addChild(XCSElementFactory.createPropertyDv("VfeiName",key,project).getNode());
                 }
-                lastChildNode.addChild(XCSElementFactory.createPropertyDv("VfeiName",key,project).getNode());
             }
             // Move to where the property has been created
             ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
