@@ -46,7 +46,7 @@ FUNCTION_END=.
 STREAM_FUNCTION=S\d+F\d+(" W")?
 
 //CORE
-VARIABLE_TYPE=(U|I)[1248](\s?\[\d+\])?|F[48](\s?\[\d+\])?|(B|V|v|BOOLEAN|Boolean)(\s?\[\d+\])?|J|V|v
+VARIABLE_TYPE=(U|I)[1248](\s?\[\d+\])?|F[48](\s?\[\d+\])?|(B|V|v|BOOLEAN|Boolean|S|s)(\s?\[\d+\])?|J|V|v|S|s
 VARIABLE_NAME=(\$)?\w*[a-zA-Z]\w*
 VARIABLE_VALUE=([-]?\w+([.,]\w+)?)|(\'[-]?\w+([.,]\w+)?\')
 CEID=CEID

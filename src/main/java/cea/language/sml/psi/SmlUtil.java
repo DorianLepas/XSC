@@ -83,8 +83,8 @@ public class SmlUtil {
      *
      * @param file    current file
      * @param project current project
-     * @param value     to check
-     * @param element   to check
+     * @param value   to check
+     * @param element to check
      * @return matching properties
      */
     public static List<PsiMethod> findFunctions(SmlFile file, Project project, String value, PsiElement element) {
@@ -114,7 +114,7 @@ public class SmlUtil {
                         break;
                     }
                     // Found the function in the FFC (only if the JavaCall file is in the FFC directory) project (lower priority)
-                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC"))||
+                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) ||
                             javaFile.getVirtualFile().getCanonicalPath().contains("FFCGenerator") && fileType.equals("FFCGenerator")) {
                         AddFunctionProperties(value, element, javaFile, result);
                         break;
@@ -181,14 +181,14 @@ public class SmlUtil {
     /**
      * Add all the value matching PsiMethod in the javaFile to the result list
      *
-     * @param value to check
+     * @param value    to check
      * @param javaFile the file where to search
-     * @param result list of matching PsiMethods
+     * @param result   list of matching PsiMethods
      */
 
-    private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result){
+    private static void AddFunctionProperties(String value, PsiElement element, PsiJavaFile javaFile, List<PsiMethod> result) {
         // Check if the file is an interface
-        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()){
+        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()) {
             return;
         }
         PsiMethod leastProperty = null;
@@ -202,18 +202,20 @@ public class SmlUtil {
                 if (value.substring(value.lastIndexOf(".") + 1).equals(property.getName())) {
                     result.add(property);
                     // Stock the PsiMethod with the least number of parameters
-                    if (leastProperty == null || property.getParameterList().getParametersCount() < leastProperty.getParameterList().getParametersCount()){
+                    if (leastProperty == null || property.getParameterList().getParametersCount() < leastProperty.getParameterList().getParametersCount()) {
                         leastProperty = property;
                     }
                 }
             }
         }
         // Same function but different number of parameter
-        if (result.size()>1){
+        if (result.size() > 1) {
+            // Remove all PsiMethod not in the good file
+            result.removeIf(property -> !property.getContainingFile().getVirtualFile().getCanonicalPath().equals(javaFile.getVirtualFile().getCanonicalPath()));
             // Remove all PsiMethod with a different number of parameters than the JavaCall
             result.removeIf(property -> property.getParameterList().getParametersCount() != ((SmlCallJavaFunctionInstruction) element).getParametersCount());
             // If they all have a different number of parameters, reference to the PsiMethod with the least number of parameters
-            if (result.size() == 0){
+            if (result.size() == 0) {
                 result.add(leastProperty);
             }
         }
@@ -223,11 +225,11 @@ public class SmlUtil {
      * Add all PsiMethod in the javaFile to the result list
      *
      * @param javaFile the file where to search
-     * @param result list of matching PsiMethods
+     * @param result   list of matching PsiMethods
      */
-    private static void AddFunctionProperties(PsiJavaFile javaFile, List<PsiMethod> result){
+    private static void AddFunctionProperties(PsiJavaFile javaFile, List<PsiMethod> result) {
         // Check if the file is an interface
-        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()){
+        if (javaFile.getClasses()[0].isInterface() || javaFile.getClasses()[0].isEnum()) {
             return;
         }
         // Get all the PsiMethod of the javaFile
@@ -235,31 +237,27 @@ public class SmlUtil {
         if (properties.size() != 0) {
             result.addAll(properties);
         }
+        result.removeIf(property -> !property.getContainingFile().getVirtualFile().getCanonicalPath().equals(javaFile.getVirtualFile().getCanonicalPath()));
     }
 
     /**
-     *  Search the value matching PsiMethod in the javaFile extends file within the project to the result list
+     * Search the value matching PsiMethod in the javaFile extends file within the project to the result list
      *
-     * @param value to check
+     * @param value    to check
      * @param javaFile the file where to search
-     * @param project current project
-     * @param result list of matching PsiMethods
+     * @param project  current project
+     * @param result   list of matching PsiMethods
      */
-    private static void SearchInExtends(String value, PsiElement element, PsiJavaFile javaFile, Project project, List<PsiMethod> result){
-        // Get the PsiClass of the javaFile
-        Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
-        // Look if there is an extend
-        if (extendsClass.size() != 0) {
-            // Go threw all extends
-            for (PsiClass extend : extendsClass) {
-                PsiElement[] children = extend.getChildren();
-                // Go threw all the extended files
-                for(PsiElement child : children){
-                    if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
-                        if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
-                            PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
-                            AddFunctionProperties(value, element, extendFile, result);
-                        }
+    private static void SearchInExtends(String value, PsiElement element, PsiJavaFile javaFile, Project project, List<PsiMethod> result) {
+        // Get the PsieReferenceLists of the javaFile
+        Collection<PsiReferenceList> children = PsiTreeUtil.findChildrenOfType(javaFile, PsiReferenceList.class);
+        // Go threw all the extended files
+        for (PsiElement child : children) {
+            if (child.getOriginalElement().getFirstChild() != null) {
+                if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
+                    PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
+                    if(extendFile.getVirtualFile().getCanonicalPath().contains("java")){
+                        AddFunctionProperties(value, element, extendFile, result);
                     }
                 }
             }
@@ -267,27 +265,22 @@ public class SmlUtil {
     }
 
     /**
-     *  Search all PsiMethod in the javaFile extends file within the project to the result list
+     * Search all PsiMethod in the javaFile extends file within the project to the result list
      *
      * @param javaFile the file where to search
-     * @param project current project
-     * @param result list of matching PsiMethods
+     * @param project  current project
+     * @param result   list of matching PsiMethods
      */
-    private static void SearchInExtends(PsiJavaFile javaFile, Project project, List<PsiMethod> result){
-        // Get the PsiClass of the javaFile
-        Collection<PsiClass> extendsClass = PsiTreeUtil.findChildrenOfType(javaFile, PsiClass.class);
-        // Look if there is an extend
-        if (extendsClass.size() != 0) {
-            // Go threw all extends
-            for (PsiClass extend : extendsClass) {
-                PsiElement[] children = extend.getChildren();
-                // Go threw all the extended files
-                for(PsiElement child : children){
-                    if(child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
-                        if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
-                            PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
-                            AddFunctionProperties(extendFile, result);
-                        }
+    private static void SearchInExtends(PsiJavaFile javaFile, Project project, List<PsiMethod> result) {
+        // Get the PsieReferenceLists of the javaFile
+        Collection<PsiReferenceList> children = PsiTreeUtil.findChildrenOfType(javaFile, PsiReferenceList.class);
+        // Go threw all the extended files
+        for (PsiElement child : children) {
+            if (child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
+                if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
+                    PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
+                    if(extendFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                        AddFunctionProperties(extendFile, result);
                     }
                 }
             }
