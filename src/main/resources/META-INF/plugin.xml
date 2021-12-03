@@ -52,6 +52,10 @@
     <lang.braceMatcher language="XSC" implementationClass="cea.language.xsc.bracematcher.XCSBraceMatcher"/>
     <lang.commenter language="XSC" implementationClass="cea.language.xsc.commenter.XCSCommenter"/>
     <psi.referenceContributor language="XSC" implementation="cea.language.xsc.reference.XCSReferenceContributor"/>
+    <lang.refactoringSupport language="XSC"
+                             implementationClass="cea.language.xsc.reference.XCSRefactoringSupportProvider"/>
+    <lang.foldingBuilder language="XSC"
+                         implementationClass="cea.language.xsc.folding.XCSFoldingBuilder"/>
 
     <!-- SML PLUGIN -->
     <fileType name="Sml " implementationClass="cea.language.sml.fileType.SmlFileType"
@@ -74,5 +78,7 @@
     <completion.contributor language="SML"
                             implementationClass="cea.language.sml.completion.SmlCompletionContributor"/>
     <psi.referenceContributor implementation="cea.language.sml.reference.SmlReferenceContributor"/>
+    <lang.foldingBuilder language="SML"
+                         implementationClass="cea.language.sml.folding.SmlFoldingBuilder"/>
   </extensions>
 </idea-plugin>

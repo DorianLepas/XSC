@@ -62,6 +62,12 @@ public class SmlAnnotator implements Annotator
                 .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()));
         HolderCreation.create();
       }
+      else{
+        PsiElement Reference =  element.getReference().resolve();
+        HolderCreation = holder.newAnnotation(HighlightSeverity.INFORMATION,"")
+                .tooltip(Reference.getContainingFile().getVirtualFile().getCanonicalPath().replace(Reference.getProject().getBasePath() + "/",""));
+        HolderCreation.create();
+      }
     }
 
     // Check if we're in an JavaCallBlock

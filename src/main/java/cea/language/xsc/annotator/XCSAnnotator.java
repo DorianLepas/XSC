@@ -7,6 +7,7 @@ import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
+import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.psi.PsiElement;
 import cea.language.xsc.psi.XCSProperty_;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,13 @@ public class XCSAnnotator implements Annotator {
                         .withFix(new XCSCreateReportQuickFix(((XCSFunctionCore)element).getValue(),element));
                 HolderCreation.create();
             }
+            else{
+                XCSFunctionCore Reference =  ((XCSFunctionCore)element.getReference().resolve());
+                HolderCreation = holder.newAnnotation(HighlightSeverity.INFORMATION,"")
+                        .tooltip(Reference.getContainingFile().getVirtualFile().getCanonicalPath().replace(Reference.getProject().getBasePath() + "/","") + "\n" +
+                        Reference.getFunctionName() + ": " + Reference.getSF());
+                HolderCreation.create();
+            }
         }
 
         // Ensure the Psi Element is a property
@@ -38,6 +46,12 @@ public class XCSAnnotator implements Annotator {
             // Create a WARNING if the element has 0 or multiple references
             HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
                     .withFix(new XCSCreatePropertyQuickFix(((XCSProperty_) element).getValue(), element));
+            HolderCreation.create();
+        }
+        else{
+            PsiElement Reference =  element.getReference().resolve();
+            HolderCreation = holder.newAnnotation(HighlightSeverity.INFORMATION,"")
+                    .tooltip(Reference.getContainingFile().getVirtualFile().getCanonicalPath().replace(Reference.getProject().getBasePath() + "/",""));
             HolderCreation.create();
         }
     }
