@@ -154,11 +154,11 @@ public class XCSPsiImplUtil {
     public static int getDepth(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode();
         int Depth = 0;
-        while (!(valueNode.getPsi() instanceof XCSFunctions)) {
+        while (!(valueNode.getPsi() instanceof XCSFile)) {
             valueNode = valueNode.getTreeParent();
             Depth++;
         }
-        return Depth;
+        return Depth - 1;
     }
 
     /**
