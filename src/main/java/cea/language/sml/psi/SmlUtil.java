@@ -249,7 +249,7 @@ public class SmlUtil {
      * @param result   list of matching PsiMethods
      */
     private static void SearchInExtends(String value, PsiElement element, PsiJavaFile javaFile, Project project, List<PsiMethod> result) {
-        // Get the PsieReferenceLists of the javaFile
+        // Get the PsiReferenceLists of the javaFile
         Collection<PsiReferenceList> children = PsiTreeUtil.findChildrenOfType(javaFile, PsiReferenceList.class);
         // Go threw all the extended files
         for (PsiElement child : children) {
@@ -272,7 +272,7 @@ public class SmlUtil {
      * @param result   list of matching PsiMethods
      */
     private static void SearchInExtends(PsiJavaFile javaFile, Project project, List<PsiMethod> result) {
-        // Get the PsieReferenceLists of the javaFile
+        // Get the PsiReferenceLists of the javaFile
         Collection<PsiReferenceList> children = PsiTreeUtil.findChildrenOfType(javaFile, PsiReferenceList.class);
         // Go threw all the extended files
         for (PsiElement child : children) {

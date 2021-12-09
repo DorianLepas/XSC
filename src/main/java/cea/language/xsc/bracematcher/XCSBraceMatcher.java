@@ -22,7 +22,7 @@ public class XCSBraceMatcher implements PairedBraceMatcher {
 
     @Override
     public boolean isPairedBracesAllowedBeforeType(@NotNull IElementType lbraceType, @Nullable IElementType t) {
-        return true;
+        return false;
     }
 
     @Override

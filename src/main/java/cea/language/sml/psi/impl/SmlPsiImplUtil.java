@@ -10,6 +10,11 @@ import com.intellij.psi.PsiElement;
 
 public class SmlPsiImplUtil {
 
+    /**
+     * Get the value of the first child in the event section
+     * @param element event section
+     * @return String value
+     */
     public static String getKey(SmlEventsValue element) {
         ASTNode keyNode = element.getNode().getTreeParent().getTreeParent().getFirstChildNode();
         if (keyNode != null) {
@@ -32,7 +37,6 @@ public class SmlPsiImplUtil {
             return null;
         }
     }
-
 
     /**
      * Get the value of the event section

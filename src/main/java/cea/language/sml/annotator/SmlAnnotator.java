@@ -60,14 +60,13 @@ public class SmlAnnotator implements Annotator
         // Create a WARNING if the element has 0 or multiple references
         HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
                 .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()));
-        HolderCreation.create();
       }
       else{
         PsiElement Reference =  element.getReference().resolve();
         HolderCreation = holder.newAnnotation(HighlightSeverity.INFORMATION,"")
                 .tooltip(Reference.getContainingFile().getVirtualFile().getCanonicalPath().replace(Reference.getProject().getBasePath() + "/",""));
-        HolderCreation.create();
       }
+      HolderCreation.create();
     }
 
     // Check if we're in an JavaCallBlock

@@ -168,7 +168,7 @@ public class XCSPsiImplUtil {
      */
     public static int getCommentSize(XCSFunctionCore element) {
         ASTNode valueNode = element.getNode().findChildByType(XCSTypes.FUNCTION_COMMENT);
-        if (valueNode != null) {
+        if (valueNode != null && valueNode.getStartOffset() == element.getNode().getLastChildNode().getStartOffset()) {
             return valueNode.getText().length() + 1;
         } else {
             return 0;
