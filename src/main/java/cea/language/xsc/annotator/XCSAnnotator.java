@@ -35,7 +35,7 @@ public class XCSAnnotator implements Annotator {
         }
 
         // Ensure the Psi Element is a property
-        if (!(element instanceof XCSProperty_) || !(element.getFirstChild().getText().equals("VfeiName"))) {
+        if (!(element instanceof XCSProperty_) || !(element.getFirstChild().getText().equals("VfeiName")) || element.getContainingFile().getVirtualFile().getCanonicalPath().contains("bin")) {
             return;
         }
 

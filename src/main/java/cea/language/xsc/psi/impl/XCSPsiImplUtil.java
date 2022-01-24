@@ -155,7 +155,12 @@ public class XCSPsiImplUtil {
         ASTNode valueNode = element.getNode();
         int Depth = 0;
         while (!(valueNode.getPsi() instanceof XCSFile)) {
-            valueNode = valueNode.getTreeParent();
+            try{
+                valueNode = valueNode.getTreeParent();
+            }
+            catch (NullPointerException e){
+                return -1;
+            }
             Depth++;
         }
         return Depth - 1;

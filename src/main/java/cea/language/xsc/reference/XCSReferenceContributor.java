@@ -20,6 +20,9 @@ public class XCSReferenceContributor extends PsiReferenceContributor {
                     public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
                                                                            @NotNull ProcessingContext context) {
                         XCSProperty_ e = (XCSProperty_) element;
+                        if(element.getContainingFile().getVirtualFile().getCanonicalPath().contains("bin")){
+                            return PsiReference.EMPTY_ARRAY;
+                        }
                         // Only create reference to XCSProperty_ with property names = VfeiName
                         if (!e.getProp().equals("VfeiName")){
                             return PsiReference.EMPTY_ARRAY;
