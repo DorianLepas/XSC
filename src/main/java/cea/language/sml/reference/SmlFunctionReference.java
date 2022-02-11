@@ -53,7 +53,7 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
             variants.add(LookupElementBuilder
                     .create(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
                     .withIcon(method.getContainingFile().getIcon(0))
-                    .withPresentableText(method.getName() + method.getParameterList().getText())
+                    .withPresentableText(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
                     .withTypeText(method.getContainingFile().getName())
             );
         }

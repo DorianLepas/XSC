@@ -237,7 +237,7 @@ public class SmlUtil {
         if (properties.size() != 0) {
             result.addAll(properties);
         }
-        result.removeIf(property -> !property.getContainingFile().getVirtualFile().getCanonicalPath().equals(javaFile.getVirtualFile().getCanonicalPath()));
+        //result.removeIf(property -> !property.getContainingFile().getVirtualFile().getCanonicalPath().equals(javaFile.getVirtualFile().getCanonicalPath()));
     }
 
     /**
@@ -287,4 +287,48 @@ public class SmlUtil {
         }
     }
 
+    /**
+     * Searches in the sml file instances of the Sml Alias Blocks with the given value.
+     *
+     * @param containingFile    current sml file
+     * @param project current project
+     * @param value   to check
+     * @return matching alias
+     */
+    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile, Project project, String value) {
+        List<SmlAliasBlock> result = new ArrayList<>();
+            // Check if the current file is part of the same project as the sml file
+            if (containingFile != null) {
+                Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
+                if (alias.size() != 0) {
+                    // Go threw all properties find in the current file
+                    for (SmlAliasBlock alias_ : alias) {
+                        // Check if they both have the same property value
+                        if (value.equals(Objects.requireNonNull(alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME)).getText())) {
+                            result.add(alias_);
+                        }
+                    }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the sml file instances of the Sml Alias Blocks.
+     *
+     * @param containingFile    current sml file
+     * @param project current project
+     * @return all alias
+     */
+    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile, Project project) {
+        List<SmlAliasBlock> result = new ArrayList<>();
+            // Check if the current file is part of the same project as the sml file
+            if (containingFile != null) {
+                Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
+                if (alias.size() != 0) {
+                    result.addAll(alias);
+                }
+        }
+        return result;
+    }
 }

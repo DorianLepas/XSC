@@ -23,7 +23,8 @@ public class SmlFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         // Initialize the group of folding regions that will expand/collapse together.
         // Initialize the list of folding regions
         List<FoldingDescriptor> descriptors = new ArrayList<>();
-
+        return descriptors.toArray(new FoldingDescriptor[0]);
+/*
         // Get a collection of the SmlAlarmBlock in the document below root
         Collection<SmlAlarmBlock> AlarmBlocks = PsiTreeUtil.findChildrenOfType(root, SmlAlarmBlock.class);
         // Evaluate the collection
@@ -151,6 +152,7 @@ public class SmlFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         }
 
         return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
+ */
     }
 
     @Nullable

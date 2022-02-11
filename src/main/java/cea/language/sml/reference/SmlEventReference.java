@@ -1,6 +1,9 @@
 package cea.language.sml.reference;
 
+import cea.language.sml.fileType.SmlIcons;
+import cea.language.sml.psi.SmlAliasBlock;
 import cea.language.sml.psi.SmlFile;
+import cea.language.sml.psi.SmlTypes;
 import cea.language.sml.psi.SmlUtil;
 import cea.language.xsc.psi.*;
 import com.intellij.codeInsight.lookup.LookupElement;
@@ -28,10 +31,18 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
         Project project = myElement.getProject();
         List<ResolveResult> results = new ArrayList<>();
-        // Search in the project collection_events.xsc file
-        final List<XCSCeProperty_> propertiesCe = SmlUtil.findProperties((SmlFile) myElement.getContainingFile(), project, value);
-        for (XCSCeProperty_ property : propertiesCe) {
-            results.add(new PsiElementResolveResult(property));
+        // Search in the project collection_events.xsc file and the sml file
+        if (value.indexOf('&') == 1){
+            final List<SmlAliasBlock> propertiesAlias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile(), project,value.replace("\"","").substring(1));
+            for (SmlAliasBlock alias : propertiesAlias) {
+                results.add(new PsiElementResolveResult(alias));
+            }
+        }
+        else {
+            final List<XCSCeProperty_> propertiesCe = SmlUtil.findProperties((SmlFile) myElement.getContainingFile(), project, value);
+            for (XCSCeProperty_ property : propertiesCe) {
+                results.add(new PsiElementResolveResult(property));
+            }
         }
         return results.toArray(new ResolveResult[results.size()]);
     }
@@ -56,6 +67,18 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
                         .withIcon(XCSIcons.FILE)
                         .withPresentableText(property.getLastChild().getText().replace("\"",""))
                         .withTypeText(property.getContainingFile().getName())
+                );
+            }
+        }
+        // Create LookUpElement with element of Sml Alias Blocks
+        List<SmlAliasBlock> alias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile(), project);
+        for (final SmlAliasBlock alias_ : alias) {
+            if (alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME) != null) {
+                variants.add(LookupElementBuilder
+                        .create("&"+alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME).getText())
+                        .withIcon(SmlIcons.FILE)
+                        .withPresentableText(alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME).getText())
+                        .withTypeText("Alias")
                 );
             }
         }

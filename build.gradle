@@ -6,7 +6,7 @@ plugins {
 }
 
 group 'org.intellij.sdk'
-version '1.5'
+version '1.6'
 
 jar {
     archiveName('XSC_&_SML_Support.jar')

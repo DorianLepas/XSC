@@ -68,7 +68,7 @@ PROPERTY_NAME_DV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignme
 PROPERTY_NAME_EC=VfeiName|VfeiType|SecsType|MinSecsValue|DefaultSecsValue
 PROPERTY_NAME_SV=VfeiName|VfeiType|SecsType|SecsValueToVfeiText|SecsValueAlignment|ReplaceVfeiName|ReplaceItems|SendAsList|ReuseProperties
 PROPERTY_NAME_VSS=CheckAck|SecsItemsToCheck
-PROPERTY_VALUE=(\"[^\"]*\")
+PROPERTY_VALUE=(\"[^\"\s]*\")
 
 //TYPES
 ASCII_TYPE=A(\s?\[\d+\])?|A
