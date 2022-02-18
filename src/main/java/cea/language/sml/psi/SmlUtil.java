@@ -255,9 +255,15 @@ public class SmlUtil {
         for (PsiElement child : children) {
             if (child.getOriginalElement().getFirstChild() != null) {
                 if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
-                    PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
-                    if(extendFile.getVirtualFile().getCanonicalPath().contains("java")){
-                        AddFunctionProperties(value, element, extendFile, result);
+                    PsiElement ref = ((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve();
+                    if (ref != null) {
+                        VirtualFile file = ref.getContainingFile().getVirtualFile();
+                        if (file != null) {
+                            PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(file);
+                            if (extendFile != null && extendFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                                AddFunctionProperties(value, element, extendFile, result);
+                            }
+                        }
                     }
                 }
             }
@@ -278,9 +284,15 @@ public class SmlUtil {
         for (PsiElement child : children) {
             if (child.getOriginalElement().toString().equals("PsiReferenceList") && child.getOriginalElement().getFirstChild() != null) {
                 if (child.getOriginalElement().getFirstChild().getText().equals("extends")) {
-                    PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(Objects.requireNonNull(((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve()).getContainingFile().getVirtualFile());
-                    if(extendFile.getVirtualFile().getCanonicalPath().contains("java")) {
-                        AddFunctionProperties(extendFile, result);
+                    PsiElement ref = ((PsiJavaCodeReferenceElement) child.getOriginalElement().getLastChild()).resolve();
+                    if (ref != null) {
+                        VirtualFile file = ref.getContainingFile().getVirtualFile();
+                        if (file != null) {
+                            PsiJavaFile extendFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(file);
+                            if (extendFile != null && extendFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                                AddFunctionProperties(extendFile, result);
+                            }
+                        }
                     }
                 }
             }
@@ -290,24 +302,23 @@ public class SmlUtil {
     /**
      * Searches in the sml file instances of the Sml Alias Blocks with the given value.
      *
-     * @param containingFile    current sml file
-     * @param project current project
-     * @param value   to check
+     * @param containingFile current sml file
+     * @param value          to check
      * @return matching alias
      */
-    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile, Project project, String value) {
+    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile, String value) {
         List<SmlAliasBlock> result = new ArrayList<>();
-            // Check if the current file is part of the same project as the sml file
-            if (containingFile != null) {
-                Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
-                if (alias.size() != 0) {
-                    // Go threw all properties find in the current file
-                    for (SmlAliasBlock alias_ : alias) {
-                        // Check if they both have the same property value
-                        if (value.equals(Objects.requireNonNull(alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME)).getText())) {
-                            result.add(alias_);
-                        }
+        // Check if the current file is part of the same project as the sml file
+        if (containingFile != null) {
+            Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
+            if (alias.size() != 0) {
+                // Go threw all properties find in the current file
+                for (SmlAliasBlock alias_ : alias) {
+                    // Check if they both have the same property value
+                    if (value.equals(Objects.requireNonNull(alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME)).getText())) {
+                        result.add(alias_);
                     }
+                }
             }
         }
         return result;
@@ -316,18 +327,17 @@ public class SmlUtil {
     /**
      * Searches in the sml file instances of the Sml Alias Blocks.
      *
-     * @param containingFile    current sml file
-     * @param project current project
+     * @param containingFile current sml file
      * @return all alias
      */
-    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile, Project project) {
+    public static List<SmlAliasBlock> findPropertiesInAlias(SmlFile containingFile) {
         List<SmlAliasBlock> result = new ArrayList<>();
-            // Check if the current file is part of the same project as the sml file
-            if (containingFile != null) {
-                Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
-                if (alias.size() != 0) {
-                    result.addAll(alias);
-                }
+        // Check if the current file is part of the same project as the sml file
+        if (containingFile != null) {
+            Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
+            if (alias.size() != 0) {
+                result.addAll(alias);
+            }
         }
         return result;
     }

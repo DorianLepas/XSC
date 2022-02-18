@@ -33,7 +33,7 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
         List<ResolveResult> results = new ArrayList<>();
         // Search in the project collection_events.xsc file and the sml file
         if (value.indexOf('&') == 1){
-            final List<SmlAliasBlock> propertiesAlias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile(), project,value.replace("\"","").substring(1));
+            final List<SmlAliasBlock> propertiesAlias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile(),value.replace("\"","").substring(1));
             for (SmlAliasBlock alias : propertiesAlias) {
                 results.add(new PsiElementResolveResult(alias));
             }
@@ -71,7 +71,7 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
             }
         }
         // Create LookUpElement with element of Sml Alias Blocks
-        List<SmlAliasBlock> alias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile(), project);
+        List<SmlAliasBlock> alias = SmlUtil.findPropertiesInAlias((SmlFile) myElement.getContainingFile());
         for (final SmlAliasBlock alias_ : alias) {
             if (alias_.getNode().findChildByType(SmlTypes.ALIAS_NAME) != null) {
                 variants.add(LookupElementBuilder
