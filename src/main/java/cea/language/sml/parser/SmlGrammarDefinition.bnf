@@ -50,7 +50,7 @@ scriptBlock ::= SCRIPT beginBlock bindingBlock javascript? endBlock
 
 bindingBlock ::= BINDING beginBlock bind+ endBlock
 
-bind ::= BIND_NAME BINDS_SEPARATOR smlVars {name="binds"}
+bind ::= BIND_NAME EQUALS_SEPARATOR smlVars {name="binds"}
 
 javascript ::= JAVASCRIPT_CODE+
 
@@ -100,7 +100,8 @@ private instructions ::= ifBlock|elseIfBlock|elseBlock|conditionBlock|scriptBloc
 |threadEndInstruction
 |traceInstruction
 |execEndInstruction
-|consumeEventInstruction) {name="Instructions"}
+|consumeEventInstruction
+|setInstruction) {name="Instructions"}
 
 // Instruction goto state
 gotoStateInstruction ::= GOTO_STATE SEPARATOR stateName (STATE_NAME_SEPARATOR stateName)*
@@ -125,6 +126,12 @@ execEndInstruction ::= EXEC_END
 // Instruction consume_event
 consumeEventInstruction ::= CONSUME_EVENT
 
+setInstruction ::= SET setProperty EQUALS_SEPARATOR setValue
+
+setProperty ::= setVariables | ((THREAD_KEYWORD|PROCESS_KEYWORD) identificationKey DOT_SEPARATOR setVariables)
+
+setValue ::= (setVariables|THREAD_KEYWORD|PROCESS_KEYWORD)
+
 // Instruction MESSAGE, WARNING ou DEBUG
 traceInstruction ::= (MESSAGE|WARNING|DEBUG) traceMessage?
 
@@ -147,3 +154,5 @@ private identificationKey ::= IDENTIFICATION_KEY {name="Identification Key"}
 private binds ::= BINDS {name="Bindings"}
 
 private smlVars ::= SML_VARS {name="Variables"}
+
+private setVariables ::= SET_VARIABLES {name="set Variables"}

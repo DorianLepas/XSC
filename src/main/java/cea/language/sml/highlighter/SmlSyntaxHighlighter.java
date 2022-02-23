@@ -115,6 +115,8 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
       return KEYWORDS_KEYS;
     }  else if (tokenType.equals(SmlTypes.CONDITION)) {
       return KEYWORDS_KEYS;
+    }  else if (tokenType.equals(SmlTypes.SET)) {
+      return KEYWORDS_KEYS;
     }
     /* Noms d'états */
     else if(tokenType.equals(SmlTypes.STATE_NAME)) {

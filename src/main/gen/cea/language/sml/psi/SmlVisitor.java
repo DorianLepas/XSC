@@ -99,6 +99,18 @@ public class SmlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitSetInstruction(@NotNull SmlSetInstruction o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSetProperty(@NotNull SmlSetProperty o) {
+    visitPsiElement(o);
+  }
+
+  public void visitSetValue(@NotNull SmlSetValue o) {
+    visitPsiElement(o);
+  }
+
   public void visitStateBlock(@NotNull SmlStateBlock o) {
     visitPsiElement(o);
   }

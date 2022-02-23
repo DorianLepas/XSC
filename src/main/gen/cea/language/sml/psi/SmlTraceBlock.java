@@ -41,6 +41,9 @@ public interface SmlTraceBlock extends PsiElement {
   List<SmlScriptBlock> getScriptBlockList();
 
   @NotNull
+  List<SmlSetInstruction> getSetInstructionList();
+
+  @NotNull
   List<SmlThreadEndInstruction> getThreadEndInstructionList();
 
   @NotNull

@@ -89,6 +89,12 @@ public class SmlElseBlockImpl extends ASTWrapperPsiElement implements SmlElseBlo
 
   @Override
   @NotNull
+  public List<SmlSetInstruction> getSetInstructionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlSetInstruction.class);
+  }
+
+  @Override
+  @NotNull
   public List<SmlThreadEndInstruction> getThreadEndInstructionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlThreadEndInstruction.class);
   }

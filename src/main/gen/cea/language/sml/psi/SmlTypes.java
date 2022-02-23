@@ -31,6 +31,9 @@ public interface SmlTypes {
   IElementType OPTIONS_BLOCK = new SmlElementType("OPTIONS_BLOCK");
   IElementType PROCESS_STATE_INSTRUCTION = new SmlElementType("PROCESS_STATE_INSTRUCTION");
   IElementType SCRIPT_BLOCK = new SmlElementType("SCRIPT_BLOCK");
+  IElementType SET_INSTRUCTION = new SmlElementType("SET_INSTRUCTION");
+  IElementType SET_PROPERTY = new SmlElementType("SET_PROPERTY");
+  IElementType SET_VALUE = new SmlElementType("SET_VALUE");
   IElementType STATE_BLOCK = new SmlElementType("STATE_BLOCK");
   IElementType THREAD_END_INSTRUCTION = new SmlElementType("THREAD_END_INSTRUCTION");
   IElementType THREAD_STATE_INSTRUCTION = new SmlElementType("THREAD_STATE_INSTRUCTION");
@@ -46,7 +49,6 @@ public interface SmlTypes {
   IElementType BEGIN_PARENTHESE = new SmlTokenType("BEGIN_PARENTHESE");
   IElementType BINDING = new SmlTokenType("BINDING");
   IElementType BINDS = new SmlTokenType("BINDS");
-  IElementType BINDS_SEPARATOR = new SmlTokenType("BINDS_SEPARATOR");
   IElementType BIND_NAME = new SmlTokenType("BIND_NAME");
   IElementType CALL = new SmlTokenType("CALL");
   IElementType COMMENT = new SmlTokenType("COMMENT");
@@ -55,11 +57,13 @@ public interface SmlTypes {
   IElementType CONST_CONDS = new SmlTokenType("CONST_CONDS");
   IElementType CONSUME_EVENT = new SmlTokenType("CONSUME_EVENT");
   IElementType DEBUG = new SmlTokenType("DEBUG");
+  IElementType DOT_SEPARATOR = new SmlTokenType("DOT_SEPARATOR");
   IElementType ELSE = new SmlTokenType("ELSE");
   IElementType ELSE_IF = new SmlTokenType("ELSE_IF");
   IElementType END_BLOCK = new SmlTokenType("END_BLOCK");
   IElementType END_PARENTHESE = new SmlTokenType("END_PARENTHESE");
   IElementType ENTER = new SmlTokenType("ENTER");
+  IElementType EQUALS_SEPARATOR = new SmlTokenType("EQUALS_SEPARATOR");
   IElementType EVENT = new SmlTokenType("EVENT");
   IElementType EVENT_NAME = new SmlTokenType("EVENT_NAME");
   IElementType EVENT_NAME_SEPARATOR = new SmlTokenType("EVENT_NAME_SEPARATOR");
@@ -75,14 +79,18 @@ public interface SmlTypes {
   IElementType OPTION = new SmlTokenType("OPTION");
   IElementType OPTIONS = new SmlTokenType("OPTIONS");
   IElementType OP_CONDS = new SmlTokenType("OP_CONDS");
+  IElementType PROCESS_KEYWORD = new SmlTokenType("PROCESS_KEYWORD");
   IElementType PROCESS_STATE = new SmlTokenType("PROCESS_STATE");
   IElementType SCRIPT = new SmlTokenType("SCRIPT");
   IElementType SEPARATOR = new SmlTokenType("SEPARATOR");
+  IElementType SET = new SmlTokenType("SET");
+  IElementType SET_VARIABLES = new SmlTokenType("SET_VARIABLES");
   IElementType SML_VARS = new SmlTokenType("SML_VARS");
   IElementType STATE = new SmlTokenType("STATE");
   IElementType STATE_NAME = new SmlTokenType("STATE_NAME");
   IElementType STATE_NAME_SEPARATOR = new SmlTokenType("STATE_NAME_SEPARATOR");
   IElementType THREAD_END = new SmlTokenType("THREAD_END");
+  IElementType THREAD_KEYWORD = new SmlTokenType("THREAD_KEYWORD");
   IElementType THREAD_NAME = new SmlTokenType("THREAD_NAME");
   IElementType THREAD_STATE = new SmlTokenType("THREAD_STATE");
   IElementType TRACE = new SmlTokenType("TRACE");
@@ -161,6 +169,15 @@ public interface SmlTypes {
       }
       else if (type == SCRIPT_BLOCK) {
         return new SmlScriptBlockImpl(node);
+      }
+      else if (type == SET_INSTRUCTION) {
+        return new SmlSetInstructionImpl(node);
+      }
+      else if (type == SET_PROPERTY) {
+        return new SmlSetPropertyImpl(node);
+      }
+      else if (type == SET_VALUE) {
+        return new SmlSetValueImpl(node);
       }
       else if (type == STATE_BLOCK) {
         return new SmlStateBlockImpl(node);

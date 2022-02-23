@@ -58,6 +58,14 @@ EVENT_NAME = [&]?[\w]+ | \'.+\'
 /* Séparateur entre les noms d'événements dans une définition d'événements */
 EVENT_NAME_SEPARATOR = ","
 
+SET_VARIABLES = [a-zA-Z0-9\_$]+
+
+THREAD_KEYWORD = #thread
+
+PROCESS_KEYWORD = #process
+
+DOT_SEPARATOR = \.
+
 /* Variables en SML */
 SML_VARS = (\#|\$|\@)[\w]+((\((\#|\$|\@)[\w]+\))?|(\.[\w]+)*)
 
@@ -87,7 +95,7 @@ TRACE_MESSAGE_SEPARATOR = [+]
 BIND_NAME = [\w]+
 
 /* Séparateur liens - expression mathématique associée */
-BINDS_SEPARATOR = [=]
+EQUALS_SEPARATOR = [=]
 
 /* Déclaration des états lexicaux du lexer */
 %state  STATES_NAMES
@@ -215,6 +223,7 @@ BINDS_SEPARATOR = [=]
   "MESSAGE"       { return SmlTypes.MESSAGE; }
   "DEBUG"         { return SmlTypes.DEBUG; }
   "WARNING"       { return SmlTypes.WARNING; }
+  "set"           { return SmlTypes.SET; }
 
   // Mots clés des blocs considérés comme des instructions
   "condition" { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.CONDITION; }
@@ -223,6 +232,13 @@ BINDS_SEPARATOR = [=]
   "else"      { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.ELSE; }
   "script"    { rootScript = false; return SmlTypes.SCRIPT; }
   "binding"   { yybegin(BINDINGS); return SmlTypes.BINDING; }
+
+  // Structure d'un set
+  {EQUALS_SEPARATOR}  { return SmlTypes.EQUALS_SEPARATOR; }
+  {THREAD_KEYWORD}  { return SmlTypes.THREAD_KEYWORD; }
+  {PROCESS_KEYWORD}  { return SmlTypes.PROCESS_KEYWORD; }
+  {DOT_SEPARATOR}  { return SmlTypes.DOT_SEPARATOR; }
+  {SET_VARIABLES} {return SmlTypes.SET_VARIABLES; }
 
   // Messages de traces (chaine de caractères pouvant se trouver après un MESSAGE, WARNING ou un DEBUG)
   {TRACE_MESSAGE_STRING}    { return SmlTypes.TRACE_MESSAGE_STRING; }
@@ -261,7 +277,7 @@ BINDS_SEPARATOR = [=]
   {BIND_NAME}  { return SmlTypes.BIND_NAME; }
 
   // Séparateur lien - variable
-  {BINDS_SEPARATOR}  { return SmlTypes.BINDS_SEPARATOR; }
+  {EQUALS_SEPARATOR}  { return SmlTypes.EQUALS_SEPARATOR; }
 
   // Variables SML
   {SML_VARS}  { return SmlTypes.SML_VARS; }

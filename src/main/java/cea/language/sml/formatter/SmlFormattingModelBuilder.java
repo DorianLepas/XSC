@@ -31,6 +31,10 @@ public class SmlFormattingModelBuilder implements FormattingModelBuilder
             .spaces(0)
             .between(TokenSet.ANY, SmlTypes.SEPARATOR)
             .spaces(0)
+            .before(SmlTypes.DOT_SEPARATOR).none()
+            .after(SmlTypes.DOT_SEPARATOR).none()
+            .before(SmlTypes.EQUALS_SEPARATOR).spaces(1)
+            .after(SmlTypes.EQUALS_SEPARATOR).spaces(1)
             /* Espaces entre un début de bloc et n'importe quel type de tokens */
             .between(TokenSet.ANY, SmlTypes.BEGIN_BLOCK)
             .spaces(1)

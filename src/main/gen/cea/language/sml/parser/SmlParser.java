@@ -124,13 +124,13 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BIND_NAME BINDS_SEPARATOR smlVars
+  // BIND_NAME EQUALS_SEPARATOR smlVars
   public static boolean bind(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "bind")) return false;
     if (!nextTokenIs(b, "<Bindings>", BIND_NAME)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, BIND, "<Bindings>");
-    r = consumeTokens(b, 1, BIND_NAME, BINDS_SEPARATOR);
+    r = consumeTokens(b, 1, BIND_NAME, EQUALS_SEPARATOR);
     p = r; // pin = 1
     r = r && smlVars(b, l + 1);
     exit_section_(b, l, m, r, p, null);
@@ -671,7 +671,8 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // |threadEndInstruction
   // |traceInstruction
   // |execEndInstruction
-  // |consumeEventInstruction)
+  // |consumeEventInstruction
+  // |setInstruction)
   static boolean instructions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "instructions")) return false;
     boolean r;
@@ -694,6 +695,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // |traceInstruction
   // |execEndInstruction
   // |consumeEventInstruction
+  // |setInstruction
   private static boolean instructions_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "instructions_5")) return false;
     boolean r;
@@ -705,6 +707,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
     if (!r) r = traceInstruction(b, l + 1);
     if (!r) r = execEndInstruction(b, l + 1);
     if (!r) r = consumeEventInstruction(b, l + 1);
+    if (!r) r = setInstruction(b, l + 1);
     return r;
   }
 
@@ -799,6 +802,82 @@ public class SmlParser implements PsiParser, LightPsiParser {
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, null, "<Separator ':' >");
     r = consumeToken(b, SEPARATOR);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SET setProperty EQUALS_SEPARATOR setValue
+  public static boolean setInstruction(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setInstruction")) return false;
+    if (!nextTokenIs(b, SET)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, SET_INSTRUCTION, null);
+    r = consumeToken(b, SET);
+    p = r; // pin = 1
+    r = r && report_error_(b, setProperty(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, EQUALS_SEPARATOR)) && r;
+    r = p && setValue(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  /* ********************************************************** */
+  // setVariables | ((THREAD_KEYWORD|PROCESS_KEYWORD) identificationKey DOT_SEPARATOR setVariables)
+  public static boolean setProperty(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setProperty")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SET_PROPERTY, "<set property>");
+    r = setVariables(b, l + 1);
+    if (!r) r = setProperty_1(b, l + 1);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  // (THREAD_KEYWORD|PROCESS_KEYWORD) identificationKey DOT_SEPARATOR setVariables
+  private static boolean setProperty_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setProperty_1")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = setProperty_1_0(b, l + 1);
+    p = r; // pin = 1
+    r = r && report_error_(b, identificationKey(b, l + 1));
+    r = p && report_error_(b, consumeToken(b, DOT_SEPARATOR)) && r;
+    r = p && setVariables(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // THREAD_KEYWORD|PROCESS_KEYWORD
+  private static boolean setProperty_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setProperty_1_0")) return false;
+    boolean r;
+    r = consumeToken(b, THREAD_KEYWORD);
+    if (!r) r = consumeToken(b, PROCESS_KEYWORD);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // setVariables|THREAD_KEYWORD|PROCESS_KEYWORD
+  public static boolean setValue(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setValue")) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, SET_VALUE, "<set value>");
+    r = setVariables(b, l + 1);
+    if (!r) r = consumeToken(b, THREAD_KEYWORD);
+    if (!r) r = consumeToken(b, PROCESS_KEYWORD);
+    exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // SET_VARIABLES
+  static boolean setVariables(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "setVariables")) return false;
+    if (!nextTokenIs(b, "<set Variables>", SET_VARIABLES)) return false;
+    boolean r;
+    Marker m = enter_section_(b, l, _NONE_, null, "<set Variables>");
+    r = consumeToken(b, SET_VARIABLES);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
