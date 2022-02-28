@@ -51,9 +51,9 @@ public class SmlFunctionReference extends PsiReferenceBase<PsiElement> implement
         List<PsiMethod> methods = SmlUtil.findFunctions((SmlFile) myElement.getContainingFile(), project);
         for (final PsiMethod method : methods) {
             variants.add(LookupElementBuilder
-                    .create(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
+                    .create(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + method.getParameterList().getText())
                     .withIcon(method.getContainingFile().getIcon(0))
-                    .withPresentableText(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + "()")
+                    .withPresentableText(method.getContainingFile().getName().substring(0, method.getContainingFile().getName().lastIndexOf(".")) + "." + method.getName() + method.getParameterList().getText())
                     .withTypeText(method.getContainingFile().getName())
             );
         }

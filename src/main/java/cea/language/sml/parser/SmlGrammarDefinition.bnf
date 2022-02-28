@@ -85,10 +85,10 @@ eventsValue ::= EVENT_NAME {name="Events Value" mixin="cea.language.sml.psi.impl
 
 
 /* Règle des conditions pour un bloc de condition */
-conditions ::= (SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (SML_VARS|CONST_CONDS))*
+conditions ::= (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*
 
 /* Règle des conditions pour un bloc if, else if ou else */
-ifConditions ::= BEGIN_PARENTHESE (SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (SML_VARS|CONST_CONDS))* END_PARENTHESE
+ifConditions ::= BEGIN_PARENTHESE (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))* END_PARENTHESE
 
 
 /* Règles grammaticales des instructions */
@@ -128,14 +128,14 @@ consumeEventInstruction ::= CONSUME_EVENT
 
 setInstruction ::= SET setProperty EQUALS_SEPARATOR setValue
 
-setProperty ::= setVariables | ((THREAD_KEYWORD|PROCESS_KEYWORD) identificationKey DOT_SEPARATOR setVariables)
+setProperty ::= setVariables | (( smlVars | ((THREAD_KEYWORD|PROCESS_KEYWORD) identificationKey)) DOT_SEPARATOR setVariables)
 
 setValue ::= (setVariables|THREAD_KEYWORD|PROCESS_KEYWORD)
 
 // Instruction MESSAGE, WARNING ou DEBUG
 traceInstruction ::= (MESSAGE|WARNING|DEBUG) traceMessage?
 
-traceMessage ::= (TRACE_MESSAGE_STRING|SML_VARS) (TRACE_MESSAGE_SEPARATOR (TRACE_MESSAGE_STRING|SML_VARS))*
+traceMessage ::= (TRACE_MESSAGE_STRING|SML_VARS|THREAD_KEYWORD|PROCESS_KEYWORD) (TRACE_MESSAGE_SEPARATOR (TRACE_MESSAGE_STRING|SML_VARS|THREAD_KEYWORD|PROCESS_KEYWORD))*
 
 /* Les règles suivantes ne contiennent qu'un seul token avec le message d'erreur
    associé à ce token lorsque celui-ci est manquant */

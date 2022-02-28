@@ -101,7 +101,7 @@ public class SmlPsiImplUtil {
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (valueNode != null) {
             if (!valueNode.getText().contains("(")) {return "";}
-            return valueNode.getText().substring(0,valueNode.getText().lastIndexOf("("));
+            return valueNode.getText().substring(0,valueNode.getText().indexOf("("));
         } else {
             return null;
         }

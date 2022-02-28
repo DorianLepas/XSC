@@ -6,8 +6,12 @@ import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SmlCompletionContributor extends CompletionContributor {
 
@@ -81,13 +85,11 @@ public class SmlCompletionContributor extends CompletionContributor {
         );
 
         // After }
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeafSkipping(PlatformPatterns.psiElement().whitespaceCommentOrError().and(PlatformPatterns.psiElement().withName("BAD_CHARACTER")),PlatformPatterns.psiElement(SmlTypes.END_BLOCK)),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement().afterLeafSkipping(PlatformPatterns.psiElement().whitespace(),PlatformPatterns.psiElement(SmlTypes.END_BLOCK)),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
                                                @NotNull CompletionResultSet resultSet) {
-                        PsiElement element = parameters.getOriginalPosition();
-                        if (element != null && !(element.getParent().getParent() instanceof SmlFile && element.getParent().getFirstChild() == element)) {
                             // Root and inside Block Keywords
                             resultSet.addElement(LookupElementBuilder.create("state")
                                     .withTypeText("Block Keyword"));
@@ -147,7 +149,6 @@ public class SmlCompletionContributor extends CompletionContributor {
                             resultSet.addElement(LookupElementBuilder.create("binding")
                                     .withTypeText("Instruction Block"));
                         }
-                    }
                 }
         );
 
@@ -173,11 +174,32 @@ public class SmlCompletionContributor extends CompletionContributor {
                             resultSet.addElement(LookupElementBuilder.create("script")
                                     .withTypeText("Block Keyword"));
                         }
-
+                        else{
+                            // Only inside Block Instructions
+                            resultSet.addElement(LookupElementBuilder.create("goto state")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("process state")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("call")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("thread state")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("thread_end")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("exec_end")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("consume_event")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("MESSAGE")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("DEBUG")
+                                    .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("WARNING")
+                                    .withTypeText("Instruction"));
+                        }
                         // Check if the element is an instance of SmlEventsValue
                         if ( element != null &&
-                                element.getNode().getElementType() == SmlTypes.EVENT_NAME &&
-                                element.getNode().getTreeParent().getPsi() instanceof SmlEventsDefinition){
+                                element.getNode().getElementType() == SmlTypes.EVENT_NAME){
                             SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
                             Object[] result = new Object[0];
@@ -187,6 +209,17 @@ public class SmlCompletionContributor extends CompletionContributor {
                             for (Object LUElement : result){
                                 resultSet.addElement((LookupElement) LUElement);
                             }
+                            List<LookupElement> variants = new ArrayList<>();
+                            List<PsiLiteralExpression> eventDeclaration = SmlUtil.findPropertiesInDeclaration((SmlFile) e.getContainingFile(),e.getProject());
+                            for (final PsiLiteralExpression eventDeclaration_ : eventDeclaration) {
+                                variants.add(LookupElementBuilder
+                                        .create(eventDeclaration_.getText().substring(1,eventDeclaration_.getText().length()-1))
+                                        .withIcon(eventDeclaration_.getContainingFile().getIcon(0))
+                                        .withPresentableText(eventDeclaration_.getText().substring(1,eventDeclaration_.getText().length()-1))
+                                        .withTypeText("Event Declaration")
+                                );
+                            }
+                            variants.forEach(resultSet::addElement);
                         }
                         // Check if the element is an instance of SmlCallJavaFunctionInstruction
                         if ( element != null &&

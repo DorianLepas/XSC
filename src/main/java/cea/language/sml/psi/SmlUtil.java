@@ -3,6 +3,8 @@ package cea.language.sml.psi;
 import cea.language.xsc.filetype.XCSFileType;
 import cea.language.xsc.psi.*;
 import com.intellij.ide.highlighter.JavaFileType;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
@@ -337,6 +339,79 @@ public class SmlUtil {
             Collection<SmlAliasBlock> alias = PsiTreeUtil.findChildrenOfType(containingFile, SmlAliasBlock.class);
             if (alias.size() != 0) {
                 result.addAll(alias);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the Equipment file event declaration with the given value.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @param value          to check
+     * @return matching event declaration
+     */
+    public static List<PsiLiteralExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project, String value) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        // Get Equipment file
+        Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
+        if (module == null){
+            return result;
+        }
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
+        virtualFiles.removeIf(e -> !e.getName().equals("Equipment.java") || !e.getCanonicalPath().contains(containingFile.getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getName()));
+        if (virtualFiles.size() == 1) {
+            PsiJavaFile EquipmentFile = (PsiJavaFile) PsiManager.getInstance(project).findFile((VirtualFile) virtualFiles.toArray()[0]);
+            // if not find
+            if (EquipmentFile != null) {
+                Collection<PsiMethodCallExpression> Expr = PsiTreeUtil.findChildrenOfType(EquipmentFile, PsiMethodCallExpression.class);
+                if (Expr.size() != 0) {
+                    // Go threw all expression find in the current file
+                    for (PsiMethodCallExpression e : Expr) {
+                        // Check if they both have the same property value
+                        if (e.getMethodExpression().getText().equals("fireEvent")) {
+                            if (e.getArgumentList().getExpressionCount() == 1 && e.getArgumentList().getExpressions()[0].getText().equals(value) && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
+                                result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the Equipment file event declaration.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @return all event declaration
+     */
+    public static List<PsiLiteralExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        // Get Equipment file
+        Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
+        if (module == null){
+            return result;
+        }
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
+        virtualFiles.removeIf(e -> !e.getName().equals("Equipment.java") || !e.getCanonicalPath().contains(containingFile.getContainingDirectory().getParentDirectory().getParentDirectory().getParentDirectory().getName()));
+        if (virtualFiles.size() == 1) {
+            PsiJavaFile EquipmentFile = (PsiJavaFile) PsiManager.getInstance(project).findFile((VirtualFile) virtualFiles.toArray()[0]);
+            // if not find
+            if (EquipmentFile != null) {
+                Collection<PsiMethodCallExpression> Expr = PsiTreeUtil.findChildrenOfType(EquipmentFile, PsiMethodCallExpression.class);
+                if (Expr.size() != 0) {
+                    // Go threw all expression find in the current file
+                    for (PsiMethodCallExpression e : Expr) {
+                        // Check if they both have the same property value
+                        if (e.getMethodExpression().getText().equals("fireEvent") && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
+                            result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                        }
+                    }
+                }
             }
         }
         return result;

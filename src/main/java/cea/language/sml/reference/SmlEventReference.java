@@ -39,8 +39,14 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
             }
         }
         else {
+            //Search in Collection Events
             final List<XCSCeProperty_> propertiesCe = SmlUtil.findProperties((SmlFile) myElement.getContainingFile(), project, value);
             for (XCSCeProperty_ property : propertiesCe) {
+                results.add(new PsiElementResolveResult(property));
+            }
+            //Search in Equipment event declaration
+            final List<PsiLiteralExpression> propertiesDeclaration = SmlUtil.findPropertiesInDeclaration((SmlFile) myElement.getContainingFile(), project, value);
+            for (PsiLiteralExpression property : propertiesDeclaration) {
                 results.add(new PsiElementResolveResult(property));
             }
         }

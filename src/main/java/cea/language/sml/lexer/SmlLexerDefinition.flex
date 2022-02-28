@@ -109,6 +109,7 @@ EQUALS_SEPARATOR = [=]
 %state  THREADS_NAMES
 %state  BINDINGS
 %state  JAVASCRIPT_CODE
+%state  CALL
 
 %%
 
@@ -192,6 +193,8 @@ EQUALS_SEPARATOR = [=]
 
 /* Etat lexical des conditions */
 <CONDITIONS> {
+  {THREAD_KEYWORD}  { return SmlTypes.THREAD_KEYWORD; }
+  {PROCESS_KEYWORD}  { return SmlTypes.PROCESS_KEYWORD; }
   // Constantes
   {CONSTANTES_CONDITIONS} { return SmlTypes.CONST_CONDS; }
   // Opérateurs
@@ -215,7 +218,7 @@ EQUALS_SEPARATOR = [=]
   // Mots clés des instructions
   "goto state"    { yybegin(STATES_CALLS); return SmlTypes.GOTO_STATE; }
   "process state" { yybegin(STATES_CALLS); return SmlTypes.PROCESS_STATE; }
-  "call"          { return SmlTypes.CALL; }
+  "call"          { yybegin(CALL);return SmlTypes.CALL; }
   "thread state"  { yybegin(THREADS_NAMES); return SmlTypes.THREAD_STATE; }
   "thread_end"    { return SmlTypes.THREAD_END; }
   "exec_end"      { return SmlTypes.EXEC_END; }
@@ -238,7 +241,7 @@ EQUALS_SEPARATOR = [=]
   {THREAD_KEYWORD}  { return SmlTypes.THREAD_KEYWORD; }
   {PROCESS_KEYWORD}  { return SmlTypes.PROCESS_KEYWORD; }
   {DOT_SEPARATOR}  { return SmlTypes.DOT_SEPARATOR; }
-  {SET_VARIABLES} {return SmlTypes.SET_VARIABLES; }
+  {SET_VARIABLES} { return SmlTypes.SET_VARIABLES; }
 
   // Messages de traces (chaine de caractères pouvant se trouver après un MESSAGE, WARNING ou un DEBUG)
   {TRACE_MESSAGE_STRING}    { return SmlTypes.TRACE_MESSAGE_STRING; }
@@ -250,8 +253,11 @@ EQUALS_SEPARATOR = [=]
   // Clé d'indentification d'un état ou d'un thread
   {IDENTIFICATION_KEY}  { return SmlTypes.IDENTIFICATION_KEY; }
 
+}
+
+<CALL>{
   // Appel d'un fonction dans le code Java
-  {JAVA_FUNCTION_CALL}  { return SmlTypes.JAVA_FUNCTION_CALL; }
+  {JAVA_FUNCTION_CALL}  { yybegin(INSTRUCTIONS); return SmlTypes.JAVA_FUNCTION_CALL; }
 }
 
 /* Etat lexical des appels d'états ou de sous-états */
