@@ -154,6 +154,7 @@ public class SmlAnnotator implements Annotator
     // Nombre de constantes dans la condition
     int nbConstants = 0;
     //ElementType précédent
+    int nbFun = 0;
     ASTNode previous = null;
 
     for(ASTNode node : condition.getNode().getChildren(TokenSet.ANY)) {
@@ -163,11 +164,13 @@ public class SmlAnnotator implements Annotator
         nbComparators++;
       } else if(node.getElementType() == SmlTypes.CONST_CONDS) {
         nbConstants++;
+      }else if(node.getElementType() == SmlTypes.JAVA_FUNCTION_CALL) {
+        nbFun++;
       }
 
       /* Si deux éléments consécutifs d'une conditions sont soit des variables sml soit des constantes */
-      if(previous != null && (node.getElementType() == SmlTypes.SML_VARS || node.getElementType() == SmlTypes.CONST_CONDS)
-          && (previous.getElementType() == SmlTypes.SML_VARS || previous.getElementType() == SmlTypes.CONST_CONDS)) {
+      if(previous != null && (node.getElementType() == SmlTypes.SML_VARS || node.getElementType() == SmlTypes.JAVA_FUNCTION_CALL || node.getElementType() == SmlTypes.CONST_CONDS)
+          && (previous.getElementType() == SmlTypes.SML_VARS || previous.getElementType() == SmlTypes.JAVA_FUNCTION_CALL || previous.getElementType() == SmlTypes.CONST_CONDS)) {
         holder.createErrorAnnotation(node.getPsi(), "Comparator or operator needed");
         holder.createErrorAnnotation(previous.getPsi(), "Comparator or operator needed");
       }
@@ -180,7 +183,7 @@ public class SmlAnnotator implements Annotator
     if(nbComparators == 0 && (nbVars > 1 || nbConstants > 0)) {
       holder.createErrorAnnotation(condition, "A complex condition must have one or more comparator");
     }
-    if(nbVars == 0) {
+    if(nbVars == 0 && nbFun == 0) {
       holder.createErrorAnnotation(condition, "A complex condition must have one or more variable");
     }
   }

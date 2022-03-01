@@ -204,6 +204,8 @@ EQUALS_SEPARATOR = [=]
   // Variables SML
   {SML_VARS}  { return SmlTypes.SML_VARS; }
 
+  {JAVA_FUNCTION_CALL} ")"? {yybegin(INSTRUCTIONS); return SmlTypes.JAVA_FUNCTION_CALL; }
+
   "(" { return SmlTypes.BEGIN_PARENTHESE; }
   ")" { yybegin(INSTRUCTIONS); return SmlTypes.END_PARENTHESE; }
 }
