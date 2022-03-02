@@ -88,7 +88,7 @@ IDENTIFICATION_KEY = \(.+\)
 
 /* Messages de traces
 (chaine de caractères pouvant se trouver après un MESSAGE, WARNING ou un DEBUG) */
-TRACE_MESSAGE_STRING = \"[^\"]+\"
+TRACE_MESSAGE_STRING = (\"[^\"]+\")
 TRACE_MESSAGE_SEPARATOR = [+]
 
 /* Nom d'un lien */
@@ -110,6 +110,7 @@ EQUALS_SEPARATOR = [=]
 %state  BINDINGS
 %state  JAVASCRIPT_CODE
 %state  CALL
+%state  SET
 
 %%
 
@@ -228,22 +229,20 @@ EQUALS_SEPARATOR = [=]
   "MESSAGE"       { return SmlTypes.MESSAGE; }
   "DEBUG"         { return SmlTypes.DEBUG; }
   "WARNING"       { return SmlTypes.WARNING; }
-  "set"           { return SmlTypes.SET; }
+  "set "          { yybegin(SET); return SmlTypes.SET; }
 
   // Mots clés des blocs considérés comme des instructions
   "condition" { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.CONDITION; }
   "if"        { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.IF; }
   "else if"   { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.ELSE_IF; }
-  "else"      { conditionBlock = true; yybegin(CONDITIONS); return SmlTypes.ELSE; }
+  "else"      { return SmlTypes.ELSE; }
   "script"    { rootScript = false; return SmlTypes.SCRIPT; }
   "binding"   { yybegin(BINDINGS); return SmlTypes.BINDING; }
 
-  // Structure d'un set
-  {EQUALS_SEPARATOR}  { return SmlTypes.EQUALS_SEPARATOR; }
+  {JAVA_FUNCTION_CALL} {return SmlTypes.JAVA_FUNCTION_CALL; }
+
   {THREAD_KEYWORD}  { return SmlTypes.THREAD_KEYWORD; }
   {PROCESS_KEYWORD}  { return SmlTypes.PROCESS_KEYWORD; }
-  {DOT_SEPARATOR}  { return SmlTypes.DOT_SEPARATOR; }
-  {SET_VARIABLES} { return SmlTypes.SET_VARIABLES; }
 
   // Messages de traces (chaine de caractères pouvant se trouver après un MESSAGE, WARNING ou un DEBUG)
   {TRACE_MESSAGE_STRING}    { return SmlTypes.TRACE_MESSAGE_STRING; }
@@ -255,6 +254,18 @@ EQUALS_SEPARATOR = [=]
   // Clé d'indentification d'un état ou d'un thread
   {IDENTIFICATION_KEY}  { return SmlTypes.IDENTIFICATION_KEY; }
 
+}
+
+<SET>{
+  // Structure d'un set
+  {EQUALS_SEPARATOR}  { yybegin(INSTRUCTIONS); return SmlTypes.EQUALS_SEPARATOR; }
+  {THREAD_KEYWORD}  { return SmlTypes.THREAD_KEYWORD; }
+  {PROCESS_KEYWORD}  { return SmlTypes.PROCESS_KEYWORD; }
+  {DOT_SEPARATOR}  { return SmlTypes.DOT_SEPARATOR; }
+  {SET_VARIABLES} { return SmlTypes.SML_VARS; }
+  {SML_VARS}  { return SmlTypes.SML_VARS; }
+  // Clé d'indentification d'un état ou d'un thread
+  {IDENTIFICATION_KEY}  { return SmlTypes.IDENTIFICATION_KEY; }
 }
 
 <CALL>{
