@@ -26,15 +26,15 @@ public class SmlFormattingModelBuilder implements FormattingModelBuilder
   // Methods
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     return new SpacingBuilder(settings, SmlLanguage.INSTANCE)
-            /* Espaces entre un séparateur et n'importe quel autre type de tokens */
-            .between(SmlTypes.SEPARATOR, TokenSet.ANY)
-            .spaces(0)
-            .between(TokenSet.ANY, SmlTypes.SEPARATOR)
-            .spaces(0)
-            .before(SmlTypes.DOT_SEPARATOR).none()
-            .after(SmlTypes.DOT_SEPARATOR).none()
-            .before(SmlTypes.EQUALS_SEPARATOR).spaces(1)
-            .after(SmlTypes.EQUALS_SEPARATOR).spaces(1)
+
+            /* Pas d'espace autour des . et : */
+            .around(SmlTypes.DOT_SEPARATOR).none()
+            .around(SmlTypes.SEPARATOR).spaces(0)
+            /* Espace avant et après les seprateur */
+            .around(SmlTypes.EQUALS_SEPARATOR).spaces(1)
+            .around(SmlTypes.TRACE_MESSAGE_SEPARATOR).spaces(1)
+            .around(SmlTypes.COMP_CONDS).spaces(1)
+            .around(SmlTypes.OP_CONDS).spaces(1)
             /* Espaces entre un début de bloc et n'importe quel type de tokens */
             .between(TokenSet.ANY, SmlTypes.BEGIN_BLOCK)
             .spaces(1)

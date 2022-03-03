@@ -19,6 +19,10 @@ public class SmlReferenceContributor extends PsiReferenceContributor {
                     public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element,
                                                                            @NotNull ProcessingContext context) {
                         SmlEventsValue e = (SmlEventsValue) element;
+                        if (element.getText().matches("'[^']+'")){
+                            System.out.println(element.getText());
+                            return new PsiReference[]{};
+                        }
                         return new PsiReference[]{new SmlEventReference(e,
                                 new TextRange(e.getText().length()-e.getValue().length(),e.getText().length()))};
                     }

@@ -55,7 +55,7 @@ public class SmlAnnotator implements Annotator
     }
 
     // Check if we're in an EventBlock
-    if(element instanceof SmlEventsValue && element.getParent().getParent() instanceof SmlEventBlock && element.getProject().getName().equals("Automation")) {
+    if(element instanceof SmlEventsValue && !element.getText().matches("'[^']+'") &&element.getParent().getParent() instanceof SmlEventBlock && element.getProject().getName().equals("Automation")) {
       // Check if the element has a reference
       if (element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
