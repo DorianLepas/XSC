@@ -36,6 +36,8 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
           createTextAttributesKey("_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
   public static final TextAttributesKey JAVASCRIPT_CODE =
           createTextAttributesKey("JAVASCRIPT_CODE", HighlighterColors.TEXT);
+  public static final TextAttributesKey JAVA_FUNCTION =
+          createTextAttributesKey("JAVA_FUNCTION", DefaultLanguageHighlighterColors.STATIC_METHOD);
 
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
@@ -47,6 +49,7 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
   private static final TextAttributesKey[] TRACE_MESSAGES_KEYS = new TextAttributesKey[]{TRACE_MESSAGES};
   private static final TextAttributesKey[] CONDITIONS_CONSTANTES_KEYS = new TextAttributesKey[]{CONDITION_CONSTANTES};
   private static final TextAttributesKey[] JAVASCRIPT_CODE_KEYS = new TextAttributesKey[]{JAVASCRIPT_CODE};
+  private static final TextAttributesKey[] JAVA_FUNCTION_KEYS = new TextAttributesKey[]{JAVA_FUNCTION};
   private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
 
   // Static code
@@ -143,6 +146,9 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
     /* Code javascript */
     else if(tokenType.equals(SmlTypes.JAVASCRIPT_CODE)) {
       return JAVASCRIPT_CODE_KEYS;
+    }
+    else if(tokenType.equals(SmlTypes.JAVA_FUNCTION_CALL)) {
+      return JAVA_FUNCTION_KEYS;
     }
     /* Mauvais caractères */
    else if (tokenType.equals(TokenType.BAD_CHARACTER)) {

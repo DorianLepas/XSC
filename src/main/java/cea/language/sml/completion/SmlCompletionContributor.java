@@ -216,7 +216,7 @@ public class SmlCompletionContributor extends CompletionContributor {
                                         .create(eventDeclaration_.getText().substring(1,eventDeclaration_.getText().length()-1))
                                         .withIcon(eventDeclaration_.getContainingFile().getIcon(0))
                                         .withPresentableText(eventDeclaration_.getText().substring(1,eventDeclaration_.getText().length()-1))
-                                        .withTypeText("Event Declaration")
+                                        .withTypeText(eventDeclaration_.getContainingFile().getName())
                                 );
                             }
                             variants.forEach(resultSet::addElement);

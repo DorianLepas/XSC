@@ -25,7 +25,8 @@ public class SmlColorSettingsPage implements ColorSettingsPage
           new AttributesDescriptor("State Names", SmlSyntaxHighlighter.STATE_NAMES),
           new AttributesDescriptor("Variables", SmlSyntaxHighlighter.VARIABLES),
           new AttributesDescriptor("Trace Messages", SmlSyntaxHighlighter.TRACE_MESSAGES),
-          new AttributesDescriptor("Keywords", SmlSyntaxHighlighter.KEYWORDS)
+          new AttributesDescriptor("Keywords", SmlSyntaxHighlighter.KEYWORDS),
+          new AttributesDescriptor("Java Function Calls", SmlSyntaxHighlighter.JAVA_FUNCTION)
   };
 
   // Static code
