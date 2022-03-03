@@ -3,6 +3,7 @@ package cea.language.sml.annotator;
 import cea.language.sml.psi.*;
 import cea.language.sml.psi.impl.SmlScriptBlockImpl;
 import cea.language.sml.psi.impl.SmlStateBlockImpl;
+import cea.language.sml.quickfix.SmlCreateEventAliasQuickFix;
 import cea.language.sml.quickfix.SmlCreateEventQuickFix;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationBuilder;
@@ -59,7 +60,8 @@ public class SmlAnnotator implements Annotator
       if (element.getReference().resolve() == null) {
         // Create a WARNING if the element has 0 or multiple references
         HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property or Declared multiples times")
-                .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()));
+                .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()))
+                .withFix(new SmlCreateEventAliasQuickFix(((SmlEventsValue) element).getValue(), element));
       }
       else{
         PsiElement Reference =  element.getReference().resolve();
@@ -158,7 +160,7 @@ public class SmlAnnotator implements Annotator
     ASTNode previous = null;
 
     for(ASTNode node : condition.getNode().getChildren(TokenSet.ANY)) {
-      if(node.getElementType()== SmlTypes.SML_VARS) {
+      if(node.getElementType()== SmlTypes.SML_VARS || node.getElementType()== SmlTypes.THREAD_KEYWORD || node.getElementType()== SmlTypes.PROCESS_KEYWORD) {
         nbVars++;
       } else if(node.getElementType() == SmlTypes.COMP_CONDS) {
         nbComparators++;

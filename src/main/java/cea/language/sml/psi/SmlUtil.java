@@ -373,6 +373,7 @@ public class SmlUtil {
                         if (e.getMethodExpression().getText().equals("fireEvent")) {
                             if (e.getArgumentList().getExpressionCount() == 1 && e.getArgumentList().getExpressions()[0].getText().equals(value) && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
                                 result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                                return result;
                             }
                         }
                     }

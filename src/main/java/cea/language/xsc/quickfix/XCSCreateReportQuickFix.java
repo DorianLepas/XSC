@@ -79,7 +79,6 @@ public class XCSCreateReportQuickFix extends BaseIntentionAction {
                                 lastChildNode = InnerCores[InnerCores.length-1].getNode();
                                 lastChildNode.addChild(XCSElementFactory.createCRLF(project).getNode());
                                 lastChildNode.addChild(XCSElementFactory.createReport(element,project).getNode());
-                                //XCSElementFactory.createReport(Objects.requireNonNull(lastChildNode), element);
                                 // Move to where the property has been created
                                 ((Navigatable) Objects.requireNonNull(lastChildNode).getTreeNext().getPsi().getNavigationElement()).navigate(true);
                                 Objects.requireNonNull(FileEditorManager.getInstance(project).getSelectedTextEditor()).getCaretModel().moveCaretRelatively(2, 0, false, false, false);

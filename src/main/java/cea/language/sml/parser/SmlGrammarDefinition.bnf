@@ -28,7 +28,7 @@ private stateBody ::= stateBlock|aliasBlock|alarmBlock|eventBlock|traceBlock|ent
 
 
 /* Règles grammaticales d'un alias */
-aliasBlock ::= ALIAS separator aliasName beginBlock aliasBlockBody endBlock
+aliasBlock ::= ALIAS separator aliasName beginBlock aliasBlockBody? endBlock
 
 private aliasBlockBody ::= EVENT_NAME+ {name="Events names"}
 

@@ -71,14 +71,14 @@ SML_VARS = (\#|\$|\@)[\w]+((\((\#|\$|\@)[\w]+\))?|(\.[\w]+)*)
 
 /* Conditions */
 // Constantes
-CONSTANTES_CONDITIONS = \"[^\"]+\" | [0-9]+
+CONSTANTES_CONDITIONS = (\"[^\"]+\")|(\d+)
 // Opérateurs
 OPERATORS_CONDITIONS = ("+"|"-"|"*"|"/"|"&&"|"||")
 // Comparateurs
 COMPARATORS_CONDITIONS = ("=="|"!="|"<="|"<"|">="|">")
 
 /* Appels d'une fonction dans le code Java */
-JAVA_FUNCTION_CALL = [\w]+(\.)*[\w]*("(".*")")*
+JAVA_FUNCTION_CALL = [\w]+(\.)*[\w]*("(".*")")+
 
 /* Nom d'un thread */
 THREAD_NAME = [\w]+
