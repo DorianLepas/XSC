@@ -49,7 +49,7 @@ public class SmlAnnotator implements Annotator {
         }
 
         // Check if we're in an EventBlock
-        if (element instanceof SmlEventsValue && !element.getText().matches("'[^']+'") && element.getParent().getParent() instanceof SmlEventBlock && element.getProject().getName().equals("Automation")) {
+        if (element instanceof SmlEventsValue && !element.getText().matches("'[^']+'") && !element.getText().equals("INIT_END") && element.getParent().getParent() instanceof SmlEventBlock && element.getProject().getName().equals("Automation")) {
             // Check if the element has a reference
             if (element.getReference().resolve() == null) {
                 // Create a WARNING if the element has 0
@@ -81,7 +81,7 @@ public class SmlAnnotator implements Annotator {
                 }
                 // Create a WARNING if the element multiple references
                 if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Method signature is ambiguous : " + ((SmlCallJavaFunctionInstruction) element).getValue());
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.WEAK_WARNING, "Method signature is ambiguous : " + ((SmlCallJavaFunctionInstruction) element).getValue());
                     HolderCreation.create();
                 }
             }
@@ -89,12 +89,12 @@ public class SmlAnnotator implements Annotator {
             else if (((SmlCallJavaFunctionInstruction) element).getParametersCount() != ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()) {
                 // Too much arguments
                 if (((SmlCallJavaFunctionInstruction) element).getParametersCount() > ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Too many parameters provided, method signature : " + ((PsiMethod)element.getReference().resolve()).getName() + ((PsiMethod)element.getReference().resolve()).getParameterList().getText());
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Too many parameters provided, method signature : " + ((PsiMethod)element.getReference().resolve()).getName() + ((PsiMethod)element.getReference().resolve()).getParameterList().getText());
                     HolderCreation.create();
                 }
                 // Missing arguments
                 if (((SmlCallJavaFunctionInstruction) element).getParametersCount() < ((PsiMethod) element.getReference().resolve()).getParameterList().getParametersCount()) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.ERROR, "Missing parameters, method signature : " + ((PsiMethod)element.getReference().resolve()).getName() + ((PsiMethod)element.getReference().resolve()).getParameterList().getText());
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Missing parameters, method signature : " + ((PsiMethod)element.getReference().resolve()).getName() + ((PsiMethod)element.getReference().resolve()).getParameterList().getText());
                     HolderCreation.create();
                 }
             }

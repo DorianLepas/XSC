@@ -356,7 +356,7 @@ public class SmlUtil {
         List<PsiLiteralExpression> result = new ArrayList<>();
         // Get Equipment file
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
-        if (module == null){
+        if (module == null) {
             return result;
         }
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
@@ -394,7 +394,7 @@ public class SmlUtil {
         List<PsiLiteralExpression> result = new ArrayList<>();
         // Get Equipment file
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
-        if (module == null){
+        if (module == null) {
             return result;
         }
         Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
@@ -409,6 +409,80 @@ public class SmlUtil {
                     for (PsiMethodCallExpression e : Expr) {
                         // Check if they both have the same property value
                         if (e.getMethodExpression().getText().equals("fireEvent") && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
+                            result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the eventHandler files with the given value.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @param value          to check
+     * @return matching event
+     */
+    public static List<PsiLiteralExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project, String value) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        // Get eventHandler files
+        Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
+        if (module == null) {
+            return result;
+        }
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
+        virtualFiles.removeIf(e -> !(e.getCanonicalPath().contains("java") && e.getCanonicalPath().contains("FFC")));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // if javaFile is null
+            if (javaFile != null) {
+                Collection<PsiMethodCallExpression> Expr = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethodCallExpression.class);
+                if (Expr.size() != 0) {
+                    // Go threw all expression find in the current file
+                    for (PsiMethodCallExpression e : Expr) {
+                        // Check if they both have the same property value
+                        if (e.getMethodExpression().getText().contains("fireEvent")) {
+                            if (e.getArgumentList().getExpressionCount() == 1 && e.getArgumentList().getExpressions()[0].getText().equals(value) && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
+                                result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the eventHandler files with the given value.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @return matching event
+     */
+    public static List<PsiLiteralExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        // Get eventHandler files
+        Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
+        if (module == null) {
+            return result;
+        }
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.moduleScope(module));
+        virtualFiles.removeIf(e -> !(e.getCanonicalPath().contains("java") && e.getCanonicalPath().contains("FFC")));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // if javaFile is null
+            if (javaFile != null) {
+                Collection<PsiMethodCallExpression> Expr = PsiTreeUtil.findChildrenOfType(javaFile, PsiMethodCallExpression.class);
+                if (Expr.size() != 0) {
+                    // Go threw all expression find in the current file
+                    for (PsiMethodCallExpression e : Expr) {
+                        // Check if they both have the same property value
+                        if (e.getMethodExpression().getText().contains("fireEvent") && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
                             result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
                         }
                     }
