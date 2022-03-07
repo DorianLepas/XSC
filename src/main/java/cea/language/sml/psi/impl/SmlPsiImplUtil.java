@@ -7,6 +7,8 @@ import cea.language.sml.psi.SmlTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
+import java.util.ArrayList;
+
 
 public class SmlPsiImplUtil {
 
@@ -125,14 +127,33 @@ public class SmlPsiImplUtil {
     public static String[] getParametersList(SmlCallJavaFunctionInstruction element){
         ASTNode valueNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
         if (valueNode != null) {
-            String parameters = valueNode.getText().substring(valueNode.getText().lastIndexOf("(")+1,valueNode.getText().lastIndexOf(")"));
+            String parameters = valueNode.getText().substring(valueNode.getText().indexOf("(")+1,valueNode.getText().lastIndexOf(")"));
             parameters = parameters.replace(" ","");
             // 0 arg
             if (parameters.length() == 0){
                 return new String[0];
             }
             // 1 or more arg
-            return parameters.split(",");
+            int braceCount = 0;
+            int lastParameterIndex = 0;
+            ArrayList<String> parametersList = new ArrayList<>();
+            for(int i = 0; i < parameters.length(); i++){
+                // new argument
+                if (braceCount == 0 && parameters.charAt(i) == ','){
+                    parametersList.add(parameters.substring(lastParameterIndex,i));
+                    lastParameterIndex = i + 1;
+                }
+                // enter a block
+                if (parameters.charAt(i) == '('){
+                    braceCount++;
+                }
+                // leave a block
+                if (parameters.charAt(i) == ')'){
+                    braceCount--;
+                }
+            }
+            parametersList.add(parameters.substring(lastParameterIndex));
+            return parametersList.toArray(new String[0]);
         }
         return new String[0];
     }

@@ -37,7 +37,7 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
   public static final TextAttributesKey JAVASCRIPT_CODE =
           createTextAttributesKey("JAVASCRIPT_CODE", HighlighterColors.TEXT);
   public static final TextAttributesKey JAVA_FUNCTION =
-          createTextAttributesKey("JAVA_FUNCTION", DefaultLanguageHighlighterColors.STATIC_METHOD);
+          createTextAttributesKey("JAVA_FUNCTION", DefaultLanguageHighlighterColors.FUNCTION_CALL);
 
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};

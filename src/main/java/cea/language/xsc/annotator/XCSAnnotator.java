@@ -9,6 +9,7 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import cea.language.xsc.psi.XCSProperty_;
+import com.intellij.psi.PsiPolyVariantReference;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -23,12 +24,12 @@ public class XCSAnnotator implements Annotator {
         if (element instanceof XCSFunctionCore && ((XCSFunctionCore)element).getSF().equals("S2F35") && ((XCSFunctionCore)element).getDepth() == 5 && ((XCSFunctionCore) element).getValue() != null){
             if (element.getReference().resolve() == null) {
                 // Create a WARNING if the element has 0
-                if (element.getReference().resolveReference().size() == 0) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared report variable '" + ((XCSFunctionCore) element).getName() + "'" )
                             .withFix(new XCSCreateReportQuickFix(((XCSFunctionCore)element).getValue(),element));
                 }
                 // Create a WARNING if the element multiple references
-                if (element.getReference().resolveReference().size() > 1) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Report variable '" + ((XCSFunctionCore) element).getName() + "' declared multiple times");
                 }
             }
@@ -49,12 +50,12 @@ public class XCSAnnotator implements Annotator {
         // Check if the element has a reference
         if (element.getReference().resolve() == null) {
             // Create a WARNING if the element has 0
-            if (element.getReference().resolveReference().size() == 0) {
+            if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
                 HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property '" + ((XCSProperty_) element).getValue() + "'")
                         .withFix(new XCSCreatePropertyQuickFix(((XCSProperty_) element).getValue(), element));
             }
             // Create a WARNING if the element multiple references
-            if (element.getReference().resolveReference().size() > 1) {
+            if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
                 HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Property '" + ((XCSProperty_) element).getValue() + "' Declared multiple times");
             }
         }

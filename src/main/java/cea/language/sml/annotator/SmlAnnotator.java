@@ -12,6 +12,7 @@ import com.intellij.lang.annotation.Annotator;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
+import com.intellij.psi.PsiPolyVariantReference;
 import com.intellij.psi.TokenType;
 import com.intellij.psi.impl.source.tree.PsiWhiteSpaceImpl;
 import com.intellij.psi.tree.TokenSet;
@@ -52,13 +53,13 @@ public class SmlAnnotator implements Annotator {
             // Check if the element has a reference
             if (element.getReference().resolve() == null) {
                 // Create a WARNING if the element has 0
-                if (element.getReference().resolveReference().size() == 0) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property '" + ((SmlEventsValue) element).getValue() + "'")
                             .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()))
                             .withFix(new SmlCreateEventAliasQuickFix(((SmlEventsValue) element).getValue(), element));
                 }
                 // Create a WARNING if the element multiple references
-                if (element.getReference().resolveReference().size() > 1) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Property '" + ((SmlEventsValue) element).getValue() + "' declared multiple times");
                 }
             } else {
@@ -74,12 +75,12 @@ public class SmlAnnotator implements Annotator {
             // Check if the element has a reference
             if (((SmlCallJavaFunctionInstruction) element).getValue() != null && element.getReference().resolve() == null) {
                 // Create a WARNING if the element has 0
-                if (element.getReference().resolveReference().size() == 0) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Unknown function : " + ((SmlCallJavaFunctionInstruction) element).getValue());
                     HolderCreation.create();
                 }
                 // Create a WARNING if the element multiple references
-                if (element.getReference().resolveReference().size() > 1) {
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
                     HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Method signature is ambiguous : " + ((SmlCallJavaFunctionInstruction) element).getValue());
                     HolderCreation.create();
                 }

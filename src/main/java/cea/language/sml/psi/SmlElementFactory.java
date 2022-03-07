@@ -1,8 +1,7 @@
 package cea.language.sml.psi;
 
 import cea.language.sml.fileType.SmlFileType;
-import cea.language.xsc.psi.XCSDvCore;
-import cea.language.xsc.psi.XCSFile;
+
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
