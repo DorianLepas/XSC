@@ -22,13 +22,17 @@ smlFile ::= smlFileContent*
 private smlFileContent ::= (COMMENT|LINE_END|stateBlock|aliasBlock|alarmBlock|eventBlock|traceBlock|scriptBlock)
 
 /* Règles grammaticales d'un état */
-stateBlock ::= STATE separator stateNames beginBlock stateBody* endBlock
+stateBlock ::= STATE separator stateNames beginBlock stateBody* endBlock  {name="State Block" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
+                                                                                   implements="cea.language.sml.psi.SmlNamedElement"
+                                                                                   methods=[getKey getValue getName setName getNameIdentifier getPresentation]}
 
 private stateBody ::= stateBlock|aliasBlock|alarmBlock|eventBlock|traceBlock|enterBlock|exitBlock|optionsBlock
 
 
 /* Règles grammaticales d'un alias */
-aliasBlock ::= ALIAS separator aliasName beginBlock aliasBlockBody? endBlock
+aliasBlock ::= ALIAS separator aliasName beginBlock aliasBlockBody? endBlock {name="State Block" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
+                                                                                     implements="cea.language.sml.psi.SmlNamedElement"
+                                                                                     methods=[getKey getValue getName setName getNameIdentifier getPresentation]}
 
 private aliasBlockBody ::= EVENT_NAME+ {name="Events names"}
 

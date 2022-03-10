@@ -4,8 +4,9 @@ package cea.language.sml.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
 
-public interface SmlStateBlock extends PsiElement {
+public interface SmlStateBlock extends SmlNamedElement {
 
   @NotNull
   List<SmlAlarmBlock> getAlarmBlockList();
@@ -33,5 +34,17 @@ public interface SmlStateBlock extends PsiElement {
 
   @NotNull
   List<SmlTraceBlock> getTraceBlockList();
+
+  String getKey();
+
+  String getValue();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
+
+  ItemPresentation getPresentation();
 
 }

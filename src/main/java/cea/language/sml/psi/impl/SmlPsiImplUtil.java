@@ -1,9 +1,14 @@
 package cea.language.sml.psi.impl;
 
+import cea.language.sml.fileType.SmlIcons;
 import cea.language.sml.psi.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.editor.Document;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 
@@ -260,5 +265,200 @@ public class SmlPsiImplUtil {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get the value of the first child in the stateBlock
+     * @param element stateBlock
+     * @return String value
+     */
+    public static String getKey(SmlStateBlock element) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAMES);
+        if (keyNode != null) {
+            return keyNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the stateBlock
+     * @param element stateBlock
+     * @return String value
+     */
+    public static String getValue(SmlStateBlock element) {
+        ASTNode valueNode = element.getNode().findChildByType(SmlTypes.STATE_NAMES);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the stateBlock
+     * @param element stateBlock
+     * @return String value
+     */
+    public static String getName(SmlStateBlock element) {
+        return getValue(element);
+    }
+
+    /**
+     * Set the value of the stateBlock with a new value
+     * @param element stateBlock
+     * @param newName new value
+     * @return new stateName
+     */
+    public static PsiElement setName(SmlStateBlock element, String newName) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAMES);
+        if (keyNode != null) {
+            SmlStateBlock property = SmlElementFactory.createStateBlock(element.getProject(), newName);
+            ASTNode newKeyNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(keyNode, newKeyNode);
+        }
+        return element;
+    }
+
+    /**
+     * Get the value of the stateBlock
+     * @param element stateBlock
+     * @return PsiElement value
+     */
+    public static PsiElement getNameIdentifier(SmlStateBlock element) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAMES);
+        if (keyNode != null) {
+            return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Create a new presentation for stateBlock
+     * @param element stateBlock section
+     * @return ItemPresentation new presentation
+     */
+    public static ItemPresentation getPresentation(SmlStateBlock element) {
+        return new ItemPresentation() {
+
+            @Override
+            public String getPresentableText() {
+                return "state:" + element.getValue();
+            }
+
+            @Override
+            public String getLocationString() {
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;
+            }
+
+            @Override
+            public Icon getIcon(boolean open) {
+                return SmlIcons.FILE;
+            }
+
+        };
+    }
+
+
+    /**
+     * Get the value of the first child in the aliasBlock
+     * @param element aliasBlock
+     * @return String value
+     */
+    public static String getKey(SmlAliasBlock element) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.ALIAS_NAME);
+        if (keyNode != null) {
+            return keyNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the aliasBlock
+     * @param element aliasBlock
+     * @return String value
+     */
+    public static String getValue(SmlAliasBlock element) {
+        ASTNode valueNode = element.getNode().findChildByType(SmlTypes.ALIAS_NAME);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the aliasBlock
+     * @param element aliasBlock
+     * @return String value
+     */
+    public static String getName(SmlAliasBlock element) {
+        return getValue(element);
+    }
+
+    /**
+     * Set the value of the aliasBlock with a new value
+     * @param element aliasBlock
+     * @param newName new value
+     * @return new stateName
+     */
+    public static PsiElement setName(SmlAliasBlock element, String newName) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.ALIAS_NAME);
+        if (keyNode != null) {
+            SmlAliasBlock property = SmlElementFactory.createAlias(element.getProject(), newName);
+            ASTNode newKeyNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(keyNode, newKeyNode);
+        }
+        return element;
+    }
+
+    /**
+     * Get the value of the aliasBlock
+     * @param element aliasBlock
+     * @return PsiElement value
+     */
+    public static PsiElement getNameIdentifier(SmlAliasBlock element) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.ALIAS_NAME);
+        if (keyNode != null) {
+            return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Create a new presentation for aliasBlock
+     * @param element aliasBlock section
+     * @return ItemPresentation new presentation
+     */
+    public static ItemPresentation getPresentation(SmlAliasBlock element) {
+        return new ItemPresentation() {
+
+            @Override
+            public String getPresentableText() {
+                return "alias:" + element.getValue();
+            }
+
+            @Override
+            public String getLocationString() {
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;
+            }
+
+            @Override
+            public Icon getIcon(boolean open) {
+                return SmlIcons.FILE;
+            }
+
+        };
     }
 }

@@ -4,6 +4,8 @@ import cea.language.xsc.filetype.XCSIcons;
 import cea.language.xsc.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.openapi.editor.Document;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
@@ -237,7 +239,11 @@ public class XCSPsiImplUtil {
 
             @Override
             public String getLocationString() {
-                return element.getFunctionName();
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;
             }
 
             @Override
@@ -316,7 +322,11 @@ public class XCSPsiImplUtil {
 
             @Override
             public String getLocationString() {
-                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".");
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;
             }
 
             @Override
@@ -396,8 +406,11 @@ public class XCSPsiImplUtil {
 
             @Override
             public String getLocationString() {
-                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".");
-            }
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;            }
 
             @Override
             public Icon getIcon(boolean open) {
@@ -475,8 +488,11 @@ public class XCSPsiImplUtil {
 
             @Override
             public String getLocationString() {
-                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".");
-            }
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;            }
 
             @Override
             public Icon getIcon(boolean open) {
@@ -554,8 +570,11 @@ public class XCSPsiImplUtil {
 
             @Override
             public String getLocationString() {
-                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".");
-            }
+                PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(element.getProject());
+                Document document = psiDocumentManager.getDocument(element.getContainingFile());
+                int textOffset = element.getTextOffset();
+                int lineNumber = document.getLineNumber(textOffset);
+                return element.getContainingFile().getVirtualFile().getCanonicalPath().replace(element.getProject().getBasePath() + "/", "").replace("/",".") +":"+ lineNumber;            }
 
             @Override
             public Icon getIcon(boolean open) {

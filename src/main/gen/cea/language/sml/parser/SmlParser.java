@@ -68,9 +68,9 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // ALIAS separator aliasName beginBlock aliasBlockBody? endBlock
   public static boolean aliasBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "aliasBlock")) return false;
-    if (!nextTokenIs(b, ALIAS)) return false;
+    if (!nextTokenIs(b, "<State Block>", ALIAS)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, ALIAS_BLOCK, null);
+    Marker m = enter_section_(b, l, _NONE_, ALIAS_BLOCK, "<State Block>");
     r = consumeToken(b, ALIAS);
     p = r; // pin = 1
     r = r && report_error_(b, separator(b, l + 1));
@@ -998,9 +998,9 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // STATE separator stateNames beginBlock stateBody* endBlock
   public static boolean stateBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "stateBlock")) return false;
-    if (!nextTokenIs(b, STATE)) return false;
+    if (!nextTokenIs(b, "<State Block>", STATE)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, STATE_BLOCK, null);
+    Marker m = enter_section_(b, l, _NONE_, STATE_BLOCK, "<State Block>");
     r = consumeToken(b, STATE);
     p = r; // pin = 1
     r = r && report_error_(b, separator(b, l + 1));

@@ -32,4 +32,15 @@ public class SmlElementFactory {
         final SmlFile file = createFile(project, name);
         return (SmlStateNames) file.getFirstChild();
     }
+
+    public static SmlStateBlock createStateBlock(Project project, String newName) {
+        final SmlFile file = createFile(project, newName);
+        return (SmlStateBlock) file.getFirstChild();
+    }
+
+
+    public static SmlAliasBlock createAlias(Project project, String newName) {
+        final SmlFile file = createFile(project, newName);
+        return (SmlAliasBlock) file.getFirstChild();
+    }
 }

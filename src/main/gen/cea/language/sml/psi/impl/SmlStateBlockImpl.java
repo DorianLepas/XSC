@@ -8,10 +8,10 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static cea.language.sml.psi.SmlTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import cea.language.sml.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
-public class SmlStateBlockImpl extends ASTWrapperPsiElement implements SmlStateBlock {
+public class SmlStateBlockImpl extends SmlNamedElementImpl implements SmlStateBlock {
 
   public SmlStateBlockImpl(@NotNull ASTNode node) {
     super(node);
@@ -79,6 +79,36 @@ public class SmlStateBlockImpl extends ASTWrapperPsiElement implements SmlStateB
   @NotNull
   public List<SmlTraceBlock> getTraceBlockList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlTraceBlock.class);
+  }
+
+  @Override
+  public String getKey() {
+    return SmlPsiImplUtil.getKey(this);
+  }
+
+  @Override
+  public String getValue() {
+    return SmlPsiImplUtil.getValue(this);
+  }
+
+  @Override
+  public String getName() {
+    return SmlPsiImplUtil.getName(this);
+  }
+
+  @Override
+  public PsiElement setName(String newName) {
+    return SmlPsiImplUtil.setName(this, newName);
+  }
+
+  @Override
+  public PsiElement getNameIdentifier() {
+    return SmlPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @Override
+  public ItemPresentation getPresentation() {
+    return SmlPsiImplUtil.getPresentation(this);
   }
 
 }

@@ -2,13 +2,10 @@ package cea.language.sml.reference;
 
 import cea.language.sml.fileType.SmlIcons;
 import cea.language.sml.psi.*;
-import cea.language.xsc.psi.*;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.*;
-import cea.language.xsc.filetype.XCSIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,7 +23,6 @@ public class SmlStateReference extends PsiReferenceBase<PsiElement> implements P
 
     @Override
     public ResolveResult @NotNull [] multiResolve(boolean incompleteCode) {
-        Project project = myElement.getProject();
         List<ResolveResult> results = new ArrayList<>();
         // Search in the project collection_events.xsc file and the sml file
             final List<SmlStateBlock> states = SmlUtil.findStates((SmlFile) myElement.getContainingFile(),value);
@@ -45,7 +41,6 @@ public class SmlStateReference extends PsiReferenceBase<PsiElement> implements P
 
     @Override
     public Object @NotNull [] getVariants() {
-        Project project = myElement.getProject();
         List<LookupElement> variants = new ArrayList<>();
         // Create LookUpElement with element of Sml State Blocks
         List<SmlStateBlock> states = SmlUtil.findStates((SmlFile) myElement.getContainingFile());

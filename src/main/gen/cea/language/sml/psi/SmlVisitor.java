@@ -12,7 +12,7 @@ public class SmlVisitor extends PsiElementVisitor {
   }
 
   public void visitAliasBlock(@NotNull SmlAliasBlock o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitBind(@NotNull SmlBind o) {
@@ -112,7 +112,7 @@ public class SmlVisitor extends PsiElementVisitor {
   }
 
   public void visitStateBlock(@NotNull SmlStateBlock o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitStateNames(@NotNull SmlStateNames o) {
