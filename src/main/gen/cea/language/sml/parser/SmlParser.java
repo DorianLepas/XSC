@@ -529,7 +529,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // GOTO_STATE SEPARATOR stateName (STATE_NAME_SEPARATOR stateName)*
+  // GOTO_STATE SEPARATOR stateNames (STATE_NAME_SEPARATOR stateNames)*
   public static boolean gotoStateInstruction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "gotoStateInstruction")) return false;
     if (!nextTokenIs(b, GOTO_STATE)) return false;
@@ -537,13 +537,13 @@ public class SmlParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, GOTO_STATE_INSTRUCTION, null);
     r = consumeTokens(b, 1, GOTO_STATE, SEPARATOR);
     p = r; // pin = 1
-    r = r && report_error_(b, stateName(b, l + 1));
+    r = r && report_error_(b, stateNames(b, l + 1));
     r = p && gotoStateInstruction_3(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // (STATE_NAME_SEPARATOR stateName)*
+  // (STATE_NAME_SEPARATOR stateNames)*
   private static boolean gotoStateInstruction_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "gotoStateInstruction_3")) return false;
     while (true) {
@@ -554,14 +554,14 @@ public class SmlParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // STATE_NAME_SEPARATOR stateName
+  // STATE_NAME_SEPARATOR stateNames
   private static boolean gotoStateInstruction_3_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "gotoStateInstruction_3_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, STATE_NAME_SEPARATOR);
     p = r; // pin = 1
-    r = r && stateName(b, l + 1);
+    r = r && stateNames(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -802,7 +802,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // PROCESS_STATE SEPARATOR stateName identificationKey
+  // PROCESS_STATE SEPARATOR stateNames identificationKey
   public static boolean processStateInstruction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "processStateInstruction")) return false;
     if (!nextTokenIs(b, PROCESS_STATE)) return false;
@@ -810,7 +810,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, PROCESS_STATE_INSTRUCTION, null);
     r = consumeTokens(b, 1, PROCESS_STATE, SEPARATOR);
     p = r; // pin = 1
-    r = r && report_error_(b, stateName(b, l + 1));
+    r = r && report_error_(b, stateNames(b, l + 1));
     r = p && identificationKey(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
@@ -995,7 +995,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // STATE separator stateName beginBlock stateBody* endBlock
+  // STATE separator stateNames beginBlock stateBody* endBlock
   public static boolean stateBlock(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "stateBlock")) return false;
     if (!nextTokenIs(b, STATE)) return false;
@@ -1004,7 +1004,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, STATE);
     p = r; // pin = 1
     r = r && report_error_(b, separator(b, l + 1));
-    r = p && report_error_(b, stateName(b, l + 1)) && r;
+    r = p && report_error_(b, stateNames(b, l + 1)) && r;
     r = p && report_error_(b, beginBlock(b, l + 1)) && r;
     r = p && report_error_(b, stateBlock_4(b, l + 1)) && r;
     r = p && endBlock(b, l + 1) && r;
@@ -1041,11 +1041,11 @@ public class SmlParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // STATE_NAME
-  static boolean stateName(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "stateName")) return false;
-    if (!nextTokenIs(b, "<State name>", STATE_NAME)) return false;
+  public static boolean stateNames(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "stateNames")) return false;
+    if (!nextTokenIs(b, "<State names>", STATE_NAME)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, null, "<State name>");
+    Marker m = enter_section_(b, l, _NONE_, STATE_NAMES, "<State names>");
     r = consumeToken(b, STATE_NAME);
     exit_section_(b, l, m, r, false, null);
     return r;

@@ -35,6 +35,7 @@ public interface SmlTypes {
   IElementType SET_PROPERTY = new SmlElementType("SET_PROPERTY");
   IElementType SET_VALUE = new SmlElementType("SET_VALUE");
   IElementType STATE_BLOCK = new SmlElementType("STATE_BLOCK");
+  IElementType STATE_NAMES = new SmlElementType("STATE_NAMES");
   IElementType THREAD_END_INSTRUCTION = new SmlElementType("THREAD_END_INSTRUCTION");
   IElementType THREAD_STATE_INSTRUCTION = new SmlElementType("THREAD_STATE_INSTRUCTION");
   IElementType TRACE_BLOCK = new SmlElementType("TRACE_BLOCK");
@@ -182,6 +183,9 @@ public interface SmlTypes {
       }
       else if (type == STATE_BLOCK) {
         return new SmlStateBlockImpl(node);
+      }
+      else if (type == STATE_NAMES) {
+        return new SmlStateNamesImpl(node);
       }
       else if (type == THREAD_END_INSTRUCTION) {
         return new SmlThreadEndInstructionImpl(node);

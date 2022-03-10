@@ -548,4 +548,47 @@ public class SmlUtil {
         }
         return result;
     }
+
+    /**
+     * Searches in the sml file instances of the Sml state Blocks with the given value.
+     *
+     * @param containingFile current sml file
+     * @param value          to check
+     * @return matching state
+     */
+    public static List<SmlStateBlock> findStates(SmlFile containingFile, String value) {
+        List<SmlStateBlock> result = new ArrayList<>();
+        // Check if the current file is part of the same project as the sml file
+        if (containingFile != null) {
+            Collection<SmlStateBlock> states = PsiTreeUtil.findChildrenOfType(containingFile, SmlStateBlock.class);
+            if (states.size() != 0) {
+                // Go threw all states find in the current file
+                for (SmlStateBlock state : states) {
+                    // Check if they both have the same value
+                    if (value.equals(Objects.requireNonNull(state.getNode().findChildByType(SmlTypes.STATE_NAMES)).getText())) {
+                        result.add(state);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in the sml file instances of the Sml Alias Blocks.
+     *
+     * @param containingFile current sml file
+     * @return all alias
+     */
+    public static List<SmlStateBlock> findStates(SmlFile containingFile) {
+        List<SmlStateBlock> result = new ArrayList<>();
+        // Check if the current file is part of the same project as the sml file
+        if (containingFile != null) {
+            Collection<SmlStateBlock> states = PsiTreeUtil.findChildrenOfType(containingFile, SmlStateBlock.class);
+            if (states.size() != 0) {
+                result.addAll(states);
+            }
+        }
+        return result;
+    }
 }

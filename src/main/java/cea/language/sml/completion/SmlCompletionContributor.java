@@ -262,6 +262,22 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 resultSet.addElement((LookupElement) LUElement);
                             }
                         }
+
+                        // Check if the element is an instance of SmlStateNames
+                        if (element != null &&
+                                element.getNode().getElementType() == SmlTypes.STATE_NAME &&
+                                (element.getNode().getTreeParent().getTreeParent().getPsi() instanceof SmlGotoStateInstruction ||
+                                element.getNode().getTreeParent().getTreeParent().getPsi() instanceof SmlProcessStateInstruction)) {
+                            SmlStateNames e = (SmlStateNames)  element.getNode().getTreeParent().getPsi();
+                            // Search for the element to complete with
+                            Object[] result = new Object[0];
+                            if (e.getReference() != null) {
+                                result = e.getReference().getVariants();
+                            }
+                            for (Object LUElement : result) {
+                                resultSet.addElement((LookupElement) LUElement);
+                            }
+                        }
                     }
                 }
         );

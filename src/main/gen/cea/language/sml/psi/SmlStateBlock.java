@@ -28,6 +28,9 @@ public interface SmlStateBlock extends PsiElement {
   @NotNull
   List<SmlStateBlock> getStateBlockList();
 
+  @Nullable
+  SmlStateNames getStateNames();
+
   @NotNull
   List<SmlTraceBlock> getTraceBlockList();
 

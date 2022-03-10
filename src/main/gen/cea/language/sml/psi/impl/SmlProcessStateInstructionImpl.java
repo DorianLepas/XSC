@@ -27,4 +27,10 @@ public class SmlProcessStateInstructionImpl extends ASTWrapperPsiElement impleme
     else super.accept(visitor);
   }
 
+  @Override
+  @Nullable
+  public SmlStateNames getStateNames() {
+    return findChildByClass(SmlStateNames.class);
+  }
+
 }

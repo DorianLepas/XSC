@@ -27,4 +27,9 @@ public class SmlElementFactory {
         final SmlFile file = createFile(project, "alias :"+ element + "{\n}");
         return PsiTreeUtil.findChildOfType(file, SmlAliasBlock.class);
     }
+
+    public static SmlStateNames createStateName(Project project, String name) {
+        final SmlFile file = createFile(project, name);
+        return (SmlStateNames) file.getFirstChild();
+    }
 }

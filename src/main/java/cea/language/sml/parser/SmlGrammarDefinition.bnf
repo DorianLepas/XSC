@@ -22,7 +22,7 @@ smlFile ::= smlFileContent*
 private smlFileContent ::= (COMMENT|LINE_END|stateBlock|aliasBlock|alarmBlock|eventBlock|traceBlock|scriptBlock)
 
 /* Règles grammaticales d'un état */
-stateBlock ::= STATE separator stateName beginBlock stateBody* endBlock
+stateBlock ::= STATE separator stateNames beginBlock stateBody* endBlock
 
 private stateBody ::= stateBlock|aliasBlock|alarmBlock|eventBlock|traceBlock|enterBlock|exitBlock|optionsBlock
 
@@ -105,10 +105,10 @@ private instructions ::= ifBlock|elseIfBlock|elseBlock|conditionBlock|scriptBloc
 |setInstruction) {name="Instructions"}
 
 // Instruction goto state
-gotoStateInstruction ::= GOTO_STATE SEPARATOR stateName (STATE_NAME_SEPARATOR stateName)*
+gotoStateInstruction ::= GOTO_STATE SEPARATOR stateNames (STATE_NAME_SEPARATOR stateNames)*
 
 // Instruction process state
-processStateInstruction ::= PROCESS_STATE SEPARATOR stateName identificationKey
+processStateInstruction ::= PROCESS_STATE SEPARATOR stateNames identificationKey
 
 // Instrution call
 callJavaFunctionInstruction ::= CALL JAVA_FUNCTION_CALL {name="Call Java Function" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
@@ -149,7 +149,9 @@ private beginBlock ::= BEGIN_BLOCK {name="Begin block '{' "}
 
 private endBlock ::= END_BLOCK {name="End block '}' "}
 
-private stateName ::= STATE_NAME {name="State name"}
+stateNames ::= STATE_NAME {name="State names" mixin="cea.language.sml.psi.impl.SmlNamedElementImpl"
+                                                    implements="cea.language.sml.psi.SmlNamedElement"
+                                                    methods=[getKey getValue getName setName getNameIdentifier]}
 
 private aliasName ::= ALIAS_NAME {name="Alias name"}
 

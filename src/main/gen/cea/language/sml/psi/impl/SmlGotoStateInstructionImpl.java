@@ -27,4 +27,10 @@ public class SmlGotoStateInstructionImpl extends ASTWrapperPsiElement implements
     else super.accept(visitor);
   }
 
+  @Override
+  @NotNull
+  public List<SmlStateNames> getStateNamesList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlStateNames.class);
+  }
+
 }

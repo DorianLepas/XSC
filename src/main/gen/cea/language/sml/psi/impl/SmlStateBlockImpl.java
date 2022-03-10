@@ -70,6 +70,12 @@ public class SmlStateBlockImpl extends ASTWrapperPsiElement implements SmlStateB
   }
 
   @Override
+  @Nullable
+  public SmlStateNames getStateNames() {
+    return findChildByClass(SmlStateNames.class);
+  }
+
+  @Override
   @NotNull
   public List<SmlTraceBlock> getTraceBlockList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlTraceBlock.class);

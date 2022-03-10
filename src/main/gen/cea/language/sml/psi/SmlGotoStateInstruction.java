@@ -7,4 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface SmlGotoStateInstruction extends PsiElement {
 
+  @NotNull
+  List<SmlStateNames> getStateNamesList();
+
 }

@@ -100,6 +100,26 @@ public class SmlAnnotator implements Annotator {
             }
         }
 
+        // Check if we're in an StateNames
+        if (element instanceof SmlStateNames && (element.getParent() instanceof SmlGotoStateInstruction || element.getParent() instanceof SmlProcessStateInstruction) && element.getProject().getName().equals("Automation")) {
+            // Check if the element has a reference
+            if (element.getReference().resolve() == null) {
+                // Create a WARNING if the element has 0
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared state '" + ((SmlStateNames) element).getValue() + "'");
+                }
+                // Create a WARNING if the element multiple references
+                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "State '" + ((SmlStateNames) element).getValue() + "' declared multiple times");
+                }
+            } else {
+                PsiElement Reference = element.getReference().resolve();
+                HolderCreation = holder.newAnnotation(HighlightSeverity.INFORMATION, "")
+                        .tooltip(Reference.getContainingFile().getVirtualFile().getCanonicalPath().replace(Reference.getProject().getBasePath() + "/", ""));
+            }
+            HolderCreation.create();
+        }
+
         previousElement = element;
     }
 

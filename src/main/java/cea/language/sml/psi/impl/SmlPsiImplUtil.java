@@ -1,9 +1,6 @@
 package cea.language.sml.psi.impl;
 
-import cea.language.sml.psi.SmlCallJavaFunctionInstruction;
-import cea.language.sml.psi.SmlElementFactory;
-import cea.language.sml.psi.SmlEventsValue;
-import cea.language.sml.psi.SmlTypes;
+import cea.language.sml.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 
@@ -191,6 +188,73 @@ public class SmlPsiImplUtil {
      */
     public static PsiElement getNameIdentifier(SmlCallJavaFunctionInstruction element) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.JAVA_FUNCTION_CALL);
+        if (keyNode != null) {
+            return keyNode.getPsi();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the first child in the stateName
+     * @param element stateName
+     * @return String value
+     */
+    public static String getKey(SmlStateNames element) {
+        ASTNode keyNode = element.getNode().getTreeParent().getTreeParent().getFirstChildNode();
+        if (keyNode != null) {
+            return keyNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the stateName
+     * @param element stateName
+     * @return String value
+     */
+    public static String getValue(SmlStateNames element) {
+        ASTNode valueNode = element.getNode().findChildByType(SmlTypes.STATE_NAME);
+        if (valueNode != null) {
+            return valueNode.getText();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Get the value of the stateName
+     * @param element stateName
+     * @return String value
+     */
+    public static String getName(SmlStateNames element) {
+        return getValue(element);
+    }
+
+    /**
+     * Set the value of the stateName with a new value
+     * @param element stateName
+     * @param newName new value
+     * @return new stateName
+     */
+    public static PsiElement setName(SmlStateNames element, String newName) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAME);
+        if (keyNode != null) {
+            SmlStateNames property = SmlElementFactory.createStateName(element.getProject(), newName);
+            ASTNode newKeyNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(keyNode, newKeyNode);
+        }
+        return element;
+    }
+
+    /**
+     * Get the value of the stateName
+     * @param element stateName
+     * @return PsiElement value
+     */
+    public static PsiElement getNameIdentifier(SmlStateNames element) {
+        ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAME);
         if (keyNode != null) {
             return keyNode.getPsi();
         } else {

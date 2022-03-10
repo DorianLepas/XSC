@@ -115,6 +115,10 @@ public class SmlVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitStateNames(@NotNull SmlStateNames o) {
+    visitNamedElement(o);
+  }
+
   public void visitThreadEndInstruction(@NotNull SmlThreadEndInstruction o) {
     visitPsiElement(o);
   }
