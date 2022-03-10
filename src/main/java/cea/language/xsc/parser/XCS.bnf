@@ -24,7 +24,7 @@ FUNCTION_CORE ::= (CORE_START VARIABLE_TYPE VARIABLE_NAME? PROPERTY? VARIABLE_VA
                   (CORE_START ASCII_TYPE VARIABLE_NAME? PROPERTY? ASCII_VALUE* CORE_END FUNCTION_COMMENT?) |
                   (CORE_START LIST_TYPE VARIABLE_NAME? PROPERTY? FUNCTION_COMMENT? FUNCTION_CORE* CORE_END FUNCTION_COMMENT?) { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
                                                                                                                                 implements="cea.language.xsc.psi.XCSNamedElement"
-                                                                                                                                methods = [getFunctionName getSF getDepth getCommentSize getValue getName setName getNameIdentifier]}
+                                                                                                                                methods = [getFunctionName getSF getDepth getCommentSize getValue getName setName getNameIdentifier getPresentation]}
 PROPERTY ::= PROPERTY_START PROPERTY_+ PROPERTY_END
 PROPERTY_ ::= PROPERTY_NAME EQUALS PROPERTY_VALUE { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
                                                     implements="cea.language.xsc.psi.XCSNamedElement"
@@ -36,7 +36,9 @@ CE_LIST ::= (CORE_START LIST_TYPE CE_CORE* CORE_END FUNCTION_COMMENT?)
 CE_CORE ::= (CORE_START ASCII_TYPE CEID? CE_PROPERTY? ASCII_VALUE CORE_END FUNCTION_COMMENT?) |
             (CORE_START VARIABLE_TYPE CEID? CE_PROPERTY? VARIABLE_VALUE CORE_END FUNCTION_COMMENT?)
 CE_PROPERTY ::= PROPERTY_START CE_PROPERTY_+ PROPERTY_END
-CE_PROPERTY_ ::= PROPERTY_NAME_CE EQUALS PROPERTY_VALUE
+CE_PROPERTY_ ::= PROPERTY_NAME_CE EQUALS PROPERTY_VALUE  { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                                   implements="cea.language.xsc.psi.XCSNamedElement"
+                                                                   methods = [getValue getName setName getNameIdentifier getPresentation]}
 
 // DV paragraph treatment
 data_variable_section ::= (DATA_VARIABLE COLON FUNCTION_COMMENT? DV_LIST? FUNCTION_END FUNCTION_COMMENT?)
@@ -45,7 +47,9 @@ DV_CORE ::= (CORE_START ASCII_TYPE (DVID|VARIABLE_NAME)? DV_PROPERTY? ASCII_VALU
             (CORE_START LIST_TYPE VARIABLE_NAME? DV_PROPERTY? DV_CORE* CORE_END FUNCTION_COMMENT?) |
             (CORE_START VARIABLE_TYPE (DVID|VARIABLE_NAME)? DV_PROPERTY? VARIABLE_VALUE? CORE_END FUNCTION_COMMENT?)
 DV_PROPERTY ::= PROPERTY_START DV_PROPERTY_+ PROPERTY_END
-DV_PROPERTY_ ::= PROPERTY_NAME_DV EQUALS PROPERTY_VALUE
+DV_PROPERTY_ ::= PROPERTY_NAME_DV EQUALS PROPERTY_VALUE     { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                                      implements="cea.language.xsc.psi.XCSNamedElement"
+                                                                      methods = [getValue getName setName getNameIdentifier getPresentation]}
 
 // EC paragraph treatment
 equipment_constant_section ::= (EQUIPMENT_CONSTANT COLON FUNCTION_COMMENT? EC_LIST? FUNCTION_END FUNCTION_COMMENT?)
@@ -53,7 +57,9 @@ EC_LIST ::= (CORE_START LIST_TYPE EC_CORE* CORE_END FUNCTION_COMMENT?)
 EC_CORE ::= (CORE_START ASCII_TYPE ECID? EC_PROPERTY? ASCII_VALUE CORE_END FUNCTION_COMMENT?) |
             (CORE_START VARIABLE_TYPE ECID? EC_PROPERTY? VARIABLE_VALUE CORE_END FUNCTION_COMMENT?)
 EC_PROPERTY ::= PROPERTY_START EC_PROPERTY_+ PROPERTY_END
-EC_PROPERTY_ ::= PROPERTY_NAME_EC EQUALS PROPERTY_VALUE
+EC_PROPERTY_ ::= PROPERTY_NAME_EC EQUALS PROPERTY_VALUE     { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                                      implements="cea.language.xsc.psi.XCSNamedElement"
+                                                                      methods = [getValue getName setName getNameIdentifier getPresentation]}
 
 // SIT paragraph treatment
 secs_item_type_section ::= (SECS_ITEM_TYPE COLON FUNCTION_COMMENT? SIT_LIST? FUNCTION_END FUNCTION_COMMENT?)
@@ -68,7 +74,9 @@ SV_CORE ::= (CORE_START ASCII_TYPE (SVID|VARIABLE_NAME)? SV_PROPERTY? ASCII_VALU
             (CORE_START LIST_TYPE VARIABLE_NAME? SV_PROPERTY? SV_CORE* CORE_END FUNCTION_COMMENT?) |
             (CORE_START VARIABLE_TYPE (SVID|VARIABLE_NAME)? SV_PROPERTY? VARIABLE_VALUE? CORE_END FUNCTION_COMMENT?)
 SV_PROPERTY ::= PROPERTY_START SV_PROPERTY_+ PROPERTY_END
-SV_PROPERTY_ ::= PROPERTY_NAME_SV EQUALS PROPERTY_VALUE
+SV_PROPERTY_ ::= PROPERTY_NAME_SV EQUALS PROPERTY_VALUE     { mixin="cea.language.xsc.psi.impl.XCSNamedElementImpl"
+                                                                      implements="cea.language.xsc.psi.XCSNamedElement"
+                                                                      methods = [getValue getName setName getNameIdentifier getPresentation]}
 
 // VSS paragraph treatment
 vfei_secs_seq_section ::= (VFEI_SECS_SEQ COLON FUNCTION_COMMENT? VSS_LIST? FUNCTION_END FUNCTION_COMMENT?)

@@ -4,7 +4,18 @@ package cea.language.xsc.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
 
-public interface XCSCeProperty_ extends PsiElement {
+public interface XCSCeProperty_ extends XCSNamedElement {
+
+  String getValue();
+
+  String getName();
+
+  PsiElement setName(String newName);
+
+  PsiElement getNameIdentifier();
+
+  ItemPresentation getPresentation();
 
 }

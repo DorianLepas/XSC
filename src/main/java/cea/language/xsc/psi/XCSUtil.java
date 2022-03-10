@@ -29,7 +29,7 @@ public class XCSUtil {
                 Collection<XCSCeProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSCeProperty_.class);
                 if (properties.size() != 0) {
                     for (XCSCeProperty_ property : properties) {
-                        if (value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
+                        if (property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE).getTreePrev().getTreePrev().getText().equals("VfeiName") && value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
                             result.add(property);
                         }
                     }
@@ -73,7 +73,7 @@ public class XCSUtil {
                 Collection<XCSDvProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSDvProperty_.class);
                 if (properties.size() != 0) {
                     for (XCSDvProperty_ property : properties) {
-                        if (value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
+                        if (property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE).getTreePrev().getTreePrev().getText().equals("VfeiName") && value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
                             result.add(property);
                         }
                     }
@@ -110,7 +110,7 @@ public class XCSUtil {
                 Collection<XCSEcProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSEcProperty_.class);
                 if (properties.size() != 0) {
                     for (XCSEcProperty_ property : properties) {
-                        if (value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
+                        if (property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE).getTreePrev().getTreePrev().getText().equals("VfeiName") && value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
                             result.add(property);
                         }
                     }
@@ -147,7 +147,7 @@ public class XCSUtil {
                 Collection<XCSSvProperty_> properties = PsiTreeUtil.findChildrenOfType(xcsFile, XCSSvProperty_.class);
                 if (properties.size() != 0) {
                     for (XCSSvProperty_ property : properties) {
-                        if (value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
+                        if (property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE).getTreePrev().getTreePrev().getText().equals("VfeiName") && value.equals(Objects.requireNonNull(property.getNode().findChildByType(XCSTypes.PROPERTY_VALUE)).getText()) && (property.getParent().getParent().getNode().findChildByType(XCSTypes.LIST_TYPE) == null)) {
                             result.add(property);
                         }
                     }

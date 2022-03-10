@@ -14,6 +14,26 @@ public class XCSElementFactory {
         return file.findChildByClass(XCSProperty_.class);
     }
 
+    public static XCSCeProperty_ createPropertyCe(Project project, String name) {
+        final XCSFile file = createFile(project, name);
+        return file.findChildByClass(XCSCeProperty_.class);
+    }
+
+    public static XCSEcProperty_ createPropertyEc(Project project, String name) {
+        final XCSFile file = createFile(project, name);
+        return file.findChildByClass(XCSEcProperty_.class);
+    }
+
+    public static XCSDvProperty_ createPropertyDv(Project project, String name) {
+        final XCSFile file = createFile(project, name);
+        return file.findChildByClass(XCSDvProperty_.class);
+    }
+
+    public static XCSSvProperty_ createPropertySv(Project project, String name) {
+        final XCSFile file = createFile(project, name);
+        return file.findChildByClass(XCSSvProperty_.class);
+    }
+
     public static XCSFile createFile(Project project, String text) {
         String name = "dummy.xsc";
         return (XCSFile) PsiFileFactory.getInstance(project).

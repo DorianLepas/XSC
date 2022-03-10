@@ -28,7 +28,7 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitCeProperty_(@NotNull XCSCeProperty_ o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitDvCore(@NotNull XCSDvCore o) {
@@ -44,7 +44,7 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitDvProperty_(@NotNull XCSDvProperty_ o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitEcCore(@NotNull XCSEcCore o) {
@@ -60,7 +60,7 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitEcProperty_(@NotNull XCSEcProperty_ o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitEventsCore(@NotNull XCSEventsCore o) {
@@ -104,7 +104,7 @@ public class XCSVisitor extends PsiElementVisitor {
   }
 
   public void visitSvProperty_(@NotNull XCSSvProperty_ o) {
-    visitPsiElement(o);
+    visitNamedElement(o);
   }
 
   public void visitVssCore(@NotNull XCSVssCore o) {

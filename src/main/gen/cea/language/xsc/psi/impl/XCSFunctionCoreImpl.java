@@ -9,6 +9,7 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static cea.language.xsc.psi.XCSTypes.*;
 import cea.language.xsc.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class XCSFunctionCoreImpl extends XCSNamedElementImpl implements XCSFunctionCore {
 
@@ -76,6 +77,11 @@ public class XCSFunctionCoreImpl extends XCSNamedElementImpl implements XCSFunct
   @Override
   public PsiElement getNameIdentifier() {
     return XCSPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @Override
+  public ItemPresentation getPresentation() {
+    return XCSPsiImplUtil.getPresentation(this);
   }
 
 }
