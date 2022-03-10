@@ -104,13 +104,27 @@ public class SmlAnnotator implements Annotator {
         if (element instanceof SmlStateNames && (element.getParent() instanceof SmlGotoStateInstruction || element.getParent() instanceof SmlProcessStateInstruction) && element.getProject().getName().equals("Automation")) {
             // Check if the element has a reference
             if (element.getReference().resolve() == null) {
-                // Create a WARNING if the element has 0
-                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared state '" + ((SmlStateNames) element).getValue() + "'");
+                //goto state instruction
+                if (element.getParent() instanceof SmlGotoStateInstruction) {
+                    // Create a WARNING if the element has 0
+                    if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length == 0) {
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot go to a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")");
+                    }
+                    // Create a WARNING if the element multiple references
+                    if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length > 1) {
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "There are several states with the name '" + ((SmlStateNames) element).getValue() + "'");
+                    }
                 }
-                // Create a WARNING if the element multiple references
-                if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "State '" + ((SmlStateNames) element).getValue() + "' declared multiple times");
+                // process state instruction
+                if (element.getParent() instanceof SmlProcessStateInstruction){
+                    // Create a WARNING if the element has 0
+                    if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length == 0) {
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot process a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")");
+                    }
+                    // Create a WARNING if the element multiple references
+                    if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length > 1) {
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "There are several states with the name '" + ((SmlStateNames) element).getValue() + "'");
+                    }
                 }
             } else {
                 PsiElement Reference = element.getReference().resolve();
