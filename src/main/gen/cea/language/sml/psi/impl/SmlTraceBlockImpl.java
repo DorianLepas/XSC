@@ -117,4 +117,10 @@ public class SmlTraceBlockImpl extends ASTWrapperPsiElement implements SmlTraceB
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlTraceInstruction.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmlWaitInstruction> getWaitInstructionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlWaitInstruction.class);
+  }
+
 }

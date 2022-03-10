@@ -40,6 +40,7 @@ public interface SmlTypes {
   IElementType TRACE_BLOCK = new SmlElementType("TRACE_BLOCK");
   IElementType TRACE_INSTRUCTION = new SmlElementType("TRACE_INSTRUCTION");
   IElementType TRACE_MESSAGE = new SmlElementType("TRACE_MESSAGE");
+  IElementType WAIT_INSTRUCTION = new SmlElementType("WAIT_INSTRUCTION");
 
   IElementType ALARM = new SmlTokenType("ALARM");
   IElementType ALIAS = new SmlTokenType("ALIAS");
@@ -95,6 +96,7 @@ public interface SmlTypes {
   IElementType TRACE = new SmlTokenType("TRACE");
   IElementType TRACE_MESSAGE_SEPARATOR = new SmlTokenType("TRACE_MESSAGE_SEPARATOR");
   IElementType TRACE_MESSAGE_STRING = new SmlTokenType("TRACE_MESSAGE_STRING");
+  IElementType WAIT = new SmlTokenType("WAIT");
   IElementType WARNING = new SmlTokenType("WARNING");
 
   class Factory {
@@ -195,6 +197,9 @@ public interface SmlTypes {
       }
       else if (type == TRACE_MESSAGE) {
         return new SmlTraceMessageImpl(node);
+      }
+      else if (type == WAIT_INSTRUCTION) {
+        return new SmlWaitInstructionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

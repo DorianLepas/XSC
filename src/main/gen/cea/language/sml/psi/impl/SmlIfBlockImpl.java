@@ -117,4 +117,10 @@ public class SmlIfBlockImpl extends ASTWrapperPsiElement implements SmlIfBlock {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlTraceInstruction.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmlWaitInstruction> getWaitInstructionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlWaitInstruction.class);
+  }
+
 }

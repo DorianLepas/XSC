@@ -491,4 +491,61 @@ public class SmlUtil {
         }
         return result;
     }
+
+    /**
+     * Searches in FFCUtils with the given value.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @param value          to check
+     * @return matching event
+     */
+    public static List<PsiLiteralExpression> findPropertiesInFfcUtils(SmlFile containingFile, Project project, String value) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        virtualFiles.removeIf(e -> !(e.getCanonicalPath().contains("FFCGenerator") && e.getName().equals("FfcUtils.java")));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // if javaFile is null
+            if (javaFile != null) {
+                Collection<PsiLiteralExpression> strings = PsiTreeUtil.findChildrenOfType(javaFile, PsiLiteralExpression.class);
+                for (PsiLiteralExpression s : strings) {
+                    // Check if they both have the same property value
+                    if (s.getText().equals(value) && value.equals("\"PropertyChanged\"")) {
+                        result.add(s);
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Searches in FFCUtils.
+     *
+     * @param containingFile current sml file
+     * @param project        current project
+     * @return matching event
+     */
+    public static List<PsiLiteralExpression> findPropertiesInFfcUtils(SmlFile containingFile, Project project) {
+        List<PsiLiteralExpression> result = new ArrayList<>();
+        Collection<VirtualFile> virtualFiles = FileTypeIndex.getFiles(JavaFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        virtualFiles.removeIf(e -> !(e.getCanonicalPath().contains("FFCGenerator") && e.getName().equals("FfcUtils.java")));
+        for (VirtualFile virtualFile : virtualFiles) {
+            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
+            // if javaFile is null
+            if (javaFile != null) {
+                Collection<PsiLiteralExpression> strings = PsiTreeUtil.findChildrenOfType(javaFile, PsiLiteralExpression.class);
+                for (PsiLiteralExpression s : strings) {
+                    // Check if they both have the same property value
+                    if (s.getText().equals("\"PropertyChanged\"")) {
+                        result.add(s);
+                        return result;
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }

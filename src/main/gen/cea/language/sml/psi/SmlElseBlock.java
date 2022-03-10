@@ -49,4 +49,7 @@ public interface SmlElseBlock extends PsiElement {
   @NotNull
   List<SmlTraceInstruction> getTraceInstructionList();
 
+  @NotNull
+  List<SmlWaitInstruction> getWaitInstructionList();
+
 }

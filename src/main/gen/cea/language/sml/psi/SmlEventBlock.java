@@ -52,4 +52,7 @@ public interface SmlEventBlock extends PsiElement {
   @NotNull
   List<SmlTraceInstruction> getTraceInstructionList();
 
+  @NotNull
+  List<SmlWaitInstruction> getWaitInstructionList();
+
 }

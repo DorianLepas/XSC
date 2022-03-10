@@ -52,4 +52,7 @@ public interface SmlIfBlock extends PsiElement {
   @NotNull
   List<SmlTraceInstruction> getTraceInstructionList();
 
+  @NotNull
+  List<SmlWaitInstruction> getWaitInstructionList();
+
 }

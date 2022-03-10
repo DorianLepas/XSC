@@ -50,10 +50,15 @@ public class SmlEventReference extends PsiReferenceBase<PsiElement> implements P
                 results.add(new PsiElementResolveResult(property));
             }
             if (myElement.getContainingFile().getVirtualFile().getCanonicalPath().contains("FFC")){
-                //Search in eventHandler
+                //Search in FFC java files
                 final List<PsiLiteralExpression> eventHandlers = SmlUtil.findPropertiesInEventHandler((SmlFile) myElement.getContainingFile(), project, value);
                 for (PsiLiteralExpression eventHandler : eventHandlers) {
                     results.add(new PsiElementResolveResult(eventHandler));
+                }
+                //Search in FFCUtils
+                final List<PsiLiteralExpression> ffcUtilsProperties = SmlUtil.findPropertiesInFfcUtils((SmlFile) myElement.getContainingFile(), project, value);
+                for (PsiLiteralExpression ffcUtilsProperty : ffcUtilsProperties) {
+                    results.add(new PsiElementResolveResult(ffcUtilsProperty));
                 }
             }
         }

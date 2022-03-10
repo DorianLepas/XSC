@@ -229,6 +229,7 @@ EQUALS_SEPARATOR = [=]
   "MESSAGE"       { return SmlTypes.MESSAGE; }
   "DEBUG"         { return SmlTypes.DEBUG; }
   "WARNING"       { return SmlTypes.WARNING; }
+  "wait"          { return SmlTypes.WAIT; }
   "set "          { yybegin(SET); return SmlTypes.SET; }
 
   // Mots clés des blocs considérés comme des instructions

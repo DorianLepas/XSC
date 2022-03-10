@@ -98,6 +98,8 @@ public class SmlSyntaxHighlighter extends SyntaxHighlighterBase
       return KEYWORDS_KEYS;
     } else if (tokenType.equals(SmlTypes.WARNING)) {
       return KEYWORDS_KEYS;
+    } else if (tokenType.equals(SmlTypes.WAIT)) {
+      return KEYWORDS_KEYS;
     } else if (tokenType.equals(SmlTypes.DEBUG)) {
       return KEYWORDS_KEYS;
     } else if (tokenType.equals(SmlTypes.THREAD_STATE)) {

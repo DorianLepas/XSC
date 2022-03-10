@@ -57,6 +57,8 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("exec_end")
                                 .withTypeText("Instruction"));
+                        resultSet.addElement(LookupElementBuilder.create("wait")
+                                .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("consume_event")
                                 .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("MESSAGE")
@@ -125,6 +127,8 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("exec_end")
                                 .withTypeText("Instruction"));
+                        resultSet.addElement(LookupElementBuilder.create("wait")
+                                .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("consume_event")
                                 .withTypeText("Instruction"));
                         resultSet.addElement(LookupElementBuilder.create("MESSAGE")
@@ -187,6 +191,8 @@ public class SmlCompletionContributor extends CompletionContributor {
                                     .withTypeText("Instruction"));
                             resultSet.addElement(LookupElementBuilder.create("exec_end")
                                     .withTypeText("Instruction"));
+                            resultSet.addElement(LookupElementBuilder.create("wait")
+                                    .withTypeText("Instruction"));
                             resultSet.addElement(LookupElementBuilder.create("consume_event")
                                     .withTypeText("Instruction"));
                             resultSet.addElement(LookupElementBuilder.create("MESSAGE")
@@ -227,6 +233,16 @@ public class SmlCompletionContributor extends CompletionContributor {
                                             .withIcon(literals_.getContainingFile().getIcon(0))
                                             .withPresentableText(literals_.getText().substring(1, literals_.getText().length() - 1))
                                             .withTypeText(literals_.getContainingFile().getName())
+                                    );
+                                }
+                                // Create LookUpElement with element of FFC files
+                                List<PsiLiteralExpression> properties = SmlUtil.findPropertiesInFfcUtils((SmlFile) e.getContainingFile(), e.getProject());
+                                for (final PsiLiteralExpression property : properties) {
+                                    variants.add(LookupElementBuilder
+                                            .create(property.getText().substring(1, property.getText().length() - 1))
+                                            .withIcon(property.getContainingFile().getIcon(0))
+                                            .withPresentableText(property.getText().substring(1, property.getText().length() - 1))
+                                            .withTypeText(property.getContainingFile().getName())
                                     );
                                 }
                             }

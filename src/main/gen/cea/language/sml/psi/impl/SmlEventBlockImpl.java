@@ -117,4 +117,10 @@ public class SmlEventBlockImpl extends ASTWrapperPsiElement implements SmlEventB
     return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlTraceInstruction.class);
   }
 
+  @Override
+  @NotNull
+  public List<SmlWaitInstruction> getWaitInstructionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, SmlWaitInstruction.class);
+  }
+
 }

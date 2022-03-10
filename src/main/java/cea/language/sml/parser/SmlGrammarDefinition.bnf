@@ -101,6 +101,7 @@ private instructions ::= ifBlock|elseIfBlock|elseBlock|conditionBlock|scriptBloc
 |traceInstruction
 |execEndInstruction
 |consumeEventInstruction
+|waitInstruction
 |setInstruction) {name="Instructions"}
 
 // Instruction goto state
@@ -122,6 +123,9 @@ threadStateInstruction ::= THREAD_STATE SEPARATOR THREAD_NAME identificationKey
 
 // Instruction exec_end
 execEndInstruction ::= EXEC_END
+
+// Instruction wait
+waitInstruction ::= WAIT
 
 // Instruction consume_event
 consumeEventInstruction ::= CONSUME_EVENT

@@ -715,6 +715,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // |traceInstruction
   // |execEndInstruction
   // |consumeEventInstruction
+  // |waitInstruction
   // |setInstruction)
   static boolean instructions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "instructions")) return false;
@@ -738,6 +739,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   // |traceInstruction
   // |execEndInstruction
   // |consumeEventInstruction
+  // |waitInstruction
   // |setInstruction
   private static boolean instructions_5(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "instructions_5")) return false;
@@ -750,6 +752,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
     if (!r) r = traceInstruction(b, l + 1);
     if (!r) r = execEndInstruction(b, l + 1);
     if (!r) r = consumeEventInstruction(b, l + 1);
+    if (!r) r = waitInstruction(b, l + 1);
     if (!r) r = setInstruction(b, l + 1);
     return r;
   }
@@ -1190,6 +1193,18 @@ public class SmlParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, THREAD_KEYWORD);
     if (!r) r = consumeToken(b, PROCESS_KEYWORD);
     if (!r) r = consumeToken(b, JAVA_FUNCTION_CALL);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // WAIT
+  public static boolean waitInstruction(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "waitInstruction")) return false;
+    if (!nextTokenIs(b, WAIT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, WAIT);
+    exit_section_(b, m, WAIT_INSTRUCTION, r);
     return r;
   }
 
