@@ -5,6 +5,7 @@ import cea.language.sml.psi.impl.SmlScriptBlockImpl;
 import cea.language.sml.psi.impl.SmlStateBlockImpl;
 import cea.language.sml.quickfix.SmlCreateEventAliasQuickFix;
 import cea.language.sml.quickfix.SmlCreateEventQuickFix;
+import cea.language.sml.quickfix.SmlCreateStateQuickFix;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.annotation.AnnotationBuilder;
 import com.intellij.lang.annotation.AnnotationHolder;
@@ -54,13 +55,13 @@ public class SmlAnnotator implements Annotator {
             if (element.getReference().resolve() == null) {
                 // Create a WARNING if the element has 0
                 if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length == 0) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared property '" + ((SmlEventsValue) element).getValue() + "'")
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Undeclared event '" + ((SmlEventsValue) element).getValue() + "'")
                             .withFix(new SmlCreateEventQuickFix(((SmlEventsValue) element).getValue()))
                             .withFix(new SmlCreateEventAliasQuickFix(((SmlEventsValue) element).getValue(), element));
                 }
                 // Create a WARNING if the element multiple references
                 if (((PsiPolyVariantReference)element.getReference()).multiResolve(false).length > 1) {
-                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Property '" + ((SmlEventsValue) element).getValue() + "' declared multiple times");
+                    HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Event '" + ((SmlEventsValue) element).getValue() + "' declared multiple times");
                 }
             } else {
                 PsiElement Reference = element.getReference().resolve();
@@ -108,7 +109,8 @@ public class SmlAnnotator implements Annotator {
                 if (element.getParent() instanceof SmlGotoStateInstruction) {
                     // Create a WARNING if the element has 0
                     if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length == 0) {
-                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot go to a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")");
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot go to a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")")
+                                .withFix(new SmlCreateStateQuickFix(((SmlStateNames) element).getValue(), element));
                     }
                     // Create a WARNING if the element multiple references
                     if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length > 1) {
@@ -119,7 +121,8 @@ public class SmlAnnotator implements Annotator {
                 if (element.getParent() instanceof SmlProcessStateInstruction){
                     // Create a WARNING if the element has 0
                     if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length == 0) {
-                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot process a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")");
+                        HolderCreation = holder.newAnnotation(HighlightSeverity.GENERIC_SERVER_ERROR_OR_WARNING, "Cannot process a state that doesn't exist (" + ((SmlStateNames) element).getValue() + ")")
+                                .withFix(new SmlCreateStateQuickFix(((SmlStateNames) element).getValue(), element));
                     }
                     // Create a WARNING if the element multiple references
                     if (((PsiPolyVariantReference) element.getReference()).multiResolve(false).length > 1) {

@@ -352,8 +352,8 @@ public class SmlUtil {
      * @param value          to check
      * @return matching event declaration
      */
-    public static List<PsiLiteralExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project, String value) {
-        List<PsiLiteralExpression> result = new ArrayList<>();
+    public static List<PsiMethodCallExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project, String value) {
+        List<PsiMethodCallExpression> result = new ArrayList<>();
         // Get Equipment file
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
         if (module == null) {
@@ -372,7 +372,7 @@ public class SmlUtil {
                         // Check if they both have the same property value
                         if (e.getMethodExpression().getText().equals("fireEvent")) {
                             if (e.getArgumentList().getExpressionCount() == 1 && e.getArgumentList().getExpressions()[0].getText().equals(value) && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
-                                result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                                result.add(e);
                                 return result;
                             }
                         }
@@ -390,8 +390,8 @@ public class SmlUtil {
      * @param project        current project
      * @return all event declaration
      */
-    public static List<PsiLiteralExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project) {
-        List<PsiLiteralExpression> result = new ArrayList<>();
+    public static List<PsiMethodCallExpression> findPropertiesInDeclaration(SmlFile containingFile, Project project) {
+        List<PsiMethodCallExpression> result = new ArrayList<>();
         // Get Equipment file
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
         if (module == null) {
@@ -409,7 +409,7 @@ public class SmlUtil {
                     for (PsiMethodCallExpression e : Expr) {
                         // Check if they both have the same property value
                         if (e.getMethodExpression().getText().equals("fireEvent") && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
-                            result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                            result.add(e);
                         }
                     }
                 }
@@ -426,8 +426,8 @@ public class SmlUtil {
      * @param value          to check
      * @return matching event
      */
-    public static List<PsiLiteralExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project, String value) {
-        List<PsiLiteralExpression> result = new ArrayList<>();
+    public static List<PsiMethodCallExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project, String value) {
+        List<PsiMethodCallExpression> result = new ArrayList<>();
         // Get eventHandler files
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
         if (module == null) {
@@ -446,7 +446,7 @@ public class SmlUtil {
                         // Check if they both have the same property value
                         if (e.getMethodExpression().getText().contains("fireEvent")) {
                             if (e.getArgumentList().getExpressionCount() == 1 && e.getArgumentList().getExpressions()[0].getText().equals(value) && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
-                                result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                                result.add(e);
                                 return result;
                             }
                         }
@@ -464,8 +464,8 @@ public class SmlUtil {
      * @param project        current project
      * @return matching event
      */
-    public static List<PsiLiteralExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project) {
-        List<PsiLiteralExpression> result = new ArrayList<>();
+    public static List<PsiMethodCallExpression> findPropertiesInEventHandler(SmlFile containingFile, Project project) {
+        List<PsiMethodCallExpression> result = new ArrayList<>();
         // Get eventHandler files
         Module module = ModuleUtilCore.findModuleForPsiElement(containingFile);
         if (module == null) {
@@ -483,7 +483,7 @@ public class SmlUtil {
                     for (PsiMethodCallExpression e : Expr) {
                         // Check if they both have the same property value
                         if (e.getMethodExpression().getText().contains("fireEvent") && e.getArgumentList().getExpressions()[0] instanceof PsiLiteralExpression) {
-                            result.add((PsiLiteralExpression) e.getArgumentList().getExpressions()[0]);
+                            result.add(e);
                         }
                     }
                 }

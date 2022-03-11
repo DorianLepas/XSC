@@ -313,7 +313,7 @@ public class SmlPsiImplUtil {
     public static PsiElement setName(SmlStateBlock element, String newName) {
         ASTNode keyNode = element.getNode().findChildByType(SmlTypes.STATE_NAMES);
         if (keyNode != null) {
-            SmlStateBlock property = SmlElementFactory.createStateBlock(element.getProject(), newName);
+            SmlStateBlock property = SmlElementFactory.createState(element.getProject(), newName);
             ASTNode newKeyNode = property.getFirstChild().getNode();
             element.getNode().replaceChild(keyNode, newKeyNode);
         }

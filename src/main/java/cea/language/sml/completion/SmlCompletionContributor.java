@@ -7,6 +7,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLiteralExpression;
+import com.intellij.psi.PsiMethodCallExpression;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -204,7 +205,8 @@ public class SmlCompletionContributor extends CompletionContributor {
                         }
                         // Check if the element is an instance of SmlEventsValue
                         if (element != null &&
-                                element.getNode().getElementType() == SmlTypes.EVENT_NAME) {
+                                element.getNode().getElementType() == SmlTypes.EVENT_NAME &&
+                                element.getNode().getTreeParent().getPsi() instanceof SmlEventsValue) {
                             SmlEventsValue e = (SmlEventsValue) element.getNode().getTreeParent().getPsi();
                             // Search for the element to complete with
                             Object[] result = new Object[0];
@@ -215,23 +217,23 @@ public class SmlCompletionContributor extends CompletionContributor {
                                 resultSet.addElement((LookupElement) LUElement);
                             }
                             List<LookupElement> variants = new ArrayList<>();
-                            List<PsiLiteralExpression> eventDeclaration = SmlUtil.findPropertiesInDeclaration((SmlFile) e.getContainingFile(), e.getProject());
-                            for (final PsiLiteralExpression eventDeclaration_ : eventDeclaration) {
+                            List<PsiMethodCallExpression> eventDeclaration = SmlUtil.findPropertiesInDeclaration((SmlFile) e.getContainingFile(), e.getProject());
+                            for (final PsiMethodCallExpression eventDeclaration_ : eventDeclaration) {
                                 variants.add(LookupElementBuilder
-                                        .create(eventDeclaration_.getText().substring(1, eventDeclaration_.getText().length() - 1))
+                                        .create(eventDeclaration_.getArgumentList().getExpressions()[0].getText().substring(1, eventDeclaration_.getArgumentList().getExpressions()[0].getText().length() - 1))
                                         .withIcon(eventDeclaration_.getContainingFile().getIcon(0))
-                                        .withPresentableText(eventDeclaration_.getText().substring(1, eventDeclaration_.getText().length() - 1))
+                                        .withPresentableText(eventDeclaration_.getArgumentList().getExpressions()[0].getText().substring(1, eventDeclaration_.getArgumentList().getExpressions()[0].getText().length() - 1))
                                         .withTypeText(eventDeclaration_.getContainingFile().getName())
                                 );
                             }
                             if (e.getContainingFile().getVirtualFile().getCanonicalPath() != null && e.getContainingFile().getVirtualFile().getCanonicalPath().contains("FFC")) {
                                 // Create LookUpElement with element of FFC files
-                                List<PsiLiteralExpression> literals = SmlUtil.findPropertiesInEventHandler((SmlFile) e.getContainingFile(), e.getProject());
-                                for (final PsiLiteralExpression literals_ : literals) {
+                                List<PsiMethodCallExpression> literals = SmlUtil.findPropertiesInEventHandler((SmlFile) e.getContainingFile(), e.getProject());
+                                for (final PsiMethodCallExpression literals_ : literals) {
                                     variants.add(LookupElementBuilder
-                                            .create(literals_.getText().substring(1, literals_.getText().length() - 1))
+                                            .create(literals_.getArgumentList().getExpressions()[0].getText().substring(1, literals_.getArgumentList().getExpressions()[0].getText().length() - 1))
                                             .withIcon(literals_.getContainingFile().getIcon(0))
-                                            .withPresentableText(literals_.getText().substring(1, literals_.getText().length() - 1))
+                                            .withPresentableText(literals_.getArgumentList().getExpressions()[0].getText().substring(1, literals_.getArgumentList().getExpressions()[0].getText().length() - 1))
                                             .withTypeText(literals_.getContainingFile().getName())
                                     );
                                 }

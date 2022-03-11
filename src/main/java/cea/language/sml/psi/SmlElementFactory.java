@@ -28,19 +28,24 @@ public class SmlElementFactory {
         return PsiTreeUtil.findChildOfType(file, SmlAliasBlock.class);
     }
 
+    public static SmlAliasBlock createAlias(Project project, String newName) {
+        final SmlFile file = createFile(project, newName);
+        return (SmlAliasBlock) file.getFirstChild();
+    }
+
     public static SmlStateNames createStateName(Project project, String name) {
         final SmlFile file = createFile(project, name);
         return (SmlStateNames) file.getFirstChild();
     }
 
-    public static SmlStateBlock createStateBlock(Project project, String newName) {
+    public static SmlStateBlock createState(Project project, String newName) {
         final SmlFile file = createFile(project, newName);
         return (SmlStateBlock) file.getFirstChild();
     }
 
-
-    public static SmlAliasBlock createAlias(Project project, String newName) {
-        final SmlFile file = createFile(project, newName);
-        return (SmlAliasBlock) file.getFirstChild();
+    public static PsiElement createStateBlock(String element,Project project){
+        final SmlFile file = createFile(project, "state :"+ element + "{\n}");
+        return PsiTreeUtil.findChildOfType(file, SmlStateBlock.class);
     }
+
 }
