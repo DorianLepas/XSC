@@ -76,6 +76,8 @@ CONSTANTES_CONDITIONS = (\"[^\"]+\")|(\d+)
 OPERATORS_CONDITIONS = ("+"|"-"|"*"|"/"|"&&"|"||")
 // Comparateurs
 COMPARATORS_CONDITIONS = ("=="|"!="|"<="|"<"|">="|">")
+// Not
+OPERATORS_NOT = ("!")
 
 /* Appels d'une fonction dans le code Java */
 JAVA_FUNCTION_CALL = [\w]*[a-zA-Z]+[\w]*(\.)*[\w]*("(".*")")*
@@ -90,6 +92,9 @@ IDENTIFICATION_KEY = \(.+\)
 (chaine de caractères pouvant se trouver après un MESSAGE, WARNING ou un DEBUG) */
 TRACE_MESSAGE_STRING = (\"[^\"]+\")
 TRACE_MESSAGE_SEPARATOR = [+]
+
+/*Timer d'un wait*/
+WAIT_TIMER = [\d]+
 
 /* Nom d'un lien */
 BIND_NAME = [\w]+
@@ -111,6 +116,7 @@ EQUALS_SEPARATOR = [=]
 %state  JAVASCRIPT_CODE
 %state  CALL
 %state  SET
+%state WAIT
 
 %%
 
@@ -202,6 +208,8 @@ EQUALS_SEPARATOR = [=]
   {OPERATORS_CONDITIONS}  { return SmlTypes.OP_CONDS; }
   // Comparateurs
   {COMPARATORS_CONDITIONS} { return SmlTypes.COMP_CONDS; }
+   // Not
+  {OPERATORS_NOT} { return SmlTypes.OPERATORS_NOT; }
   // Variables SML
   {SML_VARS}  { return SmlTypes.SML_VARS; }
 
@@ -229,7 +237,7 @@ EQUALS_SEPARATOR = [=]
   "MESSAGE"       { return SmlTypes.MESSAGE; }
   "DEBUG"         { return SmlTypes.DEBUG; }
   "WARNING"       { return SmlTypes.WARNING; }
-  "wait"          { return SmlTypes.WAIT; }
+  "wait"          { yybegin(WAIT); return SmlTypes.WAIT; }
   "set "          { yybegin(SET); return SmlTypes.SET; }
 
   // Mots clés des blocs considérés comme des instructions
@@ -255,6 +263,10 @@ EQUALS_SEPARATOR = [=]
   // Clé d'indentification d'un état ou d'un thread
   {IDENTIFICATION_KEY}  { return SmlTypes.IDENTIFICATION_KEY; }
 
+}
+
+<WAIT>{
+    {WAIT_TIMER} {yybegin(INSTRUCTIONS); return SmlTypes.WAIT_TIMER; }
 }
 
 <SET>{

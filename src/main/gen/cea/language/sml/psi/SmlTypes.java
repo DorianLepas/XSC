@@ -78,6 +78,7 @@ public interface SmlTypes {
   IElementType JAVA_FUNCTION_CALL = new SmlTokenType("JAVA_FUNCTION_CALL");
   IElementType LINE_END = new SmlTokenType("LINE_END");
   IElementType MESSAGE = new SmlTokenType("MESSAGE");
+  IElementType OPERATORS_NOT = new SmlTokenType("OPERATORS_NOT");
   IElementType OPTION = new SmlTokenType("OPTION");
   IElementType OPTIONS = new SmlTokenType("OPTIONS");
   IElementType OP_CONDS = new SmlTokenType("OP_CONDS");
@@ -98,6 +99,7 @@ public interface SmlTypes {
   IElementType TRACE_MESSAGE_SEPARATOR = new SmlTokenType("TRACE_MESSAGE_SEPARATOR");
   IElementType TRACE_MESSAGE_STRING = new SmlTokenType("TRACE_MESSAGE_STRING");
   IElementType WAIT = new SmlTokenType("WAIT");
+  IElementType WAIT_TIMER = new SmlTokenType("WAIT_TIMER");
   IElementType WARNING = new SmlTokenType("WARNING");
 
   class Factory {

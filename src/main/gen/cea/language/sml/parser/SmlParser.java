@@ -607,7 +607,7 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BEGIN_PARENTHESE (((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*) | JAVA_FUNCTION_CALL) END_PARENTHESE?
+  // BEGIN_PARENTHESE OPERATORS_NOT?(((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL) ((OP_CONDS|COMP_CONDS) OPERATORS_NOT? ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL))*) END_PARENTHESE?
   public static boolean ifConditions(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ifConditions")) return false;
     if (!nextTokenIs(b, BEGIN_PARENTHESE)) return false;
@@ -616,37 +616,45 @@ public class SmlParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, BEGIN_PARENTHESE);
     p = r; // pin = 1
     r = r && report_error_(b, ifConditions_1(b, l + 1));
-    r = p && ifConditions_2(b, l + 1) && r;
+    r = p && report_error_(b, ifConditions_2(b, l + 1)) && r;
+    r = p && ifConditions_3(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*) | JAVA_FUNCTION_CALL
+  // OPERATORS_NOT?
   private static boolean ifConditions_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ifConditions_1")) return false;
+    consumeToken(b, OPERATORS_NOT);
+    return true;
+  }
+
+  // ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL) ((OP_CONDS|COMP_CONDS) OPERATORS_NOT? ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL))*
+  private static boolean ifConditions_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = ifConditions_2_0(b, l + 1);
+    p = r; // pin = 1
+    r = r && ifConditions_2_1(b, l + 1);
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL
+  private static boolean ifConditions_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = ifConditions_1_0(b, l + 1);
+    r = ifConditions_2_0_0(b, l + 1);
     if (!r) r = consumeToken(b, JAVA_FUNCTION_CALL);
     exit_section_(b, m, null, r);
     return r;
   }
 
-  // (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*
-  private static boolean ifConditions_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0")) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
-    r = ifConditions_1_0_0(b, l + 1);
-    p = r; // pin = 1
-    r = r && ifConditions_1_0_1(b, l + 1);
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
-  }
-
   // THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS
-  private static boolean ifConditions_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0_0")) return false;
+  private static boolean ifConditions_2_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_0_0")) return false;
     boolean r;
     r = consumeToken(b, THREAD_KEYWORD);
     if (!r) r = consumeToken(b, PROCESS_KEYWORD);
@@ -655,41 +663,60 @@ public class SmlParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*
-  private static boolean ifConditions_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0_1")) return false;
+  // ((OP_CONDS|COMP_CONDS) OPERATORS_NOT? ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL))*
+  private static boolean ifConditions_2_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1")) return false;
     while (true) {
       int c = current_position_(b);
-      if (!ifConditions_1_0_1_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "ifConditions_1_0_1", c)) break;
+      if (!ifConditions_2_1_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ifConditions_2_1", c)) break;
     }
     return true;
   }
 
-  // (OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)
-  private static boolean ifConditions_1_0_1_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0_1_0")) return false;
+  // (OP_CONDS|COMP_CONDS) OPERATORS_NOT? ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL)
+  private static boolean ifConditions_2_1_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
-    r = ifConditions_1_0_1_0_0(b, l + 1);
+    r = ifConditions_2_1_0_0(b, l + 1);
     p = r; // pin = 1
-    r = r && ifConditions_1_0_1_0_1(b, l + 1);
+    r = r && report_error_(b, ifConditions_2_1_0_1(b, l + 1));
+    r = p && ifConditions_2_1_0_2(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
   // OP_CONDS|COMP_CONDS
-  private static boolean ifConditions_1_0_1_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0_1_0_0")) return false;
+  private static boolean ifConditions_2_1_0_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1_0_0")) return false;
     boolean r;
     r = consumeToken(b, OP_CONDS);
     if (!r) r = consumeToken(b, COMP_CONDS);
     return r;
   }
 
+  // OPERATORS_NOT?
+  private static boolean ifConditions_2_1_0_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1_0_1")) return false;
+    consumeToken(b, OPERATORS_NOT);
+    return true;
+  }
+
+  // (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL
+  private static boolean ifConditions_2_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1_0_2")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ifConditions_2_1_0_2_0(b, l + 1);
+    if (!r) r = consumeToken(b, JAVA_FUNCTION_CALL);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
   // THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS
-  private static boolean ifConditions_1_0_1_0_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_1_0_1_0_1")) return false;
+  private static boolean ifConditions_2_1_0_2_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_2_1_0_2_0")) return false;
     boolean r;
     r = consumeToken(b, THREAD_KEYWORD);
     if (!r) r = consumeToken(b, PROCESS_KEYWORD);
@@ -699,8 +726,8 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   // END_PARENTHESE?
-  private static boolean ifConditions_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ifConditions_2")) return false;
+  private static boolean ifConditions_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ifConditions_3")) return false;
     consumeToken(b, END_PARENTHESE);
     return true;
   }
@@ -1197,15 +1224,16 @@ public class SmlParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // WAIT
+  // WAIT WAIT_TIMER
   public static boolean waitInstruction(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "waitInstruction")) return false;
     if (!nextTokenIs(b, WAIT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, WAIT);
-    exit_section_(b, m, WAIT_INSTRUCTION, r);
-    return r;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, WAIT_INSTRUCTION, null);
+    r = consumeTokens(b, 1, WAIT, WAIT_TIMER);
+    p = r; // pin = 1
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
   }
 
 }

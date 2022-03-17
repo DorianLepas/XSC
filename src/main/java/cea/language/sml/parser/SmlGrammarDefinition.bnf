@@ -92,7 +92,7 @@ eventsValue ::= EVENT_NAME {name="Events Value" mixin="cea.language.sml.psi.impl
 conditions ::= (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*
 
 /* Règle des conditions pour un bloc if, else if ou else */
-ifConditions ::= BEGIN_PARENTHESE (((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS) ((OP_CONDS|COMP_CONDS) (THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS))*) | JAVA_FUNCTION_CALL) END_PARENTHESE?
+ifConditions ::= BEGIN_PARENTHESE OPERATORS_NOT?(((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL) ((OP_CONDS|COMP_CONDS) OPERATORS_NOT? ((THREAD_KEYWORD|PROCESS_KEYWORD|SML_VARS|CONST_CONDS)|JAVA_FUNCTION_CALL))*) END_PARENTHESE?
 
 
 /* Règles grammaticales des instructions */
@@ -129,7 +129,7 @@ threadStateInstruction ::= THREAD_STATE SEPARATOR THREAD_NAME identificationKey
 execEndInstruction ::= EXEC_END
 
 // Instruction wait
-waitInstruction ::= WAIT
+waitInstruction ::= WAIT WAIT_TIMER
 
 // Instruction consume_event
 consumeEventInstruction ::= CONSUME_EVENT
