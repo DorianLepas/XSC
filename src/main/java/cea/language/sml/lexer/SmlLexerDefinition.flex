@@ -53,7 +53,7 @@ STATE_NAME = [\w]+
 ALIAS_NAME = [\w]+
 
 /* Noms d'événements */
-EVENT_NAME = [&]?[\w]+ | \'.+\'
+EVENT_NAME = [&]?[\w]+ | \'[^\']+\'
 
 /* Séparateur entre les noms d'événements dans une définition d'événements */
 EVENT_NAME_SEPARATOR = ","

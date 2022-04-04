@@ -565,7 +565,7 @@ public class SmlUtil {
                 // Go threw all states find in the current file
                 for (SmlStateBlock state : states) {
                     // Check if they both have the same value
-                    if (value.equals(Objects.requireNonNull(state.getNode().findChildByType(SmlTypes.STATE_NAMES)).getText())) {
+                    if (state.getNode().findChildByType(SmlTypes.STATE_NAMES) != null && value.equals(state.getNode().findChildByType(SmlTypes.STATE_NAMES).getText())) {
                         result.add(state);
                     }
                 }
