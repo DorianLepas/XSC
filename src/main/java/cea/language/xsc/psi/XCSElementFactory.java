@@ -82,7 +82,6 @@ public class XCSElementFactory {
                 ">" +
                 "\n."
         );
-        System.out.println(file.getText());
         return PsiTreeUtil.findChildOfType(file,XCSFunctionCore.class);
     }
 

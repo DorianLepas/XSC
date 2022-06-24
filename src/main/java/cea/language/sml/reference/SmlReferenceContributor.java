@@ -19,7 +19,6 @@ public class SmlReferenceContributor extends PsiReferenceContributor {
                                                                            @NotNull ProcessingContext context) {
                         SmlEventsValue e = (SmlEventsValue) element;
                         if (element.getText().matches("'[^']+'")){
-                            System.out.println(element.getText());
                             return new PsiReference[]{};
                         }
                         return new PsiReference[]{new SmlEventReference(e,

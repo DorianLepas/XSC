@@ -96,37 +96,40 @@ public class SmlUtil {
         // Go threw all files
         for (VirtualFile virtualFile : virtualFiles) {
             // Convert to javaFile
-            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
-            String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
-            // Check if the java file name is the same as the first part of the JavaCall
-            if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
-                PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
-                while (currentJavaFilePath != null) {
-                    String dir = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName();
-                    // Found the function in the same project (higher priority)
-                    if (!dir.equals("Automation") && currentJavaFilePath.getName().equals(dir)) {
-                        AddFunctionProperties(value, element, javaFile, result);
-                        SearchInExtends(value, element, javaFile, project, result);
-                        break;
+            PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
+            if (psiFile instanceof PsiJavaFile) {
+                PsiJavaFile javaFile = (PsiJavaFile) psiFile;
+                String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
+                // Check if the java file name is the same as the first part of the JavaCall
+                if (javaFile != null && javaFile.getName().equals(value.substring(0, value.lastIndexOf(".")) + ".java")) {
+                    PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
+                    while (currentJavaFilePath != null) {
+                        String dir = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName();
+                        // Found the function in the same project (higher priority)
+                        if (!dir.equals("Automation") && currentJavaFilePath.getName().equals(dir)) {
+                            AddFunctionProperties(value, element, javaFile, result);
+                            SearchInExtends(value, element, javaFile, project, result);
+                            break;
+                        }
+                        // Found the function in the AEQC (only if the JavaCall file is in the AEQC directory) project (lower priority)
+                        if ((result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) ||
+                                javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
+                            AddFunctionProperties(value, element, javaFile, result);
+                            break;
+                        }
+                        // Found the function in the FFC (only if the JavaCall file is in the FFC directory) project (lower priority)
+                        if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) ||
+                                javaFile.getVirtualFile().getCanonicalPath().contains("FFCGenerator") && fileType.equals("FFCGenerator")) {
+                            AddFunctionProperties(value, element, javaFile, result);
+                            break;
+                        }
+                        // Found the function in the AutomationCommon project (lower priority)
+                        if (result.size() == 0 && currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
+                            AddFunctionProperties(value, element, javaFile, result);
+                            break;
+                        }
+                        currentJavaFilePath = currentJavaFilePath.getParentDirectory();
                     }
-                    // Found the function in the AEQC (only if the JavaCall file is in the AEQC directory) project (lower priority)
-                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC")) ||
-                            javaFile.getVirtualFile().getCanonicalPath().contains("AEQCGenerator") && fileType.equals("AEQCGenerator")) {
-                        AddFunctionProperties(value, element, javaFile, result);
-                        break;
-                    }
-                    // Found the function in the FFC (only if the JavaCall file is in the FFC directory) project (lower priority)
-                    if ((result.size() == 0 && currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC")) ||
-                            javaFile.getVirtualFile().getCanonicalPath().contains("FFCGenerator") && fileType.equals("FFCGenerator")) {
-                        AddFunctionProperties(value, element, javaFile, result);
-                        break;
-                    }
-                    // Found the function in the AutomationCommon project (lower priority)
-                    if (result.size() == 0 && currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC"))) {
-                        AddFunctionProperties(value, element, javaFile, result);
-                        break;
-                    }
-                    currentJavaFilePath = currentJavaFilePath.getParentDirectory();
                 }
             }
         }
@@ -147,33 +150,36 @@ public class SmlUtil {
         // Go threw all files
         for (VirtualFile virtualFile : virtualFiles) {
             // Convert to javaFile
-            PsiJavaFile javaFile = (PsiJavaFile) PsiManager.getInstance(project).findFile(virtualFile);
-            String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
-            if (javaFile != null) {
-                PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
-                while (currentJavaFilePath != null) {
-                    // Get all the function the AEQCGenerator project (only in java directory)
-                    if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
-                        AddFunctionProperties(javaFile, result);
-                        break;
+            PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
+            if (psiFile instanceof PsiJavaFile) {
+                PsiJavaFile javaFile = (PsiJavaFile) psiFile;
+                String fileType = Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getName();
+                if (javaFile != null) {
+                    PsiDirectory currentJavaFilePath = javaFile.getContainingDirectory();
+                    while (currentJavaFilePath != null) {
+                        // Get all the function the AEQCGenerator project (only in java directory)
+                        if (currentJavaFilePath.getName().equals("AEQCGenerator") && fileType.equals("AEQC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                            AddFunctionProperties(javaFile, result);
+                            break;
+                        }
+                        // Get all the function the FFCGenerator project (only in java directory)
+                        if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                            AddFunctionProperties(javaFile, result);
+                            break;
+                        }
+                        // Get all the function the AutomationCommon project (only in java directory)
+                        if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC")) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                            AddFunctionProperties(javaFile, result);
+                            break;
+                        }
+                        // Get all the function the same project as the java file (only in java directory)
+                        if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName()) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
+                            AddFunctionProperties(javaFile, result);
+                            SearchInExtends(javaFile, project, result);
+                            break;
+                        }
+                        currentJavaFilePath = currentJavaFilePath.getParentDirectory();
                     }
-                    // Get all the function the FFCGenerator project (only in java directory)
-                    if (currentJavaFilePath.getName().equals("FFCGenerator") && fileType.equals("FCC") && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
-                        AddFunctionProperties(javaFile, result);
-                        break;
-                    }
-                    // Get all the function the AutomationCommon project (only in java directory)
-                    if (currentJavaFilePath.getName().equals("AutomationCommon") && (fileType.equals("AEQC") || fileType.equals("FCC")) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
-                        AddFunctionProperties(javaFile, result);
-                        break;
-                    }
-                    // Get all the function the same project as the java file (only in java directory)
-                    if (currentJavaFilePath.getName().equals(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(Objects.requireNonNull(file.getContainingDirectory()).getParentDirectory()).getParentDirectory()).getParentDirectory()).getName()) && javaFile.getVirtualFile().getCanonicalPath().contains("java")) {
-                        AddFunctionProperties(javaFile, result);
-                        SearchInExtends(javaFile, project, result);
-                        break;
-                    }
-                    currentJavaFilePath = currentJavaFilePath.getParentDirectory();
                 }
             }
         }
